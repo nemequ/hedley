@@ -41,6 +41,163 @@ macros which are defined differently depending on your platform.  For
 example, there is a `HEDLEY_NON_NULL` macro which can be used to
 indicate that specific function parameters should never be NULL.
 
+### Versioning Macros
+
+#### `HEDLEY_ENCODE_VERSION(major, minor, revision)`
+
+This macro is used to encode semantic version information into a
+single value which can easily be tested in other macros.  It assumes
+each part of the version fits in 8-bits.
+
+### Compiler Versions and Feature Checking
+
+#### `HEDLEY_GCC_VERSION_CHECK`
+
+Check whether your compiler is (pretending to be) a version of GCC
+greater than or equal to the specified value.
+
+#### `HEDLEY_GCC_NOT_CLANG_VERSION_CHECK`
+
+Like HEDLEY_GCC_VERSION_CHECK, but defined to 0 for clang.
+
+This is important because we might want to do something like
+`HEDLEY_HAS_ATTRIBUTE(foo) || HEDLEY_GCC_VERSION_CHECK(x,y,z)`, and if
+the first part fails but the second part returns true it could result
+in bad code.
+
+#### `HEDLEY_GCC_VERSION_CHECK`
+
+Check whether your compiler is a version of MSVC greater than or equal
+to the specified value.
+
+#### `HEDLEY_CLANG_HAS_X(y)`
+
+Where X is one of:
+
+ * ATTRIBUTE
+ * BUILTIN
+ * FEATURE
+ * EXTENSION
+ * DECLSPEC_ATTRIBUTE
+
+Defined to the relevant __has_* macro if the compiler is clang, or 0
+for other compilers.  This should generally be used for feature
+detection on clang instead of the version numbers, especially since
+Apple ships a version of clang with higher version numbers...
+
+#### `HEDLEY_GCC_HAS_X(y, major, minor, patch)`
+
+These macros are just a shortcut for writing:
+
+```c
+HEDLEY_CLANG_HAS_*(y) || HEDLEY_GCC_NOT_CLANG_VERSION_CHECK(major,minor,patch)
+```
+
+### For Public APIs
+
+#### `HEDLEY_DEPRECATED(since)`
+
+Mark a symbol as deprecated since `since` (currently a string,
+debating using a version encoded with `HEDLEY_VERSION_ENCODE`
+instead).
+
+This is meant to be used in conjuction with a header file like that
+descibed later on, in the "Public API in Libraries" section.
+
+#### `HEDLEY_DEPRECATED_FOR(since, replacement)`
+
+Like `HEDLEY_DEPRECATED`, but also tell the consumer what the
+replacement is.
+
+This is meant to be used in conjuction with a header file like that
+descibed later on, in the "Public API in Libraries" section.
+
+#### `HEDLEY_UNAVAILABLE(available_since)`
+
+Emit a warning that the symbol is only available in `available_since`
+and up.
+
+This is meant to be used in conjuction with a header file like that
+descibed later on, in the "Public API in Libraries" section.
+
+#### `HEDLEY_INTERNAL`/`HEDLEY_EXTERNAL`/`HEDLEY_IMPORT`
+
+These can/should be used by libraries to specify which symbols are
+publicly visible.  Note, however, that they shouldn't be used
+directly, at least in public headers.
+
+This is meant to be used in conjuction with a header file like that
+descibed later on, in the "Public API in Libraries" section.
+
+### Trigger Warnings on API Misuse
+
+#### `HEDLEY_ARRAY_PARAM(param)`
+
+Used for
+[conformant array parameters](https://www.securecoding.cert.org/confluence/display/c/API05-C.+Use+conformant+array+parameters).
+
+#### `HEDLEY_WARN_UNUSED_RESULT`
+
+Function attribute which will cause supported compilers to warn if the
+result of the function is not used.
+
+#### `HEDLEY_SENTINEL(position)`
+
+Function attribute which annotates a function requires an explicit
+NULL to denote the end of a variadic argument list.  Counting starts
+at 0 from the last (right-most) parameter.
+
+#### `HEDLEY_NO_RETURN`
+
+Function attribute to indicate that the function will never return.
+
+#### `HEDLEY_UNREACHABLE()`
+
+Tells supported compilers that the code should never be reached.
+
+#### `HEDLEY_NON_NULL(param...)`
+
+Function attribute which tells supported compilers that values passed
+to the listed parameters (identified by position number) should never
+be NULL.
+
+#### `HEDLEY_PRINTF_FORMAT(string_idx, first_to_check)`
+
+Tells the compiler that the function takes a printf-style format
+string so it can be checked at compile time.
+
+### Performance Optimizations
+
+#### `HEDLEY_MALLOC`
+
+Tells the compiler that the returned value cannot alias anything.
+
+#### `HEDLEY_LIKELY/UNLIKELY(expr)`
+
+Used to inform the compiler that the expression is likely (or
+unlikely) to evaluate to true.
+
+Note that these macros will always return 0 (if the expression
+evaluates to 0) or 1 (for everything else).
+
+#### `HEDLEY_INLINE`/`HEDLEY_ALWAYS_INLINE`/`HEDLEY_NEVER_INLINE`
+
+HEDLEY_INLINE asks the compiler to inline, but leaves the final
+decision up to the compiler (like "inline" in the C99 standard).
+`HEDLEY_ALWAYS_INLINE` takes it a step further and tells the compiler
+to *always* inline the function, and `HEDLEY_NEVER_INLINE` tells the
+compiler *never* to inline the function.
+
+Note that not all of these are supported by every compiler.  Most
+compilers, however, should behave.
+
+#### `HEDLEY_NO_THROW`
+
+Tell the compiler that this function will never throw a C++ exception.
+
+That's right, C++ screws everything up even when the API is written in
+pure C.
+
 ### Public API in Libraries
 
 If you're writing something with a public API, I strongly recommend

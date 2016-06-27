@@ -103,7 +103,7 @@
  * HEDLEY_CLANG_HAS_DECLSPEC_ATTRIBUTE(attribute):
  *
  * Defined to the relevant __has_* macro if the compiler is clang, or
- * for other compilers.  This should generally be used for feature
+ * 0 for other compilers.  This should generally be used for feature
  * detection on clang instead of the version numbers, especially since
  * Apple ships a version of clang with higher version numbers...
  */
@@ -149,8 +149,8 @@
 #endif
 
 /* HEDLEY_GCC_HAS_ATTRIBUTE(attribute,major,minor,patch)
- * HEDLEY_GCC_HAS_BUILTIN(attribute,major,minor,patch)
- * HEDLEY_GCC_HAS_FEATURE(attribute,major,minor,patch)
+ * HEDLEY_GCC_HAS_BUILTIN(builtin,major,minor,patch)
+ * HEDLEY_GCC_HAS_FEATURE(feature,major,minor,patch)
  * HEDLEY_GCC_HAS_DECLSPEC_ATTRIBUTE(attribute,major,minor,patch)
  *
  * These macros are just a shortcut for writing:
