@@ -51,9 +51,9 @@
 #  define HEDLEY_GCC_VERSION_CHECK(major,minor,patch) 0
 #else
 #  if defined(__GNUC_PATCHLEVEL__)
-#    define HEDLEY_GCC_VERSION_CHECK(major,minor,patch) (HEDLEY_ENCODE_VERSION(major,minor,patch) >= HEDLEY_ENCODE_VERSION(__GNUC__, __GNUC_MINOR__, __GNUC_PATCHLEVEL__))
+#    define HEDLEY_GCC_VERSION_CHECK(major,minor,patch) (HEDLEY_ENCODE_VERSION(__GNUC__, __GNUC_MINOR__, __GNUC_PATCHLEVEL__) >= HEDLEY_ENCODE_VERSION(major,minor,patch))
 #  else
-#    define HEDLEY_GCC_VERSION_CHECK(major,minor,patch) (HEDLEY_ENCODE_VERSION(major,minor,patch) >= HEDLEY_ENCODE_VERSION(__GNUC__, __GNUC_MINOR__, 0))
+#    define HEDLEY_GCC_VERSION_CHECK(major,minor,patch) (HEDLEY_ENCODE_VERSION(__GNUC__, __GNUC_MINOR__, 0) >= HEDLEY_ENCODE_VERSION(major,minor,patch))
 #  endif
 #endif
 
@@ -88,12 +88,12 @@
 #endif
 #if !defined(_MSC_VER)
 #  define HEDLEY_MSVC_VERSION_CHECK(major,minor,patch) 0
-#if _MSC_VER >= 1400
-#  define HEDLEY_MSVC_VERSION_CHECK(major,minor,patch) (((major * 1000000) + (minor * 10000) + (patch)) >= _MSC_FULL_VER)
+#elif _MSC_VER >= 1400
+#  define HEDLEY_MSVC_VERSION_CHECK(major,minor,patch) (_MSC_FULL_VER >= ((major * 1000000) + (minor * 10000) + (patch)))
 #elif _MSC_VER >= 1200
-#  define HEDLEY_MSVC_VERSION_CHECK(major,minor,patch) (((major * 100000) + (minor * 1000) + (patch)) >= _MSC_FULL_VER)
+#  define HEDLEY_MSVC_VERSION_CHECK(major,minor,patch) (_MSC_FULL_VER >= ((major * 100000) + (minor * 1000) + (patch)))
 #else
-#  define HEDLEY_MSVC_VERSION_CHECK(major,minor,patch) (((major * 100) + (minor)) >= _MSC_VER)
+#  define HEDLEY_MSVC_VERSION_CHECK(major,minor,patch) (_MSC_VER >= ((major * 100) + (minor)))
 #endif
 
 /* HEDLEY_CLANG_HAS_ATTRIBUTE(attribute):
@@ -214,8 +214,6 @@
 #else
 #  define HEDLEY_UNAVAILABLE(available_since)
 #endif
-
-HEDLEY_UNAVAILABLE(FOO_TARGET_VERSION, FOO_VERSION)
 
 /* HEDLEY_WARN_UNUSED_RESULT:
  *
@@ -443,7 +441,7 @@ HEDLEY_UNAVAILABLE(FOO_TARGET_VERSION, FOO_VERSION)
 #if defined(HEDLEY_NO_THROW)
 #  undef HEDLEY_NO_THROW
 #endif
-#if HEDLEY_CLANG_HAS_ATTRIBUTE(nothrow,3,3,0)
+#if HEDLEY_GCC_HAS_ATTRIBUTE(nothrow,3,3,0)
 #  define HEDLEY_NO_THROW __attribute__((__nothrow__))
 #elif HEDLEY_MSVC_VERSION_CHECK(13,1,0)
 #  define HEDLEY_NO_THROW __declspec(nothrow)
@@ -464,6 +462,33 @@ HEDLEY_UNAVAILABLE(FOO_TARGET_VERSION, FOO_VERSION)
 #  define HEDLEY_ARRAY_PARAM(name) name
 #else
 #  define HEDLEY_ARRAY_PARAM(name)
+#endif
+
+/* HEDLEY_BEGIN_C_DECLS:
+ * HEDLEY_END_C_DECLS:
+ * HEDLEY_C_DECL:
+ *
+ * HEDLEY_BEGIN_C_DECLS and HEDLEY_END_C_DECLS are used to mark
+ * regions as having C linkage when compiled with C++.  HEDLEY_C_DECL
+ * is used to mark a single symbol as having C linkage.
+ */
+#if defined(HEDLEY_BEGIN_C_DECLS)
+#  undef HEDLEY_BEGIN_C_DECLS
+#endif
+#if defined(HEDLEY_END_C_DECLS)
+#  undef HEDLEY_END_C_DECLS
+#endif
+#if defined(HEDLEY_C_DECL)
+#  undef HEDLEY_C_DECL
+#endif
+#if defined(__cplusplus)
+#  define HEDLEY_BEGIN_C_DECLS extern "C" {
+#  define HEDLEY_END_C_DECLS }
+#  define HEDLEY_C_DECL extern "C"
+#else
+#  define HEDLEY_BEGIN_C_DECLS
+#  define HEDLEY_END_C_DECLS
+#  define HEDLEY_C_DECL
 #endif
 
 #endif /* !defined(HEDLEY_VERSION) || (HEDLEY_VERSION < X) */
