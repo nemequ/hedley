@@ -225,6 +225,8 @@
 #endif
 #if HEDLEY_GCC_HAS_ATTRIBUTE(warn_unused_result,3,4,0)
 #  define HEDLEY_WARN_UNUSED_RESULT __attribute__((__warn_unused_result__))
+#elif HEDLEY_MSVC_VERSION_CHECK(17,0,0)
+#  define HEDLEY_WARN_UNUSED_RESULT _Check_return_
 #else
 #  define HEDLEY_WARN_UNUSED_RESULT
 #endif
@@ -290,21 +292,6 @@
 #  define HEDLEY_NON_NULL(...) __attribute__((__nonnull__(__VA_ARGS__)))
 #else
 #  define HEDLEY_NON_NULL(...)
-#endif
-
-/* HEDLEY_MALLOC:
- *
- * Tells the compiler that the returned value cannot alias anything.
- */
-#if defined(HEDLEY_MALLOC)
-#  undef HEDLEY_MALLOC
-#endif
-#if HEDLEY_GCC_HAS_ATTRIBUTE(malloc,3,1,0)
-#  define HEDLEY_MALLOC __attribute__((__malloc__))
-#elif HEDLEY_MSVC_VERSION_CHECK(14,0,0)
-#  DEFINE HEDLEY_MALLOC __declspec(noalias)
-#else
-#  define HEDLEY_MALLOC
 #endif
 
 /* HEDLEY_PRINTF_FORMAT(string_idx,first_to_check):
@@ -379,7 +366,7 @@
 #  define HEDLEY_INLINE inline
 #elif defined(__GNUC_STDC_INLINE__)
 #  define HEDLEY_INLINE __inline__
-#elif defined(_MSC_VER)
+#elif HEDLEY_MSVC_VERSION_CHECK(12,0,0)
 #  define HEDLEY_INLINE __inline
 #else
 #  define HEDLEY_INLINE
@@ -449,7 +436,7 @@
 #  define HEDLEY_NO_THROW
 #endif
 
-/* HEDLEY_ARRAY_PARAM(param):
+/* HEDLEY_ARRAY_PARAM(expr):
  *
  * Used for conformant array parameters (see
  * https://www.securecoding.cert.org/confluence/display/c/API05-C.+Use+conformant+array+parameters
