@@ -352,7 +352,7 @@
 #endif
 #if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L
 #  define HEDLEY_STATIC_ASSERT(expr, message) _Static_assert(expr, message)
-#elif HEDLEY_GCC_HAS_EXTENSION(c_static_assert,4,6,0)
+#elif HEDLEY_GCC_HAS_FEATURE(c_static_assert,4,6,0)
 #  define HEDLEY_STATIC_ASSERT(expr, message) _Static_assert(expr, message)
 #elif HEDLEY_MSVC_VERSION_CHECK(16,0,0)
 #  define HEDLEY_STATIC_ASSERT(expr, message) static_assert(expr, message)
