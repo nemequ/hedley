@@ -28,10 +28,25 @@
 #endif
 #define HEDLEY_VERSION 1
 
-#if defined(HEDLEY_ENCODE_VERSION)
-#  undef HEDLEY_ENCODE_VERSION
+#if defined(HEDLEY_VERSION_ENCODE)
+#  undef HEDLEY_VERSION_ENCODE
 #endif
-#define HEDLEY_ENCODE_VERSION(major,minor,revision) (((major & 0xff) << 16) | ((minor & 0xff) << 8) | (revision & 0xff))
+#define HEDLEY_VERSION_ENCODE(major,minor,revision) (((major) * 1000000) + ((minor) * 1000) + (revision))
+
+#if defined(HEDLEY_VERSION_DECODE_MAJOR)
+#  undef HEDLEY_VERSION_DECODE_MAJOR
+#endif
+#define HEDLEY_VERSION_DECODE_MAJOR(version) ((version) / 1000000)
+
+#if defined(HEDLEY_VERSION_DECODE_MINOR)
+#  undef HEDLEY_VERSION_DECODE_MINOR
+#endif
+#define HEDLEY_VERSION_DECODE_MINOR(version) (((version) % 1000000) / 1000)
+
+#if defined(HEDLEY_VERSION_DECODE_REVISION)
+#  undef HEDLEY_VERSION_DECODE_REVISION
+#endif
+#define HEDLEY_VERSION_DECODE_REVISION(version) ((version) % 1000)
 
 #if defined(HEDLEY_GCC_VERSION_CHECK)
 #  undef HEDLEY_GCC_VERSION_CHECK
@@ -40,9 +55,9 @@
 #  define HEDLEY_GCC_VERSION_CHECK(major,minor,patch) 0
 #else
 #  if defined(__GNUC_PATCHLEVEL__)
-#    define HEDLEY_GCC_VERSION_CHECK(major,minor,patch) (HEDLEY_ENCODE_VERSION(__GNUC__, __GNUC_MINOR__, __GNUC_PATCHLEVEL__) >= HEDLEY_ENCODE_VERSION(major,minor,patch))
+#    define HEDLEY_GCC_VERSION_CHECK(major,minor,patch) (HEDLEY_VERSION_ENCODE(__GNUC__, __GNUC_MINOR__, __GNUC_PATCHLEVEL__) >= HEDLEY_VERSION_ENCODE(major,minor,patch))
 #  else
-#    define HEDLEY_GCC_VERSION_CHECK(major,minor,patch) (HEDLEY_ENCODE_VERSION(__GNUC__, __GNUC_MINOR__, 0) >= HEDLEY_ENCODE_VERSION(major,minor,patch))
+#    define HEDLEY_GCC_VERSION_CHECK(major,minor,patch) (HEDLEY_VERSION_ENCODE(__GNUC__, __GNUC_MINOR__, 0) >= HEDLEY_VERSION_ENCODE(major,minor,patch))
 #  endif
 #endif
 
