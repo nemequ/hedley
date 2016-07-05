@@ -60,9 +60,9 @@
 #endif
 #if !defined(_MSC_VER)
 #  define HEDLEY_MSVC_VERSION_CHECK(major,minor,patch) 0
-#elif _MSC_VER >= 1400
+#elif defined(_MSC_VER) && (_MSC_VER >= 1400)
 #  define HEDLEY_MSVC_VERSION_CHECK(major,minor,patch) (_MSC_FULL_VER >= ((major * 1000000) + (minor * 10000) + (patch)))
-#elif _MSC_VER >= 1200
+#elif defined(_MSC_VER) && (_MSC_VER >= 1200)
 #  define HEDLEY_MSVC_VERSION_CHECK(major,minor,patch) (_MSC_FULL_VER >= ((major * 100000) + (minor * 1000) + (patch)))
 #else
 #  define HEDLEY_MSVC_VERSION_CHECK(major,minor,patch) (_MSC_VER >= ((major * 100) + (minor)))
@@ -238,10 +238,10 @@
 #endif
 #if HEDLEY_GCC_HAS_BUILTIN(expect,3,0,0)
 #  define HEDLEY_LIKELY(expr) __builtin_expect(((expr) != 0), 1)
-#  define HEDLEY_UNLIKELY(expr) __builtin_expect(((expr) == 0), 1)
+#  define HEDLEY_UNLIKELY(expr) __builtin_expect(((expr) != 0), 0)
 #else
 #  define HEDLEY_LIKELY(expr) ((expr) != 0)
-#  define HEDLEY_UNLIKELY(expr) ((expr) == 0)
+#  define HEDLEY_UNLIKELY(expr) ((expr) != 0)
 #endif
 
 #if defined(HEDLEY_INLINE)
