@@ -198,6 +198,8 @@
 #  define HEDLEY_UNREACHABLE() __builtin_unreachable()
 #elif HEDLEY_MSVC_VERSION_CHECK(13,10,0)
 #  define HEDLEY_UNREACHABLE() __assume(0)
+#elif defined(EXIT_FAILURE)
+#  define HEDLEY_UNREACHABLE() abort()
 #elif defined(assert)
 #  define HEDLEY_UNREACHABLE() assert(0)
 #else
