@@ -28,22 +28,11 @@
 #endif
 #define HEDLEY_VERSION 1
 
-/* HEDLEY_VERSION(major,minor,patch):
- *
- * This macro is used to encode semantic version information into a
- * single value which can easily be tested in other macros.  It
- * assumes each part of the version fits in 8-bits.
- */
 #if defined(HEDLEY_ENCODE_VERSION)
 #  undef HEDLEY_ENCODE_VERSION
 #endif
-#define HEDLEY_ENCODE_VERSION(major,minor,revision) ((major << 24) | (minor << 8) | (revision))
+#define HEDLEY_ENCODE_VERSION(major,minor,revision) (((major & 0xff) << 16) | ((minor & 0xff) << 8) | (revision & 0xff))
 
-/* HEDLEY_GCC_VERSION_CHECK(major,minor,patch):
- *
- * Check whether your compiler is (pretending to be) a version of GCC
- * greater than or equal to the specified value.
- */
 #if defined(HEDLEY_GCC_VERSION_CHECK)
 #  undef HEDLEY_GCC_VERSION_CHECK
 #endif
@@ -57,18 +46,6 @@
 #  endif
 #endif
 
-/* HEDLEY_GCC_NOT_CLANG_VERSION_CHECK(major,minor,patch):
- *
- * Like HEDLEY_GCC_VERSION_CHECK, but defined to 0 for clang.
- *
- * This is important because we might want to do something like
- * HEDLEY_HAS_ATTRIBUTE(foo) || HEDLEY_GCC_VERSION_CHECK(x,y,z), and
- * if the first part fails but the second part returns true it could
- * result in bad code.
- *
- * Instead, most checks in Hedley use something like
- * HEDLEY_HAS_ATTRIBUTE(foo) || HEDLEY_GCC_NOT_CLANG_VERSION_CHECK(x,y,z).
- */
 #if defined(HEDLEY_GCC_NOT_CLANG_VERSION_CHECK)
 #  undef HEDLEY_GCC_NOT_CLANG_VERSION_CHECK
 #endif
@@ -78,11 +55,6 @@
 #  define HEDLEY_GCC_NOT_CLANG_VERSION_CHECK(major,minor,patch) HEDLEY_GCC_VERSION_CHECK(major,minor,patch)
 #endif
 
-/* HEDLEY_MSVC_VERSION_CHECK(major,minor,patch):
- *
- * Check whether your compiler is a version of MSVC greater than or
- * equal to the specified value.
- */
 #if defined(HEDLEY_MSVC_VERSION_CHECK)
 #  undef HEDLEY_GCC_VERSION_CHECK
 #endif
@@ -96,17 +68,6 @@
 #  define HEDLEY_MSVC_VERSION_CHECK(major,minor,patch) (_MSC_VER >= ((major * 100) + (minor)))
 #endif
 
-/* HEDLEY_CLANG_HAS_ATTRIBUTE(attribute):
- * HEDLEY_CLANG_HAS_BUILTIN(builtin):
- * HEDLEY_CLANG_HAS_FEATURE(feature):
- * HEDLEY_CLANG_HAS_EXTENSION(extension):
- * HEDLEY_CLANG_HAS_DECLSPEC_ATTRIBUTE(attribute):
- *
- * Defined to the relevant __has_* macro if the compiler is clang, or
- * 0 for other compilers.  This should generally be used for feature
- * detection on clang instead of the version numbers, especially since
- * Apple ships a version of clang with higher version numbers...
- */
 #if defined(HEDLEY_CLANG_HAS_ATTRIBUTE)
 #  undef HEDLEY_CLANG_HAS_ATTRIBUTE
 #endif
@@ -148,15 +109,6 @@
 #  define HEDLEY_CLANG_HAS_DECLSPEC_ATTRIBUTE(attribute) 0
 #endif
 
-/* HEDLEY_GCC_HAS_ATTRIBUTE(attribute,major,minor,patch)
- * HEDLEY_GCC_HAS_BUILTIN(builtin,major,minor,patch)
- * HEDLEY_GCC_HAS_FEATURE(feature,major,minor,patch)
- * HEDLEY_GCC_HAS_DECLSPEC_ATTRIBUTE(attribute,major,minor,patch)
- *
- * These macros are just a shortcut for writing:
- *
- *   HEDLEY_CLANG_HAS_*(foo) || HEDLEY_GCC_NOT_CLANG_VERSION_CHECK(major,minor,patch)
- */
 #if defined(HEDLEY_GCC_HAS_ATTRIBUTE)
 #  undef HEDLEY_GCC_HAS_ATTRIBUTE
 #endif
@@ -174,11 +126,6 @@
 #define HEDLEY_GCC_HAS_FEATURE(feature,major,minor,patch) (HEDLEY_CLANG_HAS_FEATURE(feature) || HEDLEY_GCC_NOT_CLANG_VERSION_CHECK(major,minor,patch))
 #define HEDLEY_GCC_HAS_DECLSPEC_ATTRIBUTE(attribute,major,minor,patch) (HEDLEY_CLANG_HAS_DECLSPEC_ATTRIBUTE(attribute) || HEDLEY_GCC_NOT_CLANG_VERSION_CHECK(major,minor,patch))
 
-/* HEDLEY_DEPRECATED(since):
- * HEDLEY_DEPRECATED_FOR(since, replacement):
- *
- * These are used to mark functions as deprecated.
- */
 #if defined(HEDLEY_DEPRECATED)
 #  undef HEDLEY_DEPRECATED
 #endif
@@ -202,10 +149,6 @@
 #  define HEDLEY_DEPRECATED_FOR(since, replacement)
 #endif
 
-/* HEDLEY_UNAVAILABLE(target_version, available_since):
- *
- * Warn that the function is not available until available_since.
- */
 #if defined(HEDLEY_UNAVAILABLE)
 #  undef HEDLEY_UNAVAILABLE
 #endif
@@ -215,11 +158,6 @@
 #  define HEDLEY_UNAVAILABLE(available_since)
 #endif
 
-/* HEDLEY_WARN_UNUSED_RESULT:
- *
- * Function attribute which will cause supported compilers to warn if
- * the result of the function is not used.
- */
 #if defined(HEDLEY_WARN_UNUSED_RESULT)
 #  undef HEDLEY_WARN_UNUSED_RESULT
 #endif
@@ -231,11 +169,6 @@
 #  define HEDLEY_WARN_UNUSED_RESULT
 #endif
 
-/* HEDLEY_SENTINEL(position):
- *
- * Function attribute which annotates a function requires an explicit
- * NULL to denote the end of a variadic argument list.
- */
 #if defined(HEDLEY_SENTINEL)
 #  undef HEDLEY_SENTINEL
 #endif
@@ -245,10 +178,6 @@
 #  define HEDLEY_SENTINEL(position)
 #endif
 
-/* HEDLEY_NO_RETURN:
- *
- * Function attribute to indicate that the function will never return.
- */
 #if defined(HEDLEY_NO_RETURN)
 #  undef HEDLEY_NO_RETURN
 #endif
@@ -262,10 +191,6 @@
 #  define HEDLEY_NO_RETURN
 #endif
 
-/* HEDLEY_UNREACHABLE():
- *
- * Tells supported compilers that the code should never be reached.
- */
 #if defined(HEDLEY_UNREACHABLE)
 #  undef HEDLEY_UNREACHABLE
 #endif
@@ -279,12 +204,6 @@
 #  define HEDLEY_UNREACHABLE()
 #endif
 
-/* HEDLEY_NON_NULL(param...):
- *
- * Function attribute which tells supported compilers that values
- * passed to the listed parameters (identified by position number)
- * should never be NULL.
- */
 #if defined(HEDLEY_NON_NULL)
 #  undef HEDLEY_NON_NULL
 #endif
@@ -294,11 +213,6 @@
 #  define HEDLEY_NON_NULL(...)
 #endif
 
-/* HEDLEY_PRINTF_FORMAT(string_idx,first_to_check):
- *
- * Tells the compiler that the function takes a printf-style format
- * string so it can be checked at compile time.
- */
 #if defined(HEDLEY_PRINTF_FORMAT)
 #  undef HEDLEY_PRINTF_FORMAT
 #endif
@@ -316,15 +230,6 @@
 #  define HEDLEY_PRINTF_FORMAT(string_idx,first_to_check)
 #endif
 
-/* HEDLEY_LIKELY(expr):
- * HEDLEY_UNLIKELY(expr):
- *
- * Used to inform the compiler that the expression is likely (or
- * unlikely) to evaluate to true.
- *
- * Note that these macros will always return 0 (if the expression
- * evaluates to 0) or 1 (for everything else).
- */
 #if defined(HEDLEY_LIKELY)
 #  undef HEDLEY_LIKELY
 #endif
@@ -339,19 +244,6 @@
 #  define HEDLEY_UNLIKELY(expr) ((expr) == 0)
 #endif
 
-/* HEDLEY_INLINE:
- * HEDLEY_ALWAYS_INLINE:
- * HEDLEY_NEVER_INLINE:
- *
- * HEDLEY_INLINE asks the compiler to inline, but leaves the final
- * decision up to the compiler (like "inline" in the C99 standard).
- * HEDLEY_ALWAYS inline takes it a step further and tells the compiler
- * to *always* inline the function, and HEDLEY_NEVER_INLINE tells the
- * compiler *never* to inline the function.
- *
- * Note that not all of these are supported by every compiler.  Most
- * compilers, however, should behave.
- */
 #if defined(HEDLEY_INLINE)
 #  undef HEDLEY_INLINE
 #endif
@@ -388,31 +280,27 @@
 #  define HEDLEY_NEVER_INLINE HEDLEY_INLINE
 #endif
 
-/* HEDLEY_INTERNAL:
- * HEDLEY_EXTERNAL:
- * HEDLEY_IMPORT:
- *
- * These can/should be used by libraries to specify which symbols are
- * publicly visible.  Note, however, that they shouldn't be used
- * directly, at least in public headers.
- */
-#if defined(HEDLEY_INTERNAL)
-#  undef HEDLEY_INTERNAL
+#if defined(HEDLEY_PRIVATE)
+#  undef HEDLEY_PRIVATE
 #endif
-#if defined(HEDLEY_EXTERNAL)
-#  undef HEDLEY_EXTERNAL
+#if defined(HEDLEY_PUBLIC)
+#  undef HEDLEY_PUBLIC
 #endif
 #if defined(HEDLEY_IMPORT)
 #  undef HEDLEY_IMPORT
 #endif
 #if defined(_WIN32) || defined(__CYGWIN__)
-#  define HEDLEY_PRIVATE
+#  if HEDLEY_GCC_VERSION_CHECK(4,2,0)
+#    define HEDLEY_PRIVATE __attribute__((visibility ("hidden")))
+#  else
+#    define HEDLEY_PRIVATE
+#  endif
 #  define HEDLEY_PUBLIC   __declspec(dllexport)
 #  define HEDLEY_IMPORT   __declspec(dllimport)
 #else
 #  if HEDLEY_GCC_VERSION_CHECK(4,2,0)
-#    define HEDLEY_PRIVATE __attribute__ ((visibility ("hidden")))
-#    define HEDLEY_PUBLIC  __attribute__ ((visibility ("default")))
+#    define HEDLEY_PRIVATE __attribute__((visibility ("hidden")))
+#    define HEDLEY_PUBLIC  __attribute__((visibility ("default")))
 #  else
 #    define HEDLEY_PRIVATE
 #    define HEDLEY_PUBLIC
@@ -420,11 +308,6 @@
 #  define HEDLEY_IMPORT    extern
 #endif
 
-/* HEDLEY_NO_THROW:
- *
- * Tell the compiler that this function will never throw a C++
- * exception.
- */
 #if defined(HEDLEY_NO_THROW)
 #  undef HEDLEY_NO_THROW
 #endif
@@ -436,12 +319,6 @@
 #  define HEDLEY_NO_THROW
 #endif
 
-/* HEDLEY_ARRAY_PARAM(expr):
- *
- * Used for conformant array parameters (see
- * https://www.securecoding.cert.org/confluence/display/c/API05-C.+Use+conformant+array+parameters
- * for details).
- */
 #if defined(HEDLEY_ARRAY_PARAM)
 #  undef HEDLEY_ARRAY_PARAM
 #endif
@@ -451,14 +328,6 @@
 #  define HEDLEY_ARRAY_PARAM(name)
 #endif
 
-/* HEDLEY_BEGIN_C_DECLS:
- * HEDLEY_END_C_DECLS:
- * HEDLEY_C_DECL:
- *
- * HEDLEY_BEGIN_C_DECLS and HEDLEY_END_C_DECLS are used to mark
- * regions as having C linkage when compiled with C++.  HEDLEY_C_DECL
- * is used to mark a single symbol as having C linkage.
- */
 #if defined(HEDLEY_BEGIN_C_DECLS)
 #  undef HEDLEY_BEGIN_C_DECLS
 #endif
@@ -476,6 +345,19 @@
 #  define HEDLEY_BEGIN_C_DECLS
 #  define HEDLEY_END_C_DECLS
 #  define HEDLEY_C_DECL
+#endif
+
+#if defined(HEDLEY_STATIC_ASSERT)
+#  undef HEDLEY_STATIC_ASSERT
+#endif
+#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L
+#  define HEDLEY_STATIC_ASSERT(expr, message) _Static_assert(expr, message)
+#elif HEDLEY_GCC_HAS_EXTENSION(c_static_assert,4,6,0)
+#  define HEDLEY_STATIC_ASSERT(expr, message) _Static_assert(expr, message)
+#elif HEDLEY_MSVC_VERSION_CHECK(16,0,0)
+#  define HEDLEY_STATIC_ASSERT(expr, message) static_assert(expr, message)
+#else
+#  define HEDLEY_STATIC_ASSERT(expr, message)
 #endif
 
 #endif /* !defined(HEDLEY_VERSION) || (HEDLEY_VERSION < X) */
