@@ -1,4 +1,4 @@
-/* Hedley - https://github.com/nemequ/hedley
+/* Hedley - https://nemequ.github.io/hedley
  * Copyright (c) 2016 Evan Nemerson <evan@nemerson.com>
  *
  * Permission is hereby granted, free of charge, to any person
