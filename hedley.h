@@ -261,6 +261,46 @@
 #  define HEDLEY_UNLIKELY(expr) ((expr) != 0)
 #endif
 
+#if defined(HEDLEY_MALLOC)
+#  undef HEDLEY_MALLOC
+#endif
+#if HEDLEY_GCC_HAS_ATTRIBUTE(malloc, 3, 1, 0)
+#  define HEDLEY_MALLOC __attribute__((__malloc__))
+#elif HEDLEY_MSVC_VERSION_CHECK(14, 0, 0)
+#  define HEDLEY_MALLOC __declspec(restrict)
+#else
+#  define HEDLEY_MALLOC
+#endif
+
+#if defined(HEDLEY_PURE)
+#  undef HEDLEY_PURE
+#endif
+#if HEDLEY_GCC_HAS_ATTRIBUTE(pure, 2, 96, 0)
+#  define HEDLEY_PURE __attribute__((__pure__))
+#elif HEDLEY_MSVC_VERSION_CHECK(14, 0, 0)
+#  define HEDLEY_MALLOC __declspec(noalias)
+#else
+#  define HEDLEY_PURE
+#endif
+
+#if defined(HEDLEY_CONST)
+#  undef HEDLEY_CONST
+#endif
+#if HEDLEY_GCC_HAS_ATTRIBUTE(const, 2, 5, 0)
+#  define HEDLEY_CONST __attribute__((__const__))
+#else
+#  define HEDLEY_CONST HEDLEY_PURE
+#endif
+
+#if defined(HEDLEY_RESTRICT)
+#  undef HEDLEY_RESTRICT
+#endif
+#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L
+#  define HEDLEY_RESTRICT restrict
+#elif HEDLEY_GCC_VERSION_CHECK(3,1,0) || HEDLEY_MSVC_VERSION_CHECK(14,0,0)
+#  define HEDLEY_RESTRICT __restrict
+#endif
+
 #if defined(HEDLEY_INLINE)
 #  undef HEDLEY_INLINE
 #endif
