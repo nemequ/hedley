@@ -107,6 +107,9 @@
 #if defined(HEDLEY_CLANG_HAS_DECLSPEC_ATTRIBUTE)
 #  undef HEDLEY_CLANG_HAS_DECLSPEC_ATTRIBUTE
 #endif
+#if defined(HEDLEY_CLANG_HAS_WARNING)
+#  undef HEDLEY_CLANG_HAS_WARNING
+#endif
 #if defined(__clang__) && defined(__has_attribute)
 #  define HEDLEY_CLANG_HAS_ATTRIBUTE(attribute) __has_attribute(attribute)
 #else
@@ -132,6 +135,11 @@
 #else
 #  define HEDLEY_CLANG_HAS_DECLSPEC_ATTRIBUTE(attribute) 0
 #endif
+#if defined(__clang__) && defined(__has_warning)
+#  define HEDLEY_CLANG_HAS_WARNING(warning) __has_warning(warning)
+#else
+#  define HEDLEY_CLANG_HAS_WARNING(warning) 0
+#endif
 
 #if defined(HEDLEY_GCC_HAS_ATTRIBUTE)
 #  undef HEDLEY_GCC_HAS_ATTRIBUTE
@@ -145,10 +153,14 @@
 #if defined(HEDLEY_GCC_HAS_DECLSPEC_ATTRIBUTE)
 #  undef HEDLEY_GCC_HAS_DECLSPEC_ATTRIBUTE
 #endif
+#if defined(HEDLEY_GCC_HAS_WARNING)
+#  undef HEDLEY_GCC_HAS_WARNING
+#endif
 #define HEDLEY_GCC_HAS_ATTRIBUTE(attribute,major,minor,patch) (HEDLEY_CLANG_HAS_ATTRIBUTE(attribute) || HEDLEY_GCC_NOT_CLANG_VERSION_CHECK(major,minor,patch))
 #define HEDLEY_GCC_HAS_BUILTIN(builtin,major,minor,patch) (HEDLEY_CLANG_HAS_BUILTIN(builtin) || HEDLEY_GCC_NOT_CLANG_VERSION_CHECK(major,minor,patch))
 #define HEDLEY_GCC_HAS_FEATURE(feature,major,minor,patch) (HEDLEY_CLANG_HAS_FEATURE(feature) || HEDLEY_GCC_NOT_CLANG_VERSION_CHECK(major,minor,patch))
 #define HEDLEY_GCC_HAS_DECLSPEC_ATTRIBUTE(attribute,major,minor,patch) (HEDLEY_CLANG_HAS_DECLSPEC_ATTRIBUTE(attribute) || HEDLEY_GCC_NOT_CLANG_VERSION_CHECK(major,minor,patch))
+#define HEDLEY_GCC_HAS_WARNING(warning,major,minor,patch) (HEDLEY_CLANG_HAS_WARNING(warning) || HEDLEY_GCC_NOT_CLANG_VERSION_CHECK(major,minor,patch))
 
 #if defined(HEDLEY_DEPRECATED)
 #  undef HEDLEY_DEPRECATED
@@ -165,7 +177,7 @@
 #elif HEDLEY_MSVC_VERSION_CHECK(14,0,0)
 #  define HEDLEY_DEPRECATED(since) __declspec(deprecated("Since " # since))
 #  define HEDLEY_DEPRECATED(since, replacement) __declspec(deprecated("Since " #since "; use " #replacement))
-#elif HEDLEY_MSVC_VERSION_CHECK(13,10,0) /* MSDN only goes back to VS 2003, so this may be pessimistic. */
+#elif HEDLEY_MSVC_VERSION_CHECK(13,10,0)
 #  define HEDLEY_DEPRECATED(since) _declspec(deprecated)
 #  define HEDLEY_DEPRECATED_FOR(since, replacement) __declspec(deprecated)
 #else
