@@ -209,16 +209,26 @@
 #if defined(HEDLEY_UNREACHABLE)
 #  undef HEDLEY_UNREACHABLE
 #endif
-#if HEDLEY_GCC_HAS_BUILTIN(__builtin_unreachable,4,5,0)
-#  define HEDLEY_UNREACHABLE() __builtin_unreachable()
-#elif HEDLEY_MSVC_VERSION_CHECK(13,10,0)
-#  define HEDLEY_UNREACHABLE() __assume(0)
-#elif defined(EXIT_FAILURE)
-#  define HEDLEY_UNREACHABLE() abort()
-#elif defined(assert)
-#  define HEDLEY_UNREACHABLE() assert(0)
+#if defined(assert)
+#  if HEDLEY_GCC_HAS_BUILTIN(__builtin_unreachable,4,5,0)
+#    define HEDLEY_UNREACHABLE() do { assert(0); __builtin_unreachable(); } while(0)
+#  elif HEDLEY_MSVC_VERSION_CHECK(13,10,0)
+#    define HEDLEY_UNREACHABLE() do { assert(0); __assume(0); } while(0)
+#  elif defined(EXIT_FAILURE)
+#    define HEDLEY_UNREACHABLE() do { assert(0); abort(); } while(0)
+#  else
+#    define HEDLEY_UNREACHABLE() assert(0)
+#  endif
 #else
-#  define HEDLEY_UNREACHABLE()
+#  if HEDLEY_GCC_HAS_BUILTIN(__builtin_unreachable,4,5,0)
+#    define HEDLEY_UNREACHABLE() __builtin_unreachable();
+#  elif HEDLEY_MSVC_VERSION_CHECK(13,10,0)
+#    define HEDLEY_UNREACHABLE() __assume(0);
+#  elif defined(EXIT_FAILURE)
+#    define HEDLEY_UNREACHABLE() abort();
+#  else
+#    define HEDLEY_UNREACHABLE() assert(0)
+#  endif
 #endif
 
 #if defined(HEDLEY_NON_NULL)
