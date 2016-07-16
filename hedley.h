@@ -209,7 +209,7 @@
 #if defined(HEDLEY_UNREACHABLE)
 #  undef HEDLEY_UNREACHABLE
 #endif
-#if HEDLEY_GCC_HAS_BUILTIN(unreachable,4,5,0)
+#if HEDLEY_GCC_HAS_BUILTIN(__builtin_unreachable,4,5,0)
 #  define HEDLEY_UNREACHABLE() __builtin_unreachable()
 #elif HEDLEY_MSVC_VERSION_CHECK(13,10,0)
 #  define HEDLEY_UNREACHABLE() __assume(0)
@@ -253,7 +253,7 @@
 #if defined(HEDLEY_UNLIKELY)
 #  undef HEDLEY_UNLIKELY
 #endif
-#if HEDLEY_GCC_HAS_BUILTIN(expect,3,0,0)
+#if HEDLEY_GCC_HAS_BUILTIN(__builtin_expect,3,0,0)
 #  define HEDLEY_LIKELY(expr) __builtin_expect(((expr) != 0), 1)
 #  define HEDLEY_UNLIKELY(expr) __builtin_expect(((expr) != 0), 0)
 #else
