@@ -83,6 +83,15 @@
 #  define HEDLEY_MSVC_VERSION_CHECK(major,minor,patch) (_MSC_VER >= ((major * 100) + (minor)))
 #endif
 
+#if defined(HEDLEY_INTEL_VERSION_CHECK)
+#  undef HEDLEY_INTEL_VERSION_CHECK
+#endif
+#if defined(__INTEL_COMPILER)
+#  define HEDLEY_INTEL_VERSION_CHECK(major,minor,patch) (__INTEL_COMPILER >= (((major) * 100) + (minor)))
+#else
+#  define HEDLEY_INTEL_VERSION_CHECK(major,minor,patch) 0
+#endif
+
 #if defined(HEDLEY_CLANG_HAS_ATTRIBUTE)
 #  undef HEDLEY_CLANG_HAS_ATTRIBUTE
 #endif
