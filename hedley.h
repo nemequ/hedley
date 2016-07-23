@@ -465,7 +465,7 @@
 #  define HEDLEY_DIAGNOSTIC_POP _Pragma("GCC diagnostic pop")
 #elif HEDLEY_MSVC_VERSION_CHECK(15,0,0)
 #  define HEDLEY_DIAGNOSTIC_PUSH __pragma(warning(push))
-#  define HEDLEY_DIAGNOSTIC_POP__pragma(warning(pop))
+#  define HEDLEY_DIAGNOSTIC_POP __pragma(warning(pop))
 #else
 #  define HEDLEY_DIAGNOSTIC_PUSH
 #  define HEDLEY_DIAGNOSTIC_POP
