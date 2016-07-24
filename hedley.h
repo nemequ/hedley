@@ -176,7 +176,7 @@
 #  define HEDLEY_DEPRECATED_FOR(since, replacement) __attribute__((__deprecated__))
 #elif HEDLEY_MSVC_VERSION_CHECK(14,0,0)
 #  define HEDLEY_DEPRECATED(since) __declspec(deprecated("Since " # since))
-#  define HEDLEY_DEPRECATED(since, replacement) __declspec(deprecated("Since " #since "; use " #replacement))
+#  define HEDLEY_DEPRECATED_FOR(since, replacement) __declspec(deprecated("Since " #since "; use " #replacement))
 #elif HEDLEY_MSVC_VERSION_CHECK(13,10,0)
 #  define HEDLEY_DEPRECATED(since) _declspec(deprecated)
 #  define HEDLEY_DEPRECATED_FOR(since, replacement) __declspec(deprecated)
@@ -309,7 +309,7 @@
 #if HEDLEY_GCC_HAS_ATTRIBUTE(pure, 2, 96, 0)
 #  define HEDLEY_PURE __attribute__((__pure__))
 #elif HEDLEY_MSVC_VERSION_CHECK(14, 0, 0)
-#  define HEDLEY_MALLOC __declspec(noalias)
+#  define HEDLEY_PURE __declspec(noalias)
 #else
 #  define HEDLEY_PURE
 #endif
