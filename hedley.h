@@ -471,19 +471,19 @@
 #  define HEDLEY_DIAGNOSTIC_POP
 #endif
 
-#if defined(HEDLEY_DIAGNOSTIC_ALLOW_DEPRECATED)
-#  undef HEDLEY_DIAGNOSTIC_ALLOW_DEPRECATED
+#if defined(HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED)
+#  undef HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED
 #endif
 #if HEDLEY_CLANG_HAS_WARNING("-Wdeprecated")
-#  define HEDELY_DIAGNOSTIC_ALLOW_DEPRECATED _Pragma("clang diagnostic ignored \"-Wdeprecated\"")
+#  define HEDELY_DIAGNOSTIC_DISABLE_DEPRECATED _Pragma("clang diagnostic ignored \"-Wdeprecated\"")
 #elif HEDLEY_INTEL_VERSION_CHECK(16,0,0)
-#  define HEDLEY_DIAGNOSTIC_ALLOW_DEPRECATED _Pragma("warning(disable:1478)")
+#  define HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED _Pragma("warning(disable:1478)")
 #elif HEDLEY_GCC_NOT_CLANG_VERSION_CHECK(4,3,0)
-#  define HEDLEY_DIAGNOSTIC_ALLOW_DEPRECATED _Pragma("GCC diagnostic ignored \"-Wdeprecated\"")
+#  define HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED _Pragma("GCC diagnostic ignored \"-Wdeprecated\"")
 #elif HEDLEY_MSVC_VERSION_CHECK(15,0,0)
-#  define HEDLEY_DIAGNOSTIC_ALLOW_DEPRECATED __pragma(warning(disable:4996))
+#  define HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED __pragma(warning(disable:4996))
 #else
-#  define HEDLEY_DIAGNOSTIC_ALLOW_DEPRECATED
+#  define HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED
 #endif
 
 #endif /* !defined(HEDLEY_VERSION) || (HEDLEY_VERSION < X) */
