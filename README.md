@@ -1,11 +1,5 @@
 # Hedley
 
-**HEDLEY IS NOT READY FOR USE YET**.  I'm posting it very early in
-hopes that I'll get some feedback from C developers.  If you have any
-thougts or ideas, *please* use the issue tracker, or just e-mail me.
-If you like the idea but don't really have anything to contribute,
-just star the repo on GitHub so I know there is interest.
-
 ## Documentation
 
 For documentation, see [https://nemequ.github.io/hedley/](https://nemequ.github.io/hedley/).
