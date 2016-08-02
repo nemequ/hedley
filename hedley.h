@@ -7,11 +7,11 @@
  * https://creativecommons.org/publicdomain/zero/1.0/
  */
 
-#if !defined(HEDLEY_VERSION) || (HEDLEY_VERSION < 1)
+#if !defined(HEDLEY_VERSION) || (HEDLEY_VERSION < 2)
 #if defined(HEDLEY_VERSION)
 #  undef HEDLEY_VERSION
 #endif
-#define HEDLEY_VERSION 1
+#define HEDLEY_VERSION 2
 
 #if defined(HEDLEY_VERSION_ENCODE)
 #  undef HEDLEY_VERSION_ENCODE
