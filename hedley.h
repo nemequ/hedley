@@ -1,10 +1,12 @@
 /* Hedley - https://nemequ.github.io/hedley
  * Created by Evan Nemerson <evan@nemerson.com>
  *
- * To the extent possible under law, the authors have waived all
- * copyright and related or neighboring rights to Hedley.  For
- * details, see the Creative Commons Zero 1.0 Universal license at
- * https://creativecommons.org/publicdomain/zero/1.0/
+ * To the extent possible under law, the author(s) have dedicated all
+ * copyright and related and neighboring rights to this software to
+ * the public domain worldwide. This software is distributed without
+ * any warranty.
+ *
+ * For details, see <http://creativecommons.org/publicdomain/zero/1.0/>.
  */
 
 #if !defined(HEDLEY_VERSION) || (HEDLEY_VERSION < 2)
