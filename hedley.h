@@ -79,6 +79,15 @@
 #  define HEDLEY_INTEL_VERSION_CHECK(major,minor,patch) 0
 #endif
 
+#if defined(HEDLEY_PGI_VERSION_CHECK)
+#  undef HEDLEY_INTEL_VERSION_CHECK
+#endif
+#if defined(__PGI)
+#  define HEDLEY_PGI_VERSION_CHECK(major,minor,patch) (HEDLEY_VERSION_ENCODE(__PGIC__, __PGIC_MINOR__, __PGIC_PATCHLEVEL__) >= HEDLEY_VERSION_ENCODE(major,minor,patch))
+#else
+#  define HEDLEY_PGI_VERSION_CHECK(major,minor,patch) 0
+#endif
+
 #if defined(HEDLEY_CLANG_HAS_ATTRIBUTE)
 #  undef HEDLEY_CLANG_HAS_ATTRIBUTE
 #endif
