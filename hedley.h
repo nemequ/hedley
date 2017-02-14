@@ -155,7 +155,10 @@
 #if defined(HEDLEY_DEPRECATED_FOR)
 #  undef HEDLEY_DEPRECATED_FOR
 #endif
-#if HEDLEY_CLANG_HAS_EXTENSION(attribute_deprecated_with_message) || HEDLEY_GCC_NOT_CLANG_VERSION_CHECK(4,5,0)
+#if defined(__cplusplus) && (__cplusplus >= 201402L)
+#  define HEDLEY_DEPRECATED(since) [[deprecated("Since " #since)]]
+#  define HEDLEY_DEPRECATED_FOR(since, replacement) [[deprecated("Since " #since "; use " #replacement)]]
+#elif HEDLEY_CLANG_HAS_EXTENSION(attribute_deprecated_with_message) || HEDLEY_GCC_NOT_CLANG_VERSION_CHECK(4,5,0)
 #  define HEDLEY_DEPRECATED(since) __attribute__((__deprecated__("Since " #since)))
 #  define HEDLEY_DEPRECATED_FOR(since, replacement) __attribute__((__deprecated__("Since " #since "; use " #replacement)))
 #elif HEDLEY_GCC_HAS_ATTRIBUTE(deprcated,4,0,0)
