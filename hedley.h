@@ -225,7 +225,7 @@
 #endif
 #if HEDLEY_GCC_HAS_ATTRIBUTE(warn_unused_result,3,4,0)
 #  define HEDLEY_WARN_UNUSED_RESULT __attribute__((__warn_unused_result__))
-#elif HEDLEY_MSVC_VERSION_CHECK(17,0,0)
+#elif defined(_Check_return_)
 #  define HEDLEY_WARN_UNUSED_RESULT _Check_return_
 #else
 #  define HEDLEY_WARN_UNUSED_RESULT
