@@ -88,6 +88,23 @@
 #  define HEDLEY_PGI_VERSION_CHECK(major,minor,patch) 0
 #endif
 
+#if defined(HEDLEY_SUNPRO_VERSION_CHECK)
+#  undef HEDLEY_SUNPRO_VERSION_CHECK
+#endif
+#if defined(__SUNPRO_C)
+#  define HEDLEY_SUNPRO_VERSION_CHECK(major,minor,patch) \
+    (__SUNPRO_C >= ((((major) > 5) || (((major) == 5) && ((minor) > 9))) ? \
+                    (((major) * 0x1000) + (((minor + (6 * (minor / 10)))) * 0x10) + (revision)) : \
+                    (((major) * 0x100) + ((minor) * 0x10) + (revision))))
+#elif defined(__SUNPRO_CC)
+#  define HEDLEY_SUNPRO_VERSION_CHECK(major,minor,patch) \
+    (__SUNPRO_CC >= ((((major) > 5) || (((major) == 5) && ((minor) > 9))) ? \
+                     (((major) * 0x1000) + (((minor + (6 * (minor / 10)))) * 0x10) + (revision)) : \
+                     (((major) * 0x100) + ((minor) * 0x10) + (revision))))
+#else
+#  define HEDLEY_SUNPRO_VERSION_CHECK(major,minor,patch) 0
+#endif
+
 #if defined(HEDLEY_CLANG_HAS_ATTRIBUTE)
 #  undef HEDLEY_CLANG_HAS_ATTRIBUTE
 #endif
@@ -329,6 +346,8 @@
 #  define HEDLEY_RESTRICT restrict
 #elif HEDLEY_GCC_VERSION_CHECK(3,1,0) || HEDLEY_MSVC_VERSION_CHECK(14,0,0)
 #  define HEDLEY_RESTRICT __restrict
+#elif HEDLEY_SUNPRO_VERSION_CHECK(5,8,0)
+#  define HEDLEY_RESTRICT _Restrict
 #endif
 
 #if defined(HEDLEY_INLINE)
