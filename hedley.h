@@ -105,6 +105,16 @@
 #  define HEDLEY_SUNPRO_VERSION_CHECK(major,minor,patch) 0
 #endif
 
+#if defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901L)
+#  define HEDLEY_PRAGMA(value) _Pragma(#value)
+#elif HEDLEY_GCC_VERSION_CHECK(3,0,0)
+#  define HEDLEY_PRAGMA(value) _Pragma(#value)
+#elif HEDLEY_MSVC_VERSION_CHECK(15,0,0)
+#  define HEDLEY_PRAGMA(value) __pragma(value)
+#else
+#  define HEDLEY_PRAGMA(value)
+#endif
+
 #if defined(HEDLEY_CLANG_HAS_ATTRIBUTE)
 #  undef HEDLEY_CLANG_HAS_ATTRIBUTE
 #endif
