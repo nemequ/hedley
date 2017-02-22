@@ -264,7 +264,7 @@
 #  elif defined(EXIT_FAILURE)
 #    define HEDLEY_UNREACHABLE() abort();
 #  else
-#    define HEDLEY_UNREACHABLE() assert(0)
+#    define HEDLEY_UNREACHABLE() (0)
 #  endif
 #endif
 
