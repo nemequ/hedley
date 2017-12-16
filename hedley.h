@@ -84,7 +84,7 @@
 #if defined(HEDLEY_PGI_VERSION_CHECK)
 #  undef HEDLEY_PGI_VERSION_CHECK
 #endif
-#if defined(__PGI)
+#if defined(__PGI) && defined(__PGIC__) && defined(__PGIC_MINOR__) && defined(__PGIC_PATCHLEVEL__)
 #  define HEDLEY_PGI_VERSION_CHECK(major,minor,patch) (HEDLEY_VERSION_ENCODE(__PGIC__, __PGIC_MINOR__, __PGIC_PATCHLEVEL__) >= HEDLEY_VERSION_ENCODE(major,minor,patch))
 #else
 #  define HEDLEY_PGI_VERSION_CHECK(major,minor,patch) 0
@@ -450,7 +450,7 @@
 #if defined(HEDLEY_ARRAY_PARAM)
 #  undef HEDLEY_ARRAY_PARAM
 #endif
-#if defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901L) && !defined(__cplusplus) && !defined(__PGI)
+#if defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901L) && !defined(__cplusplus) && (!defined(__PGI) || HEDLEY_PGI_VERSION_CHECK(17,10,0))
 #  define HEDLEY_ARRAY_PARAM(name) name
 #else
 #  define HEDLEY_ARRAY_PARAM(name)
