@@ -269,6 +269,8 @@
 #endif
 #if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L
 #  define HEDLEY_NO_RETURN _Noreturn
+#elif defined(__cplusplus) && (__cplusplus >= 201103L)
+#  define HEDLEY_NO_RETURN [[noreturn]]
 #elif HEDLEY_GCC_HAS_ATTRIBUTE(noreturn,3,2,0)
 #  define HEDLEY_NO_RETURN __attribute__((__noreturn__))
 #elif HEDLEY_MSVC_VERSION_CHECK(13,10,0)
