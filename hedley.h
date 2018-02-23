@@ -130,6 +130,9 @@
 #if defined(HEDLEY_CLANG_HAS_ATTRIBUTE)
 #  undef HEDLEY_CLANG_HAS_ATTRIBUTE
 #endif
+#if defined(HEDLEY_CLANG_HAS_CPP_ATTRIBUTE)
+#  undef HEDLEY_CLANG_HAS_CPP_ATTRIBUTE
+#endif
 #if defined(HEDLEY_CLANG_HAS_BUILTIN)
 #  undef HEDLEY_CLANG_HAS_BUILTIN
 #endif
@@ -149,6 +152,11 @@
 #  define HEDLEY_CLANG_HAS_ATTRIBUTE(attribute) __has_attribute(attribute)
 #else
 #  define HEDLEY_CLANG_HAS_ATTRIBUTE(attribute) 0
+#endif
+#if defined(__clang__) && defined(__has_cpp_attribute)
+#  define HEDLEY_CLANG_HAS_CPP_ATTRIBUTE(attribute) __has_cpp_attribute(attribute)
+#else
+#  define HEDLEY_CLANG_HAS_CPP_ATTRIBUTE(attribute) 0
 #endif
 #if defined(__clang__) && defined(__has_builtin)
 #  define HEDLEY_CLANG_HAS_BUILTIN(builtin) __has_builtin(builtin)
@@ -179,6 +187,9 @@
 #if defined(HEDLEY_GCC_HAS_ATTRIBUTE)
 #  undef HEDLEY_GCC_HAS_ATTRIBUTE
 #endif
+#if defined(HEDLEY_GCC_HAS_CPP_ATTRIBUTE)
+#  undef HEDLEY_GCC_HAS_CPP_ATTRIBUTE
+#endif
 #if defined(HEDLEY_GCC_HAS_BUILTIN)
 #  undef HEDLEY_GCC_HAS_BUILTIN
 #endif
@@ -192,6 +203,7 @@
 #  undef HEDLEY_GCC_HAS_WARNING
 #endif
 #define HEDLEY_GCC_HAS_ATTRIBUTE(attribute,major,minor,patch) (HEDLEY_CLANG_HAS_ATTRIBUTE(attribute) || HEDLEY_GCC_NOT_CLANG_VERSION_CHECK(major,minor,patch))
+#define HEDLEY_GCC_HAS_CPP_ATTRIBUTE(attribute,major,minor,patch) (HEDLEY_CLANG_HAS_CPP_ATTRIBUTE(attribute) || HEDLEY_GCC_NOT_CLANG_VERSION_CHECK(major,minor,patch))
 #define HEDLEY_GCC_HAS_BUILTIN(builtin,major,minor,patch) (HEDLEY_CLANG_HAS_BUILTIN(builtin) || HEDLEY_GCC_NOT_CLANG_VERSION_CHECK(major,minor,patch))
 #define HEDLEY_GCC_HAS_FEATURE(feature,major,minor,patch) (HEDLEY_CLANG_HAS_FEATURE(feature) || HEDLEY_GCC_NOT_CLANG_VERSION_CHECK(major,minor,patch))
 #define HEDLEY_GCC_HAS_DECLSPEC_ATTRIBUTE(attribute,major,minor,patch) (HEDLEY_CLANG_HAS_DECLSPEC_ATTRIBUTE(attribute) || HEDLEY_GCC_NOT_CLANG_VERSION_CHECK(major,minor,patch))
