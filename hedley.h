@@ -305,9 +305,9 @@
 #  if HEDLEY_GCC_HAS_BUILTIN(__builtin_unreachable,4,5,0) || HEDLEY_INTEL_VERSION_CHECK(16,0,0)
 #    define HEDLEY_UNREACHABLE() __builtin_unreachable()
 #  elif HEDLEY_MSVC_VERSION_CHECK(13,10,0)
-#    define HEDLEY_UNREACHABLE() __assume(0);
+#    define HEDLEY_UNREACHABLE() __assume(0)
 #  elif defined(EXIT_FAILURE)
-#    define HEDLEY_UNREACHABLE() abort();
+#    define HEDLEY_UNREACHABLE() abort()
 #  else
 #    define HEDLEY_UNREACHABLE() (0)
 #  endif
