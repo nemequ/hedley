@@ -487,6 +487,17 @@
 #  define HEDLEY_FALL_THROUGH
 #endif
 
+#if defined(HEDLEY_RETURNS_NON_NULL)
+#  undef HEDLEY_RETURNS_NON_NULL
+#endif
+#if HEDLEY_GCC_HAS_ATTRIBUTE(returns_nonnull,4,9,0) || HEDLEY_INTEL_VERSION_CHECK(16,0,0)
+#  define HEDLEY_RETURNS_NON_NULL __attribute__((__returns_nonnull__))
+#elif defined(_Ret_notnull_) /* SAL */
+#  define HEDLEY_RETURNS_NON_NULL _Ret_notnull_
+#else
+#  define HEDLEY_RETURNS_NON_NULL
+#endif
+
 #if defined(HEDLEY_ARRAY_PARAM)
 #  undef HEDLEY_ARRAY_PARAM
 #endif
