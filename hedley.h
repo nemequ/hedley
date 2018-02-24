@@ -148,7 +148,7 @@
 #if defined(HEDLEY_CLANG_HAS_WARNING)
 #  undef HEDLEY_CLANG_HAS_WARNING
 #endif
-#if defined(__clang__) && defined(__has_attribute)
+#if defined(__has_attribute)
 #  define HEDLEY_CLANG_HAS_ATTRIBUTE(attribute) __has_attribute(attribute)
 #else
 #  define HEDLEY_CLANG_HAS_ATTRIBUTE(attribute) 0
