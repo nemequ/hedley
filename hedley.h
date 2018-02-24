@@ -252,6 +252,9 @@
 #endif
 #if defined(__cplusplus) && (__cplusplus >= 201703L)
 #  define HEDLEY_WARN_UNUSED_RESULT [[nodiscard]]
+#elif HEDLEY_SUNPRO_VERSION_CHECK(5,15,0) && defined(__cplusplus)
+#  define HEDLEY_WARN_UNUSED_RESULT __attribute__((__warn_unused_result__))
+#elif HEDLEY_GCC_HAS_ATTRIBUTE(warn_unused_result,3,4,0) || HEDLEY_INTEL_VERSION_CHECK(16,0,0)
 #  define HEDLEY_WARN_UNUSED_RESULT __attribute__((__warn_unused_result__))
 #elif defined(_Check_return_)
 #  define HEDLEY_WARN_UNUSED_RESULT _Check_return_
@@ -275,6 +278,8 @@
 #  define HEDLEY_NO_RETURN _Noreturn
 #elif defined(__cplusplus) && (__cplusplus >= 201103L)
 #  define HEDLEY_NO_RETURN [[noreturn]]
+#elif HEDLEY_SUNPRO_VERSION_CHECK(5,12,0)
+#  define HEDLEY_NO_RETURN __attribute__((__noreturn__))
 #elif HEDLEY_GCC_HAS_ATTRIBUTE(noreturn,3,2,0) || HEDLEY_INTEL_VERSION_CHECK(16,0,0)
 #  define HEDLEY_NO_RETURN __attribute__((__noreturn__))
 #elif HEDLEY_MSVC_VERSION_CHECK(13,10,0)
@@ -362,7 +367,7 @@
 #if defined(HEDLEY_PURE)
 #  undef HEDLEY_PURE
 #endif
-#if HEDLEY_GCC_HAS_ATTRIBUTE(pure, 2, 96, 0) || HEDLEY_INTEL_VERSION_CHECK(16,0,0)
+#if HEDLEY_GCC_HAS_ATTRIBUTE(pure, 2, 96, 0) || HEDLEY_INTEL_VERSION_CHECK(16,0,0) || HEDLEY_SUNPRO_VERSION_CHECK(5,12,0)
 #  define HEDLEY_PURE __attribute__((__pure__))
 #elif HEDLEY_MSVC_VERSION_CHECK(14, 0, 0)
 #  define HEDLEY_PURE __declspec(noalias)
@@ -373,7 +378,7 @@
 #if defined(HEDLEY_CONST)
 #  undef HEDLEY_CONST
 #endif
-#if HEDLEY_GCC_HAS_ATTRIBUTE(const, 2, 5, 0) || HEDLEY_INTEL_VERSION_CHECK(16,0,0)
+#if HEDLEY_GCC_HAS_ATTRIBUTE(const, 2, 5, 0) || HEDLEY_INTEL_VERSION_CHECK(16,0,0) || HEDLEY_SUNPRO_VERSION_CHECK(5,12,0)
 #  define HEDLEY_CONST __attribute__((__const__))
 #else
 #  define HEDLEY_CONST HEDLEY_PURE
@@ -410,7 +415,7 @@
 #  define HEDLEY_INLINE
 #endif
 /* HEDLEY_ALWAYS_INLINE */
-#if HEDLEY_GCC_HAS_ATTRIBUTE(always_inline,4,0,0) || HEDLEY_INTEL_VERSION_CHECK(16,0,0)
+#if HEDLEY_GCC_HAS_ATTRIBUTE(always_inline,4,0,0) || HEDLEY_INTEL_VERSION_CHECK(16,0,0) || HEDLEY_SUNPRO_VERSION_CHECK(5,12,0)
 #  define HEDLEY_ALWAYS_INLINE __attribute__((__always_inline__))
 #elif HEDLEY_MSVC_VERSION_CHECK(12,0,0)
 #  define HEDLEY_ALWAYS_INLINE __forceinline
@@ -418,7 +423,7 @@
 #  define HEDLEY_ALWAYS_INLINE HEDLEY_INLINE
 #endif
 /* HEDLEY_NEVER_INLINE */
-#if HEDLEY_GCC_HAS_ATTRIBUTE(never_inline,4,0,0) || HEDLEY_INTEL_VERSION_CHECK(16,0,0)
+#if HEDLEY_GCC_HAS_ATTRIBUTE(never_inline,4,0,0) || HEDLEY_INTEL_VERSION_CHECK(16,0,0) || HEDLEY_SUNPRO_VERSION_CHECK(5,12,0)
 #  define HEDLEY_NEVER_INLINE __attribute__((__noinline__))
 #elif HEDLEY_MSVC_VERSION_CHECK(13,10,0)
 #  define HEDLEY_NEVER_INLINE __declspec(noinline)
@@ -444,7 +449,7 @@
 #  define HEDLEY_PUBLIC   __declspec(dllexport)
 #  define HEDLEY_IMPORT   __declspec(dllimport)
 #else
-#  if HEDLEY_GCC_VERSION_CHECK(4,2,0) || HEDLEY_INTEL_VERSION_CHECK(16,0,0)
+#  if HEDLEY_GCC_VERSION_CHECK(4,2,0) || HEDLEY_SUNPRO_VERSION_CHECK(5,12,0) || HEDLEY_INTEL_VERSION_CHECK(16,0,0)
 #    define HEDLEY_PRIVATE __attribute__((__visibility__("hidden")))
 #    define HEDLEY_PUBLIC  __attribute__((__visibility__("default")))
 #  else
