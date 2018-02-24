@@ -345,12 +345,12 @@
 #if defined(HEDLEY_UNLIKELY)
 #  undef HEDLEY_UNLIKELY
 #endif
-#if HEDLEY_GCC_HAS_BUILTIN(__builtin_expect,3,0,0)
-#  define HEDLEY_LIKELY(expr) __builtin_expect(((expr) != 0), 1)
-#  define HEDLEY_UNLIKELY(expr) __builtin_expect(((expr) != 0), 0)
+#if HEDLEY_GCC_HAS_BUILTIN(__builtin_expect,3,0,0) || HEDLEY_INTEL_VERSION_CHECK(16,0,0)
+#  define HEDLEY_LIKELY(expr) __builtin_expect(!!(expr), 1)
+#  define HEDLEY_UNLIKELY(expr) __builtin_expect(!!(expr), 0)
 #else
-#  define HEDLEY_LIKELY(expr) ((expr) != 0)
-#  define HEDLEY_UNLIKELY(expr) ((expr) != 0)
+#  define HEDLEY_LIKELY(expr) (!!(expr))
+#  define HEDLEY_UNLIKELY(expr) (!!(expr))
 #endif
 
 #if defined(HEDLEY_MALLOC)
