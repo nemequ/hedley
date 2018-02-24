@@ -250,7 +250,8 @@
 #if defined(HEDLEY_WARN_UNUSED_RESULT)
 #  undef HEDLEY_WARN_UNUSED_RESULT
 #endif
-#if HEDLEY_GCC_HAS_ATTRIBUTE(warn_unused_result,3,4,0)
+#if defined(__cplusplus) && (__cplusplus >= 201703L)
+#  define HEDLEY_WARN_UNUSED_RESULT [[nodiscard]]
 #  define HEDLEY_WARN_UNUSED_RESULT __attribute__((__warn_unused_result__))
 #elif defined(_Check_return_)
 #  define HEDLEY_WARN_UNUSED_RESULT _Check_return_
