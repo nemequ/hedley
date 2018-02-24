@@ -52,7 +52,7 @@
 #  undef HEDLEY_GCC_NOT_CLANG_VERSION_CHECK
 #endif
 #if defined(__clang__)
-#  define HEDLEY_GCC_NOT_CLANG_VERSION_CHECK(major,minor,patch) 0
+#  define HEDLEY_GCC_NOT_CLANG_VERSION_CHECK(major,minor,patch) (0)
 #else
 #  define HEDLEY_GCC_NOT_CLANG_VERSION_CHECK(major,minor,patch) HEDLEY_GCC_VERSION_CHECK(major,minor,patch)
 #endif
@@ -61,7 +61,7 @@
 #  undef HEDLEY_GCC_VERSION_CHECK
 #endif
 #if !defined(_MSC_VER)
-#  define HEDLEY_MSVC_VERSION_CHECK(major,minor,patch) 0
+#  define HEDLEY_MSVC_VERSION_CHECK(major,minor,patch) (0)
 #elif defined(_MSC_VER) && (_MSC_VER >= 1400)
 #  define HEDLEY_MSVC_VERSION_CHECK(major,minor,patch) (_MSC_FULL_VER >= ((major * 1000000) + (minor * 10000) + (patch)))
 #elif defined(_MSC_VER) && (_MSC_VER >= 1200)
@@ -78,7 +78,7 @@
 #elif defined(__INTEL_COMPILER)
 #  define HEDLEY_INTEL_VERSION_CHECK(major,minor,patch) (__INTEL_COMPILER >= (((major) * 100) + (minor)))
 #else
-#  define HEDLEY_INTEL_VERSION_CHECK(major,minor,patch) 0
+#  define HEDLEY_INTEL_VERSION_CHECK(major,minor,patch) (0)
 #endif
 
 #if defined(HEDLEY_PGI_VERSION_CHECK)
@@ -87,7 +87,7 @@
 #if defined(__PGI) && defined(__PGIC__) && defined(__PGIC_MINOR__) && defined(__PGIC_PATCHLEVEL__)
 #  define HEDLEY_PGI_VERSION_CHECK(major,minor,patch) (HEDLEY_VERSION_ENCODE(__PGIC__, __PGIC_MINOR__, __PGIC_PATCHLEVEL__) >= HEDLEY_VERSION_ENCODE(major,minor,patch))
 #else
-#  define HEDLEY_PGI_VERSION_CHECK(major,minor,patch) 0
+#  define HEDLEY_PGI_VERSION_CHECK(major,minor,patch) (0)
 #endif
 
 #if defined(HEDLEY_SUNPRO_VERSION_CHECK)
