@@ -38,8 +38,8 @@
 #if defined(HEDLEY_GCC_VERSION_CHECK)
 #  undef HEDLEY_GCC_VERSION_CHECK
 #endif
-#if !defined(__GNUC__)
-#  define HEDLEY_GCC_VERSION_CHECK(major,minor,patch) 0
+#if !defined(__GNUC__) || defined(__INTEL_COMPILER)
+#  define HEDLEY_GCC_VERSION_CHECK(major,minor,patch) (0)
 #else
 #  if defined(__GNUC_PATCHLEVEL__)
 #    define HEDLEY_GCC_VERSION_CHECK(major,minor,patch) (HEDLEY_VERSION_ENCODE(__GNUC__, __GNUC_MINOR__, __GNUC_PATCHLEVEL__) >= HEDLEY_VERSION_ENCODE(major,minor,patch))
@@ -230,6 +230,9 @@
 #elif HEDLEY_MSVC_VERSION_CHECK(13,10,0)
 #  define HEDLEY_DEPRECATED(since) _declspec(deprecated)
 #  define HEDLEY_DEPRECATED_FOR(since, replacement) __declspec(deprecated)
+#elif HEDLEY_INTEL_VERSION_CHECK(16,0,0)
+#  define HEDLEY_DEPRECATED(since) __attribute__((__deprecated__("Since " #since)))
+#  define HEDLEY_DEPRECATED_FOR(since, replacement) __attribute__((__deprecated__("Since " #since "; use " #replacement)))
 #else
 #  define HEDLEY_DEPRECATED(since)
 #  define HEDLEY_DEPRECATED_FOR(since, replacement)
@@ -238,7 +241,7 @@
 #if defined(HEDLEY_UNAVAILABLE)
 #  undef HEDLEY_UNAVAILABLE
 #endif
-#if HEDLEY_GCC_HAS_ATTRIBUTE(warning,4,3,0)
+#if HEDLEY_GCC_HAS_ATTRIBUTE(warning,4,3,0) || HEDLEY_INTEL_VERSION_CHECK(16,0,0)
 #  define HEDLEY_UNAVAILABLE(available_since) __attribute__((warning("Not available until " #available_since)))
 #else
 #  define HEDLEY_UNAVAILABLE(available_since)
@@ -258,7 +261,7 @@
 #if defined(HEDLEY_SENTINEL)
 #  undef HEDLEY_SENTINEL
 #endif
-#if HEDLEY_GCC_HAS_ATTRIBUTE(sentinel,4,0,0)
+#if HEDLEY_GCC_HAS_ATTRIBUTE(sentinel,4,0,0) || HEDLEY_INTEL_VERSION_CHECK(16,0,0)
 #  define HEDLEY_SENTINEL(position) __attribute__((__sentinel__(position)))
 #else
 #  define HEDLEY_SENTINEL(position)
@@ -271,7 +274,7 @@
 #  define HEDLEY_NO_RETURN _Noreturn
 #elif defined(__cplusplus) && (__cplusplus >= 201103L)
 #  define HEDLEY_NO_RETURN [[noreturn]]
-#elif HEDLEY_GCC_HAS_ATTRIBUTE(noreturn,3,2,0)
+#elif HEDLEY_GCC_HAS_ATTRIBUTE(noreturn,3,2,0) || HEDLEY_INTEL_VERSION_CHECK(16,0,0)
 #  define HEDLEY_NO_RETURN __attribute__((__noreturn__))
 #elif HEDLEY_MSVC_VERSION_CHECK(13,10,0)
 #  define HEDLEY_NO_RETURN __declspec(noreturn)
@@ -283,7 +286,7 @@
 #  undef HEDLEY_UNREACHABLE
 #endif
 #if defined(assert)
-#  if HEDLEY_GCC_HAS_BUILTIN(__builtin_unreachable,4,5,0)
+#  if HEDLEY_GCC_HAS_BUILTIN(__builtin_unreachable,4,5,0) || HEDLEY_INTEL_VERSION_CHECK(16,0,0)
 #    define HEDLEY_UNREACHABLE() do { assert(0); __builtin_unreachable(); } while(0)
 #  elif HEDLEY_MSVC_VERSION_CHECK(13,10,0)
 #    define HEDLEY_UNREACHABLE() do { assert(0); __assume(0); } while(0)
@@ -293,8 +296,8 @@
 #    define HEDLEY_UNREACHABLE() assert(0)
 #  endif
 #else
-#  if HEDLEY_GCC_HAS_BUILTIN(__builtin_unreachable,4,5,0)
-#    define HEDLEY_UNREACHABLE() __builtin_unreachable();
+#  if HEDLEY_GCC_HAS_BUILTIN(__builtin_unreachable,4,5,0) || HEDLEY_INTEL_VERSION_CHECK(16,0,0)
+#    define HEDLEY_UNREACHABLE() __builtin_unreachable()
 #  elif HEDLEY_MSVC_VERSION_CHECK(13,10,0)
 #    define HEDLEY_UNREACHABLE() __assume(0);
 #  elif defined(EXIT_FAILURE)
@@ -307,7 +310,7 @@
 #if defined(HEDLEY_NON_NULL)
 #  undef HEDLEY_NON_NULL
 #endif
-#if HEDLEY_GCC_HAS_ATTRIBUTE(nonnull,3,3,0)
+#if HEDLEY_GCC_HAS_ATTRIBUTE(nonnull,3,3,0) || HEDLEY_INTEL_VERSION_CHECK(16,0,0)
 #  define HEDLEY_NON_NULL(...) __attribute__((__nonnull__(__VA_ARGS__)))
 #else
 #  define HEDLEY_NON_NULL(...)
@@ -316,10 +319,10 @@
 #if defined(HEDLEY_PRINTF_FORMAT)
 #  undef HEDLEY_PRINTF_FORMAT
 #endif
-#if HEDLEY_GCC_HAS_ATTRIBUTE(format,3,1,0)
+#if HEDLEY_GCC_HAS_ATTRIBUTE(format,3,1,0) || HEDLEY_INTEL_VERSION_CHECK(16,0,0)
 #  if HEDLEY_GCC_VERSION_CHECK(4,4,0) && defined(__MINGW32__) && !defined(__USE_MINGW_ANSI_STDIO)
 #    define HEDLEY_PRINTF_FORMAT(string_idx,first_to_check) __attribute__((__format__(ms_printf, string, first_to_check)))
-#  elif HEDLEY_GCC_VERSION_CHECK(4,4,0)
+#  elif HEDLEY_GCC_VERSION_CHECK(4,4,0) || HEDLEY_INTEL_VERSION_CHECK(16,0,0)
 #    define HEDLEY_PRINTF_FORMAT(string_idx,first_to_check) __attribute__((__format__(gnu_printf, string, first_to_check)))
 #  elif defined(__MINGW32__)
 #    define HEDLEY_PRINTF_FORMAT(string_idx,first_to_check)
@@ -347,7 +350,7 @@
 #if defined(HEDLEY_MALLOC)
 #  undef HEDLEY_MALLOC
 #endif
-#if HEDLEY_GCC_HAS_ATTRIBUTE(malloc, 3, 1, 0)
+#if HEDLEY_GCC_HAS_ATTRIBUTE(malloc, 3, 1, 0) || HEDLEY_INTEL_VERSION_CHECK(16,0,0)
 #  define HEDLEY_MALLOC __attribute__((__malloc__))
 #elif HEDLEY_MSVC_VERSION_CHECK(14, 0, 0)
 #  define HEDLEY_MALLOC __declspec(restrict)
@@ -358,7 +361,7 @@
 #if defined(HEDLEY_PURE)
 #  undef HEDLEY_PURE
 #endif
-#if HEDLEY_GCC_HAS_ATTRIBUTE(pure, 2, 96, 0)
+#if HEDLEY_GCC_HAS_ATTRIBUTE(pure, 2, 96, 0) || HEDLEY_INTEL_VERSION_CHECK(16,0,0)
 #  define HEDLEY_PURE __attribute__((__pure__))
 #elif HEDLEY_MSVC_VERSION_CHECK(14, 0, 0)
 #  define HEDLEY_PURE __declspec(noalias)
@@ -369,7 +372,7 @@
 #if defined(HEDLEY_CONST)
 #  undef HEDLEY_CONST
 #endif
-#if HEDLEY_GCC_HAS_ATTRIBUTE(const, 2, 5, 0)
+#if HEDLEY_GCC_HAS_ATTRIBUTE(const, 2, 5, 0) || HEDLEY_INTEL_VERSION_CHECK(16,0,0)
 #  define HEDLEY_CONST __attribute__((__const__))
 #else
 #  define HEDLEY_CONST HEDLEY_PURE
@@ -380,7 +383,7 @@
 #endif
 #if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L
 #  define HEDLEY_RESTRICT restrict
-#elif HEDLEY_GCC_VERSION_CHECK(3,1,0) || HEDLEY_MSVC_VERSION_CHECK(14,0,0)
+#elif HEDLEY_GCC_VERSION_CHECK(3,1,0) || HEDLEY_MSVC_VERSION_CHECK(14,0,0) || HEDLEY_INTEL_VERSION_CHECK(16,0,0)
 #  define HEDLEY_RESTRICT __restrict
 #elif HEDLEY_SUNPRO_VERSION_CHECK(5,8,0)
 #  define HEDLEY_RESTRICT _Restrict
@@ -406,7 +409,7 @@
 #  define HEDLEY_INLINE
 #endif
 /* HEDLEY_ALWAYS_INLINE */
-#if HEDLEY_GCC_HAS_ATTRIBUTE(always_inline,4,0,0)
+#if HEDLEY_GCC_HAS_ATTRIBUTE(always_inline,4,0,0) || HEDLEY_INTEL_VERSION_CHECK(16,0,0)
 #  define HEDLEY_ALWAYS_INLINE __attribute__((__always_inline__))
 #elif HEDLEY_MSVC_VERSION_CHECK(12,0,0)
 #  define HEDLEY_ALWAYS_INLINE __forceinline
@@ -414,7 +417,7 @@
 #  define HEDLEY_ALWAYS_INLINE HEDLEY_INLINE
 #endif
 /* HEDLEY_NEVER_INLINE */
-#if HEDLEY_GCC_HAS_ATTRIBUTE(never_inline,4,0,0)
+#if HEDLEY_GCC_HAS_ATTRIBUTE(never_inline,4,0,0) || HEDLEY_INTEL_VERSION_CHECK(16,0,0)
 #  define HEDLEY_NEVER_INLINE __attribute__((__noinline__))
 #elif HEDLEY_MSVC_VERSION_CHECK(13,10,0)
 #  define HEDLEY_NEVER_INLINE __declspec(noinline)
@@ -432,17 +435,17 @@
 #  undef HEDLEY_IMPORT
 #endif
 #if defined(_WIN32) || defined(__CYGWIN__)
-#  if HEDLEY_GCC_VERSION_CHECK(4,2,0)
-#    define HEDLEY_PRIVATE __attribute__((visibility ("hidden")))
+#  if HEDLEY_GCC_VERSION_CHECK(4,2,0) || HEDLEY_INTEL_VERSION_CHECK(16,0,0)
+#    define HEDLEY_PRIVATE __attribute__((__visibility__("hidden")))
 #  else
 #    define HEDLEY_PRIVATE
 #  endif
 #  define HEDLEY_PUBLIC   __declspec(dllexport)
 #  define HEDLEY_IMPORT   __declspec(dllimport)
 #else
-#  if HEDLEY_GCC_VERSION_CHECK(4,2,0)
-#    define HEDLEY_PRIVATE __attribute__((visibility ("hidden")))
-#    define HEDLEY_PUBLIC  __attribute__((visibility ("default")))
+#  if HEDLEY_GCC_VERSION_CHECK(4,2,0) || HEDLEY_INTEL_VERSION_CHECK(16,0,0)
+#    define HEDLEY_PRIVATE __attribute__((__visibility__("hidden")))
+#    define HEDLEY_PUBLIC  __attribute__((__visibility__("default")))
 #  else
 #    define HEDLEY_PRIVATE
 #    define HEDLEY_PUBLIC
@@ -453,7 +456,7 @@
 #if defined(HEDLEY_NO_THROW)
 #  undef HEDLEY_NO_THROW
 #endif
-#if HEDLEY_GCC_HAS_ATTRIBUTE(nothrow,3,3,0)
+#if HEDLEY_GCC_HAS_ATTRIBUTE(nothrow,3,3,0) || HEDLEY_INTEL_VERSION_CHECK(16,0,0)
 #  define HEDLEY_NO_THROW __attribute__((__nothrow__))
 #elif HEDLEY_MSVC_VERSION_CHECK(13,1,0)
 #  define HEDLEY_NO_THROW __declspec(nothrow)
@@ -513,7 +516,7 @@
 #  define HEDLEY_STATIC_ASSERT(expr, message) _Static_assert(expr, message)
 #elif defined(__cplusplus) && __cplusplus >= 201103L
 #  define HEDLEY_STATIC_ASSERT(expr, message) static_assert(expr, message)
-#elif HEDLEY_GCC_HAS_FEATURE(c_static_assert,4,6,0)
+#elif HEDLEY_GCC_HAS_FEATURE(c_static_assert,4,6,0) || HEDLEY_INTEL_VERSION_CHECK(16,0,0)
 #  define HEDLEY_STATIC_ASSERT(expr, message) _Static_assert(expr, message)
 #elif HEDLEY_MSVC_VERSION_CHECK(16,0,0)
 #  define HEDLEY_STATIC_ASSERT(expr, message) static_assert(expr, message)
