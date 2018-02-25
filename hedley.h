@@ -321,12 +321,11 @@
 #if defined(HEDLEY_PRINTF_FORMAT)
 #  undef HEDLEY_PRINTF_FORMAT
 #endif
-
 #if defined(__MINGW32__) && HEDLEY_GCC_HAS_ATTRIBUTE(format,4,4,0) && !defined(__USE_MINGW_ANSI_STDIO)
 #  define HEDLEY_PRINTF_FORMAT(string_idx,first_to_check) __attribute__((__format__(ms_printf, string_idx, first_to_check)))
 #elif defined(__MINGW32__) && HEDLEY_GCC_HAS_ATTRIBUTE(format,4,4,0) && defined(__USE_MINGW_ANSI_STDIO)
 #  define HEDLEY_PRINTF_FORMAT(string_idx,first_to_check) __attribute__((__format__(gnu_printf, string_idx, first_to_check)))
-#elif HEDLEY_GCC_HAS_ATTRIBUTE(format,4,4,0) || HEDLEY_INTEL_VERSION_CHECK(16,0,0) || HEDLEY_ARM_VERSION_CHECK(5,6,0)
+#elif HEDLEY_GCC_HAS_ATTRIBUTE(format,3,1,0) || HEDLEY_INTEL_VERSION_CHECK(16,0,0) || HEDLEY_ARM_VERSION_CHECK(5,6,0)
 #  define HEDLEY_PRINTF_FORMAT(string_idx,first_to_check) __attribute__((__format__(__printf__, string_idx, first_to_check)))
 #else
 #  define HEDLEY_PRINTF_FORMAT(string_idx,first_to_check)
