@@ -493,8 +493,8 @@
 #if defined(HEDLEY_ARRAY_PARAM)
 #  undef HEDLEY_ARRAY_PARAM
 #endif
-#if defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901L) && !defined(__cplusplus) && (!defined(__PGI) || HEDLEY_PGI_VERSION_CHECK(17,10,0))
-#  define HEDLEY_ARRAY_PARAM(name) name
+#if defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901L) && !defined(__cplusplus) && !defined(__PGI)
+#  define HEDLEY_ARRAY_PARAM(name) (name)
 #else
 #  define HEDLEY_ARRAY_PARAM(name)
 #endif
