@@ -249,6 +249,29 @@
 #  define HEDLEY_GCC_HAS_WARNING(warning,major,minor,patch) HEDLEY_GCC_VERSION_CHECK(major,minor,patch)
 #endif
 
+#if defined(HEDLEY_DIAGNOSTIC_PUSH)
+#  undef HEDLEY_DIAGNOSTIC_PUSH
+#endif
+#if defined(HEDLEY_DIAGNOSTIC_POP)
+#  undef HEDLEY_DIAGNOSTIC_POP
+#endif
+#if defined(__clang__)
+#  define HEDLEY_DIAGNOSTIC_PUSH _Pragma("clang diagnostic push")
+#  define HEDLEY_DIAGNOSTIC_POP _Pragma("clang diagnostic pop")
+#elif HEDLEY_INTEL_VERSION_CHECK(16,0,0)
+#  define HEDLEY_DIAGNOSTIC_PUSH _Pragma("warning(push)")
+#  define HEDLEY_DIAGNOSTIC_POP _Pragma("warning(pop)")
+#elif HEDLEY_GCC_NOT_CLANG_VERSION_CHECK(4,6,0)
+#  define HEDLEY_DIAGNOSTIC_PUSH _Pragma("GCC diagnostic push")
+#  define HEDLEY_DIAGNOSTIC_POP _Pragma("GCC diagnostic pop")
+#elif HEDLEY_MSVC_VERSION_CHECK(15,0,0)
+#  define HEDLEY_DIAGNOSTIC_PUSH __pragma(warning(push))
+#  define HEDLEY_DIAGNOSTIC_POP __pragma(warning(pop))
+#else
+#  define HEDLEY_DIAGNOSTIC_PUSH
+#  define HEDLEY_DIAGNOSTIC_POP
+#endif
+
 #if defined(HEDLEY_DEPRECATED)
 #  undef HEDLEY_DEPRECATED
 #endif
@@ -338,6 +361,10 @@
 #  define HEDLEY_UNREACHABLE()
 #endif
 
+HEDLEY_DIAGNOSTIC_PUSH
+#if HEDLEY_GCC_HAS_WARNING("-Wvariadic-macros",4,0,0)
+#  pragma GCC diagnostic ignored "-Wvariadic-macros"
+#endif
 #if defined(HEDLEY_NON_NULL)
 #  undef HEDLEY_NON_NULL
 #endif
@@ -346,6 +373,7 @@
 #else
 #  define HEDLEY_NON_NULL(...)
 #endif
+HEDLEY_DIAGNOSTIC_POP
 
 #if defined(HEDLEY_PRINTF_FORMAT)
 #  undef HEDLEY_PRINTF_FORMAT
@@ -560,29 +588,6 @@
 #  define HEDLEY_STATIC_ASSERT(expr, message) static_assert(expr, message)
 #else
 #  define HEDLEY_STATIC_ASSERT(expr, message)
-#endif
-
-#if defined(HEDLEY_DIAGNOSTIC_PUSH)
-#  undef HEDLEY_DIAGNOSTIC_PUSH
-#endif
-#if defined(HEDLEY_DIAGNOSTIC_POP)
-#  undef HEDLEY_DIAGNOSTIC_POP
-#endif
-#if defined(__clang__)
-#  define HEDLEY_DIAGNOSTIC_PUSH _Pragma("clang diagnostic push")
-#  define HEDLEY_DIAGNOSTIC_POP _Pragma("clang diagnostic pop")
-#elif HEDLEY_INTEL_VERSION_CHECK(16,0,0)
-#  define HEDLEY_DIAGNOSTIC_PUSH _Pragma("warning(push)")
-#  define HEDLEY_DIAGNOSTIC_POP _Pragma("warning(pop)")
-#elif HEDLEY_GCC_NOT_CLANG_VERSION_CHECK(4,6,0)
-#  define HEDLEY_DIAGNOSTIC_PUSH _Pragma("GCC diagnostic push")
-#  define HEDLEY_DIAGNOSTIC_POP _Pragma("GCC diagnostic pop")
-#elif HEDLEY_MSVC_VERSION_CHECK(15,0,0)
-#  define HEDLEY_DIAGNOSTIC_PUSH __pragma(warning(push))
-#  define HEDLEY_DIAGNOSTIC_POP __pragma(warning(pop))
-#else
-#  define HEDLEY_DIAGNOSTIC_PUSH
-#  define HEDLEY_DIAGNOSTIC_POP
 #endif
 
 #if defined(HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED)
