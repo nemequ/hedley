@@ -164,32 +164,32 @@
 #else
 #  define HEDLEY_CLANG_HAS_ATTRIBUTE(attribute) 0
 #endif
-#if defined(__clang__) && defined(__has_cpp_attribute)
+#if defined(__has_cpp_attribute) && defined(__cplusplus)
 #  define HEDLEY_CLANG_HAS_CPP_ATTRIBUTE(attribute) __has_cpp_attribute(attribute)
 #else
 #  define HEDLEY_CLANG_HAS_CPP_ATTRIBUTE(attribute) 0
 #endif
-#if defined(__clang__) && defined(__has_builtin)
+#if defined(__has_builtin)
 #  define HEDLEY_CLANG_HAS_BUILTIN(builtin) __has_builtin(builtin)
 #else
 #  define HEDLEY_CLANG_HAS_BUILTIN(builtin) 0
 #endif
-#if defined(__clang__) && defined(__has_feature)
+#if defined(__has_feature)
 #  define HEDLEY_CLANG_HAS_FEATURE(feature) __has_feature(feature)
 #else
 #  define HEDLEY_CLANG_HAS_FEATURE(feature) 0
 #endif
-#if defined(__clang__) && defined(__has_extension)
+#if defined(__has_extension)
 #  define HEDLEY_CLANG_HAS_EXTENSION(extension) __has_extension(extension)
 #else
 #  define HEDLEY_CLANG_HAS_EXTENSION(extension) 0
 #endif
-#if defined(__clang__) && defined(__has_declspec_attribute)
+#if defined(__has_declspec_attribute)
 #  define HEDLEY_CLANG_HAS_DECLSPEC_ATTRIBUTE(attribute) __has_declspec_attribute(attribute)
 #else
 #  define HEDLEY_CLANG_HAS_DECLSPEC_ATTRIBUTE(attribute) 0
 #endif
-#if defined(__clang__) && defined(__has_warning)
+#if defined(__has_warning)
 #  define HEDLEY_CLANG_HAS_WARNING(warning) __has_warning(warning)
 #else
 #  define HEDLEY_CLANG_HAS_WARNING(warning) 0
@@ -198,27 +198,56 @@
 #if defined(HEDLEY_GCC_HAS_ATTRIBUTE)
 #  undef HEDLEY_GCC_HAS_ATTRIBUTE
 #endif
+#if defined(__has_attribute)
+#  define HEDLEY_GCC_HAS_ATTRIBUTE(attribute,major,minor,patch) __has_attribute(attribute)
+#else
+#  define HEDLEY_GCC_HAS_ATTRIBUTE(attribute,major,minor,patch) HEDLEY_GCC_VERSION_CHECK(major,minor,patch)
+#endif
+
 #if defined(HEDLEY_GCC_HAS_CPP_ATTRIBUTE)
 #  undef HEDLEY_GCC_HAS_CPP_ATTRIBUTE
 #endif
+#if defined(__has_cpp_attribute) && defined(__cplusplus)
+#  define HEDLEY_GCC_HAS_CPP_ATTRIBUTE(cpp_attribute,major,minor,patch) __has_cpp_attribute(cpp_attribute)
+#else
+#  define HEDLEY_GCC_HAS_CPP_ATTRIBUTE(cpp_attribute,major,minor,patch) HEDLEY_GCC_VERSION_CHECK(major,minor,patch)
+#endif
+
 #if defined(HEDLEY_GCC_HAS_BUILTIN)
 #  undef HEDLEY_GCC_HAS_BUILTIN
 #endif
+#if defined(__has_builtin)
+#  define HEDLEY_GCC_HAS_BUILTIN(builtin,major,minor,patch) __has_builtin(builtin)
+#else
+#  define HEDLEY_GCC_HAS_BUILTIN(builtin,major,minor,patch) HEDLEY_GCC_VERSION_CHECK(major,minor,patch)
+#endif
+
 #if defined(HEDLEY_GCC_HAS_FEATURE)
 #  undef HEDLEY_GCC_HAS_FEATURE
 #endif
+#if defined(__has_feature)
+#  define HEDLEY_GCC_HAS_FEATURE(feature,major,minor,patch) __has_feature(feature)
+#else
+#  define HEDLEY_GCC_HAS_FEATURE(feature,major,minor,patch) HEDLEY_GCC_VERSION_CHECK(major,minor,patch)
+#endif
+
 #if defined(HEDLEY_GCC_HAS_DECLSPEC_ATTRIBUTE)
 #  undef HEDLEY_GCC_HAS_DECLSPEC_ATTRIBUTE
 #endif
+#if defined(__has_declspec_attribute)
+#  define HEDLEY_GCC_HAS_DECLSPEC_ATTRIBUTE(declspec_attribute,major,minor,patch) __has_declspec_attribute(declspec_attribute)
+#else
+#  define HEDLEY_GCC_HAS_DECLSPEC_ATTRIBUTE(declspec_attribute,major,minor,patch) HEDLEY_GCC_VERSION_CHECK(major,minor,patch)
+#endif
+
 #if defined(HEDLEY_GCC_HAS_WARNING)
 #  undef HEDLEY_GCC_HAS_WARNING
 #endif
-#define HEDLEY_GCC_HAS_ATTRIBUTE(attribute,major,minor,patch) (HEDLEY_CLANG_HAS_ATTRIBUTE(attribute) || HEDLEY_GCC_NOT_CLANG_VERSION_CHECK(major,minor,patch))
-#define HEDLEY_GCC_HAS_CPP_ATTRIBUTE(attribute,major,minor,patch) (HEDLEY_CLANG_HAS_CPP_ATTRIBUTE(attribute) || HEDLEY_GCC_NOT_CLANG_VERSION_CHECK(major,minor,patch))
-#define HEDLEY_GCC_HAS_BUILTIN(builtin,major,minor,patch) (HEDLEY_CLANG_HAS_BUILTIN(builtin) || HEDLEY_GCC_NOT_CLANG_VERSION_CHECK(major,minor,patch))
-#define HEDLEY_GCC_HAS_FEATURE(feature,major,minor,patch) (HEDLEY_CLANG_HAS_FEATURE(feature) || HEDLEY_GCC_NOT_CLANG_VERSION_CHECK(major,minor,patch))
-#define HEDLEY_GCC_HAS_DECLSPEC_ATTRIBUTE(attribute,major,minor,patch) (HEDLEY_CLANG_HAS_DECLSPEC_ATTRIBUTE(attribute) || HEDLEY_GCC_NOT_CLANG_VERSION_CHECK(major,minor,patch))
-#define HEDLEY_GCC_HAS_WARNING(warning,major,minor,patch) (HEDLEY_CLANG_HAS_WARNING(warning) || HEDLEY_GCC_NOT_CLANG_VERSION_CHECK(major,minor,patch))
+#if defined(__has_warning)
+#  define HEDLEY_GCC_HAS_WARNING(warning,major,minor,patch) __has_warning(warning)
+#else
+#  define HEDLEY_GCC_HAS_WARNING(warning,major,minor,patch) HEDLEY_GCC_VERSION_CHECK(major,minor,patch)
+#endif
 
 #if defined(HEDLEY_DEPRECATED)
 #  undef HEDLEY_DEPRECATED
