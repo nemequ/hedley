@@ -697,21 +697,4 @@ HEDLEY_DIAGNOSTIC_POP
 #  define HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED
 #endif
 
-#if defined(HEDLEY_ASSUME_ALIGNED)
-#  undef HEDLEY_ASSUME_ALIGNED
-#endif
-#if HEDLEY_INTEL_VERSION_CHECK(9,0,0)
-#  define HEDLEY_ASSUME_ALIGNED(ptr, align) __assume_aligned(ptr, align)
-#elif HEDLEY_MSVC_VERSION_CHECK(13,10,0)
-#  define HEDLEY_ASSUME_ALIGNED(ptr, align) __assume((((char*) ptr) - ((char*) 0)) % (align) == 0)
-#elif HEDLEY_GCC_HAS_BUILTIN(__builtin_assume_aligned,4,7,0)
-#  define HEDLEY_ASSUME_ALIGNED(ptr, align) (ptr = (__typeof__(ptr)) __builtin_assume_aligned((ptr), align))
-#elif HEDLEY_CLANG_HAS_BUILTIN(__builtin_assume)
-#  define HEDLEY_ASSUME_ALIGNED(ptr, align) __builtin_assume((((char*) ptr) - ((char*) 0)) % (align) == 0)
-#elif HEDLEY_GCC_HAS_BUILTIN(__builtin_unreachable,4,5,0)
-#  define HEDLEY_ASSUME_ALIGNED(ptr, align) ((((char*) ptr) - ((char*) 0)) % (align) == 0) ? (1) : (__builtin_unreachable(), 0)
-#else
-#  define HEDLEY_ASSUME_ALIGNED(ptr, align)
-#endif
-
 #endif /* !defined(HEDLEY_VERSION) || (HEDLEY_VERSION < X) */
