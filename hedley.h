@@ -346,7 +346,7 @@
   HEDLEY_GCC_HAS_ATTRIBUTE(warn_unused_result,3,4,0) || \
   HEDLEY_INTEL_VERSION_CHECK(16,0,0)
 #  define HEDLEY_WARN_UNUSED_RESULT __attribute__((__warn_unused_result__))
-#elif defined(_Check_return_)
+#elif defined(_Check_return_) /* SAL */
 #  define HEDLEY_WARN_UNUSED_RESULT _Check_return_
 #else
 #  define HEDLEY_WARN_UNUSED_RESULT
@@ -399,7 +399,11 @@
 
 HEDLEY_DIAGNOSTIC_PUSH
 #if HEDLEY_GCC_HAS_WARNING("-Wvariadic-macros",4,0,0)
-#  pragma GCC diagnostic ignored "-Wvariadic-macros"
+#  if defined(__clang__)
+#    pragma clang diagnostic ignored "-Wvariadic-macros"
+#  elif defined(__GNUC__)
+#    pragma GCC diagnostic ignored "-Wvariadic-macros"
+#  endif
 #endif
 #if defined(HEDLEY_NON_NULL)
 #  undef HEDLEY_NON_NULL
