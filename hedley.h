@@ -9,11 +9,11 @@
  * For details, see <http://creativecommons.org/publicdomain/zero/1.0/>.
  */
 
-#if !defined(HEDLEY_VERSION) || (HEDLEY_VERSION < 2)
+#if !defined(HEDLEY_VERSION) || (HEDLEY_VERSION < 3)
 #if defined(HEDLEY_VERSION)
 #  undef HEDLEY_VERSION
 #endif
-#define HEDLEY_VERSION 2
+#define HEDLEY_VERSION 3
 
 #if defined(HEDLEY_VERSION_ENCODE)
 #  undef HEDLEY_VERSION_ENCODE
@@ -690,7 +690,7 @@ HEDLEY_DIAGNOSTIC_POP
 #  undef HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED
 #endif
 #if HEDLEY_CLANG_HAS_WARNING("-Wdeprecated")
-#  define HEDELY_DIAGNOSTIC_DISABLE_DEPRECATED _Pragma("clang diagnostic ignored \"-Wdeprecated\"")
+#  define HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED _Pragma("clang diagnostic ignored \"-Wdeprecated\"")
 #elif HEDLEY_INTEL_VERSION_CHECK(16,0,0)
 #  define HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED _Pragma("warning(disable:1478)")
 #elif HEDLEY_GCC_NOT_CLANG_VERSION_CHECK(4,3,0)
