@@ -350,7 +350,8 @@
   HEDLEY_GCC_HAS_EXTENSION(attribute_deprecated_with_message,4,5,0) || \
   HEDLEY_INTEL_VERSION_CHECK(16,0,0) || \
   HEDLEY_ARM_VERSION_CHECK(5,6,0) || \
-  HEDLEY_SUNPRO_VERSION_CHECK(5,13,0)
+  HEDLEY_SUNPRO_VERSION_CHECK(5,13,0) || \
+  HEDLEY_PGI_VERSION_CHECK(17,10,0)
 #  define HEDLEY_DEPRECATED(since) __attribute__((__deprecated__("Since " #since)))
 #  define HEDLEY_DEPRECATED_FOR(since, replacement) __attribute__((__deprecated__("Since " #since "; use " #replacement)))
 #elif \
@@ -392,7 +393,8 @@
   HEDLEY_INTEL_VERSION_CHECK(16,0,0) || \
   HEDLEY_TI_VERSION_CHECK(8,0,0) || \
   (HEDLEY_TI_VERSION_CHECK(7,3,0) && defined(__TI_GNU_ATTRIBUTE_SUPPORT__)) || \
-  (HEDLEY_SUNPRO_VERSION_CHECK(5,15,0) && defined(__cplusplus))
+  (HEDLEY_SUNPRO_VERSION_CHECK(5,15,0) && defined(__cplusplus)) || \
+  HEDLEY_PGI_VERSION_CHECK(17,10,0)
 #  define HEDLEY_WARN_UNUSED_RESULT __attribute__((__warn_unused_result__))
 #elif defined(_Check_return_) /* SAL */
 #  define HEDLEY_WARN_UNUSED_RESULT _Check_return_
@@ -771,6 +773,8 @@ HEDLEY_DIAGNOSTIC_POP
 #  define HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED _Pragma("clang diagnostic ignored \"-Wdeprecated-declarations\"")
 #elif HEDLEY_INTEL_VERSION_CHECK(16,0,0)
 #  define HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED _Pragma("warning(disable:1478 1786)")
+#elif HEDLEY_PGI_VERSION_CHECK(17,10,0)
+#  define HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED _Pragma("diag_suppress 1215,1444")
 #elif HEDLEY_GCC_NOT_CLANG_VERSION_CHECK(4,3,0)
 #  define HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED _Pragma("GCC diagnostic ignored \"-Wdeprecated-declarations\"")
 #elif HEDLEY_MSVC_VERSION_CHECK(15,0,0)
@@ -805,7 +809,9 @@ HEDLEY_DIAGNOSTIC_POP
 #if defined(HEDLEY_MESSAGE)
 #  undef HEDLEY_MESSAGE
 #endif
-#if HEDLEY_GCC_VERSION_CHECK(4,4,0) || HEDLEY_INTEL_VERSION_CHECK(16,0,0)
+#if \
+  HEDLEY_GCC_VERSION_CHECK(4,4,0) || \
+  HEDLEY_INTEL_VERSION_CHECK(16,0,0)
 #  define HEDLEY_MESSAGE(msg) HEDLEY_PRAGMA(message msg)
 #elif HEDLEY_CLANG_HAS_WARNING("-Wunknown-pragmas")
 #  define HEDLEY_MESSAGE(msg) \
@@ -822,7 +828,9 @@ HEDLEY_DIAGNOSTIC_POP
 #if defined(HEDLEY_WARNING)
 #  undef HEDLEY_WARNING
 #endif
-#if HEDLEY_GCC_VERSION_CHECK(4,8,0) || HEDLEY_INTEL_VERSION_CHECK(16,0,0)
+#if \
+  (HEDLEY_GCC_VERSION_CHECK(4,8,0) && !defined(__PGI)) || \
+  HEDLEY_INTEL_VERSION_CHECK(16,0,0)
 #  define HEDLEY_WARNING(msg) HEDLEY_PRAGMA(GCC warning msg)
 #elif HEDLEY_CRAY_VERSION_CHECK(5,0,0)
 #  DEFINE HEDLEY_WARNING(msg) HEDLEY_PRAGMA(_CRI message msg)
