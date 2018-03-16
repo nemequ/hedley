@@ -159,6 +159,15 @@
 #  define HEDLEY_IBM_VERSION_CHECK(major,minor,patch) (0)
 #endif
 
+#if defined(HEDLEY_TI_VERSION_CHECK)
+#  undef HEDLEY_TI_VERSION_CHECK
+#endif
+#if defined(__TI_COMPILER_VERSION__)
+#  define HEDLEY_TI_VERSION_CHECK(major,minor,patch) (__TI_COMPILER_VERSION__ >= ((major * 1000000) + (minor * 1000) + patch))
+#else
+#  define HEDLEY_TI_VERSION_CHECK(major,minor,patch) (0)
+#endif
+
 #if \
   (defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901L)) || \
   HEDLEY_GCC_VERSION_CHECK(3,0,0) || \
@@ -308,6 +317,9 @@
 #elif HEDLEY_MSVC_VERSION_CHECK(15,0,0)
 #  define HEDLEY_DIAGNOSTIC_PUSH __pragma(warning(push))
 #  define HEDLEY_DIAGNOSTIC_POP __pragma(warning(pop))
+#elif HEDLEY_TI_VERSION_CHECK(8,0,0)
+#  define HEDLEY_DIAGNOSTIC_PUSH _Pragma("diag_push")
+#  define HEDLEY_DIAGNOSTIC_POP _Pragma("diag_pop")
 #else
 #  define HEDLEY_DIAGNOSTIC_PUSH
 #  define HEDLEY_DIAGNOSTIC_POP
@@ -330,7 +342,8 @@
 #  define HEDLEY_DEPRECATED_FOR(since, replacement) __attribute__((__deprecated__("Since " #since "; use " #replacement)))
 #elif \
   HEDLEY_GCC_HAS_ATTRIBUTE(deprcated,4,0,0) || \
-  HEDLEY_ARM_VERSION_CHECK(4,1,0)
+  HEDLEY_ARM_VERSION_CHECK(4,1,0) || \
+  HEDLEY_TI_VERSION_CHECK(8,0,0)
 #  define HEDLEY_DEPRECATED(since) __attribute__((__deprecated__))
 #  define HEDLEY_DEPRECATED_FOR(since, replacement) __attribute__((__deprecated__))
 #elif HEDLEY_MSVC_VERSION_CHECK(14,0,0)
@@ -360,11 +373,11 @@
 #endif
 #if defined(__cplusplus) && (__cplusplus >= 201703L)
 #  define HEDLEY_WARN_UNUSED_RESULT [[nodiscard]]
-#elif HEDLEY_SUNPRO_VERSION_CHECK(5,15,0) && defined(__cplusplus)
-#  define HEDLEY_WARN_UNUSED_RESULT __attribute__((__warn_unused_result__))
 #elif \
   HEDLEY_GCC_HAS_ATTRIBUTE(warn_unused_result,3,4,0) || \
-  HEDLEY_INTEL_VERSION_CHECK(16,0,0)
+  HEDLEY_INTEL_VERSION_CHECK(16,0,0) || \
+  HEDLEY_TI_VERSION_CHECK(8,0,0) || \
+  (HEDLEY_SUNPRO_VERSION_CHECK(5,15,0) && defined(__cplusplus))
 #  define HEDLEY_WARN_UNUSED_RESULT __attribute__((__warn_unused_result__))
 #elif defined(_Check_return_) /* SAL */
 #  define HEDLEY_WARN_UNUSED_RESULT _Check_return_
@@ -396,7 +409,8 @@
   HEDLEY_INTEL_VERSION_CHECK(16,0,0) || \
   HEDLEY_SUNPRO_VERSION_CHECK(5,11,0) || \
   HEDLEY_ARM_VERSION_CHECK(4,1,0) || \
-  HEDLEY_IBM_VERSION_CHECK(10,1,0)
+  HEDLEY_IBM_VERSION_CHECK(10,1,0) || \
+  HEDLEY_TI_VERSION_CHECK(8,0,0)
 #  define HEDLEY_NO_RETURN __attribute__((__noreturn__))
 #elif HEDLEY_MSVC_VERSION_CHECK(13,10,0)
 #  define HEDLEY_NO_RETURN __declspec(noreturn)
@@ -446,7 +460,8 @@ HEDLEY_DIAGNOSTIC_POP
   HEDLEY_GCC_HAS_ATTRIBUTE(format,3,1,0) || \
   HEDLEY_INTEL_VERSION_CHECK(16,0,0) || \
   HEDLEY_ARM_VERSION_CHECK(5,6,0) || \
-  HEDLEY_IBM_VERSION_CHECK(10,1,0)
+  HEDLEY_IBM_VERSION_CHECK(10,1,0) || \
+  HEDLEY_TI_VERSION_CHECK(8,0,0)
 #  define HEDLEY_PRINTF_FORMAT(string_idx,first_to_check) __attribute__((__format__(__printf__, string_idx, first_to_check)))
 #else
 #  define HEDLEY_PRINTF_FORMAT(string_idx,first_to_check)
@@ -463,7 +478,8 @@ HEDLEY_DIAGNOSTIC_POP
   HEDLEY_INTEL_VERSION_CHECK(16,0,0) || \
   HEDLEY_SUNPRO_VERSION_CHECK(5,12,0) || \
   HEDLEY_ARM_VERSION_CHECK(4,1,0) || \
-  HEDLEY_IBM_VERSION_CHECK(10,1,0)
+  HEDLEY_IBM_VERSION_CHECK(10,1,0) || \
+  HEDLEY_TI_VERSION_CHECK(8,0,0)
 #  define HEDLEY_LIKELY(expr) __builtin_expect(!!(expr), 1)
 #  define HEDLEY_UNLIKELY(expr) __builtin_expect(!!(expr), 0)
 #else
@@ -479,7 +495,8 @@ HEDLEY_DIAGNOSTIC_POP
   HEDLEY_INTEL_VERSION_CHECK(16,0,0) || \
   HEDLEY_SUNPRO_VERSION_CHECK(5,11,0) || \
   HEDLEY_ARM_VERSION_CHECK(4,1,0) || \
-  HEDLEY_IBM_VERSION_CHECK(12,1,0)
+  HEDLEY_IBM_VERSION_CHECK(12,1,0) || \
+  HEDLEY_TI_VERSION_CHECK(8,0,0)
 #  define HEDLEY_MALLOC __attribute__((__malloc__))
 #elif HEDLEY_MSVC_VERSION_CHECK(14, 0, 0)
 #  define HEDLEY_MALLOC __declspec(restrict)
@@ -495,7 +512,8 @@ HEDLEY_DIAGNOSTIC_POP
   HEDLEY_INTEL_VERSION_CHECK(16,0,0) || \
   HEDLEY_SUNPRO_VERSION_CHECK(5,11,0) || \
   HEDLEY_ARM_VERSION_CHECK(4,1,0) || \
-  HEDLEY_IBM_VERSION_CHECK(10,1,0)
+  HEDLEY_IBM_VERSION_CHECK(10,1,0) || \
+  HEDLEY_TI_VERSION_CHECK(8,0,0)
 #  define HEDLEY_PURE __attribute__((__pure__))
 #elif HEDLEY_MSVC_VERSION_CHECK(14, 0, 0)
 #  define HEDLEY_PURE __declspec(noalias)
@@ -510,7 +528,8 @@ HEDLEY_DIAGNOSTIC_POP
   HEDLEY_INTEL_VERSION_CHECK(16,0,0) || \
   HEDLEY_SUNPRO_VERSION_CHECK(5,11,0) || \
   HEDLEY_ARM_VERSION_CHECK(4,1,0) || \
-  HEDLEY_IBM_VERSION_CHECK(10,1,0)
+  HEDLEY_IBM_VERSION_CHECK(10,1,0) || \
+  HEDLEY_TI_VERSION_CHECK(8,0,0)
 #  define HEDLEY_CONST __attribute__((__const__))
 #else
 #  define HEDLEY_CONST HEDLEY_PURE
@@ -527,7 +546,8 @@ HEDLEY_DIAGNOSTIC_POP
   HEDLEY_INTEL_VERSION_CHECK(16,0,0) || \
   HEDLEY_ARM_VERSION_CHECK(4,1,0) || \
   HEDLEY_IBM_VERSION_CHECK(10,1,0) || \
-  HEDLEY_PGI_VERSION_CHECK(17,10,0)
+  HEDLEY_PGI_VERSION_CHECK(17,10,0) || \
+  HEDLEY_TI_VERSION_CHECK(8,0,0)
 #  define HEDLEY_RESTRICT __restrict
 #elif HEDLEY_SUNPRO_VERSION_CHECK(5,8,0)
 #  define HEDLEY_RESTRICT _Restrict
@@ -542,7 +562,10 @@ HEDLEY_DIAGNOSTIC_POP
 #  define HEDLEY_INLINE inline
 #elif defined(__GNUC_STDC_INLINE__) || HEDLEY_ARM_VERSION_CHECK(6,2,0)
 #  define HEDLEY_INLINE __inline__
-#elif HEDLEY_MSVC_VERSION_CHECK(12,0,0) || HEDLEY_ARM_VERSION_CHECK(4,1,0)
+#elif \
+  HEDLEY_MSVC_VERSION_CHECK(12,0,0) || \
+  HEDLEY_ARM_VERSION_CHECK(4,1,0) || \
+  HEDLEY_TI_VERSION_CHECK(8,0,0)
 #  define HEDLEY_INLINE __inline
 #else
 #  define HEDLEY_INLINE
@@ -556,7 +579,8 @@ HEDLEY_DIAGNOSTIC_POP
   HEDLEY_INTEL_VERSION_CHECK(16,0,0) || \
   HEDLEY_SUNPRO_VERSION_CHECK(5,11,0) || \
   HEDLEY_ARM_VERSION_CHECK(4,1,0) || \
-  HEDLEY_IBM_VERSION_CHECK(10,1,0)
+  HEDLEY_IBM_VERSION_CHECK(10,1,0) || \
+  HEDLEY_TI_VERSION_CHECK(8,0,0)
 #  define HEDLEY_ALWAYS_INLINE __attribute__((__always_inline__))
 #elif HEDLEY_MSVC_VERSION_CHECK(12,0,0)
 #  define HEDLEY_ALWAYS_INLINE __forceinline
@@ -572,7 +596,8 @@ HEDLEY_DIAGNOSTIC_POP
   HEDLEY_INTEL_VERSION_CHECK(16,0,0) || \
   HEDLEY_SUNPRO_VERSION_CHECK(5,11,0) || \
   HEDLEY_ARM_VERSION_CHECK(4,1,0) || \
-  HEDLEY_IBM_VERSION_CHECK(10,1,0)
+  HEDLEY_IBM_VERSION_CHECK(10,1,0) || \
+  HEDLEY_TI_VERSION_CHECK(8,0,0)
 #  define HEDLEY_NEVER_INLINE __attribute__((__noinline__))
 #elif HEDLEY_MSVC_VERSION_CHECK(13,10,0)
 #  define HEDLEY_NEVER_INLINE __declspec(noinline)
@@ -597,7 +622,8 @@ HEDLEY_DIAGNOSTIC_POP
     HEDLEY_SUNPRO_VERSION_CHECK(5,11,0) || \
     HEDLEY_INTEL_VERSION_CHECK(16,0,0) || \
     HEDLEY_ARM_VERSION_CHECK(4,1,0) || \
-    HEDLEY_IBM_VERSION_CHECK(13,1,0)
+    HEDLEY_IBM_VERSION_CHECK(13,1,0) || \
+    HEDLEY_TI_VERSION_CHECK(8,0,0)
 #    define HEDLEY_PRIVATE __attribute__((__visibility__("hidden")))
 #  else
 #    define HEDLEY_PRIVATE
@@ -610,7 +636,8 @@ HEDLEY_DIAGNOSTIC_POP
     HEDLEY_SUNPRO_VERSION_CHECK(5,11,0) || \
     HEDLEY_INTEL_VERSION_CHECK(16,0,0) || \
     HEDLEY_ARM_VERSION_CHECK(4,1,0) || \
-    HEDLEY_IBM_VERSION_CHECK(13,1,0)
+    HEDLEY_IBM_VERSION_CHECK(13,1,0) || \
+    HEDLEY_TI_VERSION_CHECK(8,0,0)
 #    define HEDLEY_PRIVATE __attribute__((__visibility__("hidden")))
 #    define HEDLEY_PUBLIC  __attribute__((__visibility__("default")))
 #  else
@@ -721,6 +748,8 @@ HEDLEY_DIAGNOSTIC_POP
 #  define HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED _Pragma("GCC diagnostic ignored \"-Wdeprecated\"")
 #elif HEDLEY_MSVC_VERSION_CHECK(15,0,0)
 #  define HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED __pragma(warning(disable:4996))
+#elif HEDLEY_TI_VERSION_CHECK(8,0,0)
+#  define HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED _Pragma("diag_suppress 1291")
 #else
 #  define HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED
 #endif
