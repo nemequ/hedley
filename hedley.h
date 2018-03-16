@@ -757,7 +757,7 @@ HEDLEY_DIAGNOSTIC_POP
 #if HEDLEY_CLANG_HAS_WARNING("-Wdeprecated-declarations")
 #  define HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED _Pragma("clang diagnostic ignored \"-Wdeprecated-declarations\"")
 #elif HEDLEY_INTEL_VERSION_CHECK(16,0,0)
-#  define HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED _Pragma("warning(disable:1478)")
+#  define HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED _Pragma("warning(disable:1478 1786)")
 #elif HEDLEY_GCC_NOT_CLANG_VERSION_CHECK(4,3,0)
 #  define HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED _Pragma("GCC diagnostic ignored \"-Wdeprecated-declarations\"")
 #elif HEDLEY_MSVC_VERSION_CHECK(15,0,0)
