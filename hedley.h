@@ -340,7 +340,8 @@
 #elif \
   HEDLEY_GCC_HAS_EXTENSION(attribute_deprecated_with_message,4,5,0) || \
   HEDLEY_INTEL_VERSION_CHECK(16,0,0) || \
-  HEDLEY_ARM_VERSION_CHECK(5,6,0)
+  HEDLEY_ARM_VERSION_CHECK(5,6,0) || \
+  HEDLEY_SUNPRO_VERSION_CHECK(5,13,0)
 #  define HEDLEY_DEPRECATED(since) __attribute__((__deprecated__("Since " #since)))
 #  define HEDLEY_DEPRECATED_FOR(since, replacement) __attribute__((__deprecated__("Since " #since "; use " #replacement)))
 #elif \
@@ -769,6 +770,10 @@ HEDLEY_DIAGNOSTIC_POP
 #  define HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED __pragma(warning(disable:4996))
 #elif HEDLEY_TI_VERSION_CHECK(8,0,0)
 #  define HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED _Pragma("diag_suppress 1291")
+#elif HEDLEY_SUNPRO_VERSION_CHECK(5,13,0) && !defined(__cplusplus)
+#  define HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED _Pragma("error_messages(off,E_DEPRECATED_ATT,E_DEPRECATED_ATT_MESS)")
+#elif HEDLEY_SUNPRO_VERSION_CHECK(5,13,0) && defined(__cplusplus)
+#  define HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED _Pragma("error_messages(off,symdeprecated,symdeprecated2)")
 #else
 #  define HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED
 #endif
