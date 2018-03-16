@@ -725,4 +725,36 @@ HEDLEY_DIAGNOSTIC_POP
 #  define HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED
 #endif
 
+#if defined(HEDLEY_MESSAGE)
+#  undef HEDLEY_MESSAGE
+#endif
+#if HEDLEY_GCC_VERSION_CHECK(4,4,0) || HEDLEY_INTEL_VERSION_CHECK(16,0,0)
+#  define HEDLEY_MESSAGE(msg) HEDLEY_PRAGMA(message msg)
+#elif HEDLEY_CLANG_HAS_WARNING("-Wunknown-pragmas")
+#  define HEDLEY_MESSAGE(msg) \
+  HEDLEY_DIAGNOSTIC_PUSH \
+  _Pragma("clang diagnostic ignored \"-Wunknown-pragmas\"") \
+  HEDLEY_PRAGMA(message msg) \
+  HEDLEY_DIAGNOSTIC_POP
+#elif HEDLEY_MSVC_VERSION_CHECK(15,0,0)
+#  define HEDLEY_MESSAGE(msg) HEDLEY_PRAGMA(message(msg))
+#else
+#  define HEDLEY_MESSAGE(msg)
+#endif
+
+#if defined(HEDLEY_WARNING)
+#  undef HEDLEY_WARNING
+#endif
+#if HEDLEY_GCC_VERSION_CHECK(4,8,0) || HEDLEY_INTEL_VERSION_CHECK(16,0,0)
+#  define HEDLEY_WARNING(msg) HEDLEY_PRAGMA(GCC warning msg)
+#elif HEDLEY_CLANG_HAS_WARNING("-Wunknown-pragmas")
+#  define HEDLEY_WARNING(msg) \
+  HEDLEY_DIAGNOSTIC_PUSH \
+  _Pragma("clang diagnostic ignored \"-Wunknown-pragmas\"") \
+  HEDLEY_PRAGMA(clang warning msg) \
+  HEDLEY_DIAGNOSTIC_POP
+#else
+#  define HEDLEY_WARNING(msg) HEDLEY_MESSAGE(msg)
+#endif
+
 #endif /* !defined(HEDLEY_VERSION) || (HEDLEY_VERSION < X) */
