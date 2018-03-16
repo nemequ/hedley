@@ -15,6 +15,26 @@
 #endif
 #define HEDLEY_VERSION 4
 
+#if defined(HEDLEY_STRINGIFY_EX)
+#  undef HEDLEY_STRINGIFY_EX
+#endif
+#define HEDLEY_STRINGIFY_EX(x) #x
+
+#if defined(HEDLEY_STRINGIFY)
+#  undef HEDLEY_STRINGIFY
+#endif
+#define HEDLEY_STRINGIFY(x) HEDLEY_STRINGIFY_EX(x)
+
+#if defined(HEDLEY_CONCAT_EX)
+#  undef HEDLEY_CONCAT_EX
+#endif
+#define HEDLEY_CONCAT_EX(a,b) a##b
+
+#if defined(HEDLEY_CONCAT)
+#  undef HEDLEY_CONCAT
+#endif
+#define HEDLEY_CONCAT(a,b) HEDLEY_CONCAT_EX(a,b)
+
 #if defined(HEDLEY_VERSION_ENCODE)
 #  undef HEDLEY_VERSION_ENCODE
 #endif
