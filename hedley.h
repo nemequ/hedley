@@ -679,18 +679,23 @@ HEDLEY_DIAGNOSTIC_POP
 #if defined(HEDLEY_FALL_THROUGH)
 #  undef HEDLEY_FALL_THROUGH
 #endif
-#if defined(__cplusplus) && (__cplusplus >= 201703L)
-#  define HEDLEY_FALL_THROUGH [[fallthrough]]
-#elif defined(__cplusplus) && (__cplusplus >= 201103L) && HEDLEY_CLANG_HAS_CPP_ATTRIBUTE(clang::fallthrough)
-#  define HEDLEY_FALL_THROUGH [[clang::fallthrough]]
-#elif defined(__cplusplus) && (__cplusplus >= 201103L) && HEDLEY_GCC_HAS_CPP_ATTRIBUTE(gnu::fallthrough,7,0,0)
-#  define HEDLEY_FALL_THROUGH [[gnu::fallthrough]]
-#elif HEDLEY_GCC_HAS_ATTRIBUTE(fallthrough,7,0,0)
-#  define HEDLEY_FALL_THROUGH __attribute__((__fallthrough__))
-#elif defined(__fallthrough) /* SAL */
-#  define HEDLEY_FALL_THROUGH __fallthrough
-#else
-#  define HEDLEY_FALL_THROUGH
+#if defined(__cplusplus) && (!defined(__SUNPRO_CC) || HEDLEY_SUNPRO_VERSION_CHECK(5,15,0))
+#  if (__cplusplus >= 201703L)
+#    define HEDLEY_FALL_THROUGH [[fallthrough]]
+#  elif (__cplusplus >= 201103L) && HEDLEY_CLANG_HAS_CPP_ATTRIBUTE(clang::fallthrough)
+#    define HEDLEY_FALL_THROUGH [[clang::fallthrough]]
+#  elif (__cplusplus >= 201103L) && HEDLEY_GCC_HAS_CPP_ATTRIBUTE(gnu::fallthrough,7,0,0)
+#    define HEDLEY_FALL_THROUGH [[gnu::fallthrough]]
+#  endif
+#endif
+#if !defined(HEDLEY_FALL_THROUGH)
+#  if HEDLEY_GCC_HAS_ATTRIBUTE(fallthrough,7,0,0)
+#    define HEDLEY_FALL_THROUGH __attribute__((__fallthrough__))
+#  elif defined(__fallthrough) /* SAL */
+#    define HEDLEY_FALL_THROUGH __fallthrough
+#  else
+#    define HEDLEY_FALL_THROUGH
+#  endif
 #endif
 
 #if defined(HEDLEY_RETURNS_NON_NULL)
