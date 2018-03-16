@@ -536,7 +536,9 @@ HEDLEY_DIAGNOSTIC_POP
 #if defined(HEDLEY_INLINE)
 #  undef HEDLEY_INLINE
 #endif
-#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L
+#if \
+  (defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901L)) || \
+  (defined(__cplusplus) && (__cplusplus >= 199711L))
 #  define HEDLEY_INLINE inline
 #elif defined(__GNUC_STDC_INLINE__) || HEDLEY_ARM_VERSION_CHECK(6,2,0)
 #  define HEDLEY_INLINE __inline__
