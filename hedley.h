@@ -168,6 +168,15 @@
 #  define HEDLEY_TI_VERSION_CHECK(major,minor,patch) (0)
 #endif
 
+#if defined(HEDLEY_CRAY_VERSION_CHECK)
+#  undef HEDLEY_CRAY_VERSION_CHECK
+#endif
+#if defined(_CRAYC)
+#  define HEDLEY_CRAY_VERSION_CHECK(major,minor,patch) (HEDLEY_VERSION_ENCODE(_RELEASE_MAJOR, _RELEASE_MINOR, 0) >= HEDLEY_VERSION_ENCODE(major,minor,patch))
+#else
+#  define HEDLEY_CRAY_VERSION_CHECK(major,minor,patch) (0)
+#endif
+
 #if \
   (defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901L)) || \
   HEDLEY_GCC_VERSION_CHECK(3,0,0) || \
@@ -815,6 +824,8 @@ HEDLEY_DIAGNOSTIC_POP
 #endif
 #if HEDLEY_GCC_VERSION_CHECK(4,8,0) || HEDLEY_INTEL_VERSION_CHECK(16,0,0)
 #  define HEDLEY_WARNING(msg) HEDLEY_PRAGMA(GCC warning msg)
+#elif HEDLEY_CRAY_VERSION_CHECK(5,0,0)
+#  DEFINE HEDLEY_WARNING(msg) HEDLEY_PRAGMA(_CRI message msg)
 #else
 #  define HEDLEY_WARNING(msg) HEDLEY_MESSAGE(msg)
 #endif
