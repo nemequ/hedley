@@ -576,6 +576,8 @@ HEDLEY_DIAGNOSTIC_POP
 #  define HEDLEY_NEVER_INLINE __attribute__((__noinline__))
 #elif HEDLEY_MSVC_VERSION_CHECK(13,10,0)
 #  define HEDLEY_NEVER_INLINE __declspec(noinline)
+#elif HEDLEY_PGI_VERSION_CHECK(10,2,0)
+#  define HEDLEY_NEVER_INLINE _Pragma("noinline")
 #else
 #  define HEDLEY_NEVER_INLINE HEDLEY_INLINE
 #endif
