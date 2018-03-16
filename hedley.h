@@ -525,8 +525,6 @@ HEDLEY_DIAGNOSTIC_POP
   HEDLEY_TI_VERSION_CHECK(8,0,0) || \
   (HEDLEY_TI_VERSION_CHECK(7,3,0) && defined(__TI_GNU_ATTRIBUTE_SUPPORT__))
 #  define HEDLEY_PURE __attribute__((__pure__))
-#elif HEDLEY_MSVC_VERSION_CHECK(14, 0, 0)
-#  define HEDLEY_PURE __declspec(noalias)
 #else
 #  define HEDLEY_PURE
 #endif
