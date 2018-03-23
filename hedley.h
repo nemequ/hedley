@@ -597,6 +597,12 @@
 #  define HEDLEY_UNREACHABLE() __builtin_unreachable()
 #elif HEDLEY_MSVC_VERSION_CHECK(13,10,0)
 #  define HEDLEY_UNREACHABLE() __assume(0)
+#elif HEDLEY_TI_VERSION_CHECK(8,0,0)
+#  if defined(__cplusplus)
+#    define HEDLEY_UNREACHABLE() std::_nassert(0)
+#  else
+#    define HEDLEY_UNREACHABLE() _nassert(0)
+#  endif
 #elif defined(EXIT_FAILURE)
 #  define HEDLEY_UNREACHABLE() abort()
 #else
