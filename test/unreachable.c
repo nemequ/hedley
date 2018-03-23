@@ -26,10 +26,7 @@ static void test_unreachable(enum Foo code) {
   }
 }
 
-int main(int argc, char* argv[HEDLEY_ARRAY_PARAM(argc)]) {
-  (void) argc;
-  (void) argv;
-
+int main(void) {
   test_unreachable(FOO_QUUX);
 
   return 0;

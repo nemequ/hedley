@@ -1,7 +1,7 @@
 #include "../hedley.h"
 
-HEDLEY_STATIC_ASSERT(1 == 2, "Yay!");
+HEDLEY_STATIC_ASSERT(sizeof(char) == 1, "char must be one byte");
 
-int main (void) {
+int main(void) {
   return 0;
 }

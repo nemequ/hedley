@@ -11,6 +11,9 @@ else ifeq ($(notdir $(CC)), pgcc)
 else ifeq ($(notdir $(CC)), pgc++)
   CFLAGS := --display_error_number -Minform=inform --c++11
   C_OUTPUT_FILE := -o
+else ifeq ($(notdir $(CC)), xlc)
+  CFLAGS := -Weverything -Wno-vla
+  C_OUTPUT_FILE := -o
 else
   CFLAGS := -Wall -Wextra
 endif
@@ -22,6 +25,12 @@ else ifeq ($(notdir $(CXX)), sunCC)
 else ifeq ($(notdir $(CXX)), pgc++)
   CXXFLAGS := -Minform=inform
   CXX_OUTPUT_FILE := -o
+else ifeq ($(notdir $(CC)), cl6x)
+  CXXFLAGS := --display_error_number
+  CXX_OUTPUT_FILE := --output_file=
+else ifeq ($(notdir $(CXX)), xlc++)
+  CXXFLAGS := -Weverything
+  CXX_OUTPUT_FILE := -o
 else
   CXXFLAGS := -Wall -Wextra
 endif
@@ -32,16 +41,22 @@ CXX_OUTPUT_FILE ?= --output=
 NULL =
 
 TESTS = \
+	array-param \
 	const \
 	deprecated \
 	likely \
 	message \
+	noinline \
 	no-return \
+	pure \
+	restrict \
+	sentinel \
 	static-assert \
 	stringify \
 	unknown-pragmas \
 	unavailable \
 	unreachable \
+	visibility \
 	warn \
 	warn-unused-result \
 	$(NULL)
