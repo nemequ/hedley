@@ -483,7 +483,7 @@
 #elif HEDLEY_ARM_VERSION_CHECK(5,6,0)
 #  define HEDLEY_DIAGNOSTIC_PUSH _Pragma("push")
 #  define HEDLEY_DIAGNOSTIC_POP _Pragma("pop")
-#elif HEDLEY_TI_VERSION_CHECK(8,0,0)
+#elif HEDLEY_TI_VERSION_CHECK(8,1,0)
 #  define HEDLEY_DIAGNOSTIC_PUSH _Pragma("diag_push")
 #  define HEDLEY_DIAGNOSTIC_POP _Pragma("diag_pop")
 #else
@@ -581,11 +581,13 @@
   HEDLEY_SUNPRO_VERSION_CHECK(5,11,0) || \
   HEDLEY_ARM_VERSION_CHECK(4,1,0) || \
   HEDLEY_IBM_VERSION_CHECK(10,1,0) || \
-  HEDLEY_TI_VERSION_CHECK(8,0,0) || \
-  (HEDLEY_TI_VERSION_CHECK(7,3,0) && defined(__TI_GNU_ATTRIBUTE_SUPPORT__))
+  HEDLEY_TI_VERSION_CHECK(18,0,0) || \
+  (HEDLEY_TI_VERSION_CHECK(17,3,0) && defined(__TI_GNU_ATTRIBUTE_SUPPORT__))
 #  define HEDLEY_NO_RETURN __attribute__((__noreturn__))
 #elif HEDLEY_MSVC_VERSION_CHECK(13,10,0)
 #  define HEDLEY_NO_RETURN __declspec(noreturn)
+#elif HEDLEY_TI_VERSION_CHECK(6,0,0) && defined(__cplusplus)
+#  define HEDLEY_NO_RETURN _Pragma("FUNC_NEVER_RETURNS;")
 #else
 #  define HEDLEY_NO_RETURN
 #endif
@@ -597,7 +599,7 @@
 #  define HEDLEY_UNREACHABLE() __builtin_unreachable()
 #elif HEDLEY_MSVC_VERSION_CHECK(13,10,0)
 #  define HEDLEY_UNREACHABLE() __assume(0)
-#elif HEDLEY_TI_VERSION_CHECK(8,0,0)
+#elif HEDLEY_TI_VERSION_CHECK(6,0,0)
 #  if defined(__cplusplus)
 #    define HEDLEY_UNREACHABLE() std::_nassert(0)
 #  else
@@ -696,6 +698,8 @@ HEDLEY_DIAGNOSTIC_POP
   HEDLEY_TI_VERSION_CHECK(8,0,0) || \
   (HEDLEY_TI_VERSION_CHECK(7,3,0) && defined(__TI_GNU_ATTRIBUTE_SUPPORT__))
 #  define HEDLEY_PURE __attribute__((__pure__))
+#elif HEDLEY_TI_VERSION_CHECK(6,0,0) && defined(__cplusplus)
+#  define HEDLEY_NO_RETURN _Pragma("FUNC_IS_PURE;")
 #else
 #  define HEDLEY_PURE
 #endif
@@ -765,6 +769,8 @@ HEDLEY_DIAGNOSTIC_POP
 #  define HEDLEY_ALWAYS_INLINE __attribute__((__always_inline__))
 #elif HEDLEY_MSVC_VERSION_CHECK(12,0,0)
 #  define HEDLEY_ALWAYS_INLINE __forceinline
+#elif HEDLEY_TI_VERSION_CHECK(7,0,0) && defined(__cplusplus)
+#  define HEDLEY_NO_RETURN _Pragma("FUNC_ALWAYS_INLINE;")
 #else
 #  define HEDLEY_ALWAYS_INLINE HEDLEY_INLINE
 #endif
@@ -785,6 +791,8 @@ HEDLEY_DIAGNOSTIC_POP
 #  define HEDLEY_NEVER_INLINE __declspec(noinline)
 #elif HEDLEY_PGI_VERSION_CHECK(10,2,0)
 #  define HEDLEY_NEVER_INLINE _Pragma("noinline")
+#elif HEDLEY_TI_VERSION_CHECK(6,0,0) && defined(__cplusplus)
+#  define HEDLEY_NO_RETURN _Pragma("FUNC_CANNOT_INLINE;")
 #else
 #  define HEDLEY_NEVER_INLINE HEDLEY_INLINE
 #endif
