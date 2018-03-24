@@ -1,5 +1,3 @@
-#include <stdlib.h>
-
 #include "../hedley.h"
 
 HEDLEY_PUBLIC
@@ -12,5 +10,5 @@ int main() {
   test_public();
   test_private();
 
-  return EXIT_FAILURE;
+  return 0;
 }

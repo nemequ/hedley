@@ -1,11 +1,11 @@
 #include "../hedley.h"
 
 #ifndef NULL
-#  define NULL 0
+#  define NULL ((void*) 0)
 #endif
 
 HEDLEY_SENTINEL(0)
-int test_sentinel(void* ptr, ...) {
+static int test_sentinel(void* ptr, ...) {
   (void) ptr;
 
   return 42;

@@ -1,10 +1,12 @@
 #include "../hedley.h"
 
-void foo(char* HEDLEY_RESTRICT a, char* HEDLEY_RESTRICT b) {
+static void foo(const char* HEDLEY_RESTRICT a, const char* HEDLEY_RESTRICT b) {
   (void) a;
   (void) b;
 }
 
 int main (void) {
+  foo("one", "two");
+
   return 0;
 }
