@@ -690,7 +690,7 @@ HEDLEY_DIAGNOSTIC_POP
 #  undef HEDLEY_PURE
 #endif
 #if \
-  HEDLEY_GNUC_HAS_ATTRIBUTE(pure, 2, 96, 0) || \
+  HEDLEY_GNUC_HAS_ATTRIBUTE(pure,2,96,0) || \
   HEDLEY_INTEL_VERSION_CHECK(16,0,0) || \
   HEDLEY_SUNPRO_VERSION_CHECK(5,11,0) || \
   HEDLEY_ARM_VERSION_CHECK(4,1,0) || \
@@ -977,18 +977,18 @@ HEDLEY_DIAGNOSTIC_POP
 #if defined(HEDLEY_MESSAGE)
 #  undef HEDLEY_MESSAGE
 #endif
-#if \
-  HEDLEY_GNUC_VERSION_CHECK(4,4,0) || \
-  HEDLEY_INTEL_VERSION_CHECK(16,0,0)
-#  define HEDLEY_MESSAGE(msg) HEDLEY_PRAGMA(message msg)
-#elif HEDLEY_HAS_WARNING("-Wunknown-pragmas")
+#if HEDLEY_HAS_WARNING("-Wunknown-pragmas")
 #  define HEDLEY_MESSAGE(msg) \
   HEDLEY_DIAGNOSTIC_PUSH \
   _Pragma("clang diagnostic ignored \"-Wunknown-pragmas\"") \
   HEDLEY_PRAGMA(message msg) \
   HEDLEY_DIAGNOSTIC_POP
-#elif HEDLEY_MSVC_VERSION_CHECK(15,0,0)
-#  define HEDLEY_MESSAGE(msg) HEDLEY_PRAGMA(message(msg))
+#elif \
+  HEDLEY_GNUC_VERSION_CHECK(4,4,0) || \
+  HEDLEY_INTEL_VERSION_CHECK(16,0,0)
+#  define HEDLEY_MESSAGE(msg) HEDLEY_PRAGMA(message msg)
+#elif HEDLEY_CRAY_VERSION_CHECK(5,0,0)
+#  DEFINE HEDLEY_MESSAGE(msg) HEDLEY_PRAGMA(_CRI message msg)
 #else
 #  define HEDLEY_MESSAGE(msg)
 #endif
@@ -996,12 +996,18 @@ HEDLEY_DIAGNOSTIC_POP
 #if defined(HEDLEY_WARNING)
 #  undef HEDLEY_WARNING
 #endif
-#if \
+#if HEDLEY_HAS_WARNING("-Wunknown-pragmas")
+#  define HEDLEY_WARNING(msg) \
+  HEDLEY_DIAGNOSTIC_PUSH \
+  _Pragma("clang diagnostic ignored \"-Wunknown-pragmas\"") \
+  HEDLEY_PRAGMA(clang warning msg) \
+  HEDLEY_DIAGNOSTIC_POP
+#elif \
   (HEDLEY_GNUC_VERSION_CHECK(4,8,0) && !defined(__PGI)) || \
   HEDLEY_INTEL_VERSION_CHECK(16,0,0)
 #  define HEDLEY_WARNING(msg) HEDLEY_PRAGMA(GCC warning msg)
-#elif HEDLEY_CRAY_VERSION_CHECK(5,0,0)
-#  DEFINE HEDLEY_WARNING(msg) HEDLEY_PRAGMA(_CRI message msg)
+#elif HEDLEY_MSVC_VERSION_CHECK(15,0,0)
+#  define HEDLEY_WARNING(msg) HEDLEY_PRAGMA(message(msg))
 #else
 #  define HEDLEY_WARNING(msg) HEDLEY_MESSAGE(msg)
 #endif
