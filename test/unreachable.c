@@ -1,11 +1,7 @@
 #include "../hedley.h"
 
-#if defined(__has_warning)
-#  if __has_warning("-Wswitch-enum")
-#    pragma GCC diagnostic warning "-Wswitch-enum"
-#  endif
-#elif HEDLEY_GCC_VERSION_CHECK(4,5,0)
-#    pragma GCC diagnostic warning "-Wswitch-enum"
+#if HEDLEY_TI_VERSION_CHECK(8,0,0)
+#  pragma diag_suppress 994
 #endif
 
 enum Foo {
@@ -15,19 +11,20 @@ enum Foo {
   FOO_QUUX
 };
 
-static void test_unreachable(enum Foo code) {
+static int test_unreachable(enum Foo code) {
   switch (code) {
   case FOO_BAR:
   case FOO_BAZ:
   case FOO_QUX:
-    break;
+    return 0;
   case FOO_QUUX:
+  default:
     HEDLEY_UNREACHABLE();
   }
 }
 
 int main(void) {
-  test_unreachable(FOO_QUUX);
+  test_unreachable(FOO_BAR);
 
   return 0;
 }

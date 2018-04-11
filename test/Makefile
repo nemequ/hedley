@@ -1,46 +1,52 @@
+CLANG_C_FLAGS = -Weverything -Wno-vla -Wno-covered-switch-default -Werror
+GCC_C_FLAGS = -Wall -Wextra -Werror
+
 ifeq ($(notdir $(CC)), clang)
-  CFLAGS := -Weverything -Wno-vla
+  CFLAGS ?= $(CLANG_C_FLAGS)
 else ifeq ($(notdir $(CC)), suncc)
-  CFLAGS := -errwarn -errtags
+  CFLAGS ?= -errwarn -errtags
   C_OUTPUT_FILE := -o
 else ifeq ($(notdir $(CC)), cl6x)
-  CFLAGS := --display_error_number
+  CFLAGS ?= --display_error_number --emit_warnings_as_errors --issue_remarks
   C_OUTPUT_FILE := --output_file=
 else ifeq ($(notdir $(CC)), pgcc)
-  CFLAGS := -Minform=inform -c11
+  CFLAGS ?= -Minform=inform -c11
   C_OUTPUT_FILE := -o
 else ifeq ($(notdir $(CC)), pgc++)
-  CFLAGS := --display_error_number -Minform=inform
+  CFLAGS ?= --display_error_number -Minform=inform -Werror
   C_OUTPUT_FILE := -o
 else ifeq ($(notdir $(CC)), xlc)
-  CFLAGS := -Weverything -Wno-vla
+  CFLAGS ?= $(CLANG_C_FLAGS)
   C_OUTPUT_FILE := -o
 else ifeq ($(notdir $(CC)), icc)
-  CFLAGS := -Wall -Wextra
+  CFLAGS ?= $(GCC_C_FLAGS)
   C_OUTPUT_FILE := -o
 else
-  CFLAGS := -Wall -Wextra
+  CFLAGS ?= $(filter-out -Werror,$(GCC_C_FLAGS))
 endif
 
+CLANG_CXX_FLAGS = -Weverything -Werror
+GCC_CXX_FLAGS = -Wall -Wextra -Werror
+
 ifeq ($(notdir $(CXX)), clang)
-  CXXFLAGS := -Weverything
+  CXXFLAGS ?= $(CLANG_CXX_FLAGS)
 else ifeq ($(notdir $(CXX)), sunCC)
-  CXXFLAGS := -errwarn=%all -errtags=yes
+  CXXFLAGS ?= -errwarn=%all -errtags=yes
   CXX_OUTPUT_FILE := -o
 else ifeq ($(notdir $(CXX)), pgc++)
-  CXXFLAGS := --display_error_number -Minform=inform
+  CXXFLAGS ?= --display_error_number -Minform=inform -Werror
   CXX_OUTPUT_FILE := -o
 else ifeq ($(notdir $(CC)), cl6x)
-  CXXFLAGS := --display_error_number
+  CXXFLAGS ?= --display_error_number --emit_warnings_as_errors --issue_remarks
   CXX_OUTPUT_FILE := --output_file=
 else ifeq ($(notdir $(CXX)), xlc++)
-  CXXFLAGS := -Weverything
+  CXXFLAGS ?= $(CLANG_CXX_FLAGS)
   CXX_OUTPUT_FILE := -o
 else ifeq ($(notdir $(CXX)), icpc)
-  CXXFLAGS := -Wall -Wextra
+  CXXFLAGS ?= $(GCC_CXX_FLAGS)
   CXX_OUTPUT_FILE := -o
 else
-  CXXFLAGS := -Wall -Wextra
+  CXXFLAGS ?= $(filter-out -Werror,$(GCC_CXX_FLAGS))
 endif
 
 C_OUTPUT_FILE ?= --output=
@@ -76,12 +82,24 @@ CLEANFILES = \
 
 all: $(TESTS) $(TESTS:=-cpp) .gitignore
 
-%-cpp: %.c
-	cp -a $(@:-cpp=.c) $(^:.c=.cpp)
-	$(CXX) $(CXXFLAGS) $(CXX_OUTPUT_FILE)$@ $(^:.c=.cpp) || true
+%.cpp: %.c
+	cp -a $^ $@
+
+%-cpp: %.cpp
+	$(CXX) $(CXXFLAGS) $(CXX_OUTPUT_FILE)$@ $(^:.c=.cpp)
 
 %: %.c
-	$(CC) $(CFLAGS) $(C_OUTPUT_FILE)$@ $^ || true
+	$(CC) $(CFLAGS) $(C_OUTPUT_FILE)$@ $^
+
+define GEN_GCC_C_WARNINGS
+$(1): $(1:=.c)
+	$(CC) $(filter-out -Werror,$(CFLAGS)) $(C_OUTPUT_FILE)$(1) $(1:=.c)
+endef
+
+define GEN_GCC_CXX_WARNINGS
+$(1)-cpp: $(1:=.cpp)
+	$(CXX) $(filter-out -Werror,$(CXXFLAGS)) $(CXX_OUTPUT_FILE)$(1) $(1:=.cpp)
+endef
 
 .gitignore:
 	rm -f $@
@@ -92,3 +110,11 @@ clean:
 	rm -f $(CLEANFILES)
 
 .PHONY: clean all
+
+ifeq ($(notdir $(CC)), gcc)
+$(foreach tgt,unavailable warn unknown-pragmas,$(eval $(call GEN_GCC_C_WARNINGS,$(tgt))))
+endif
+
+ifeq ($(notdir $(CXX)), g++)
+$(foreach tgt,unavailable warn unknown-pragmas,$(eval $(call GEN_GCC_CXX_WARNINGS,$(tgt))))
+endif

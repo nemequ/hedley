@@ -1,7 +1,7 @@
 #include "../hedley.h"
 
 HEDLEY_PURE
-int test_pure(int a, int b) {
+static int test_pure(int a, int b) {
   return a * b;
 }
 

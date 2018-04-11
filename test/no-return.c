@@ -16,6 +16,4 @@ test_no_return(int code) {
 
 int main(void) {
   test_no_return(0);
-
-  return 1;
 }

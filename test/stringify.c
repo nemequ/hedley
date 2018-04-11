@@ -17,7 +17,7 @@ my_strcmp(const char* s1, const char* s2) {
   }
 }
 
-const char*
+static const char*
 foo_bar(void) {
   return HEDLEY_STRINGIFY(BAR);
 }

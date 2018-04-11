@@ -1,10 +1,15 @@
 #include "../hedley.h"
 
+HEDLEY_PUBLIC void test_public(void);
+HEDLEY_PRIVATE void test_private(void);
+
 HEDLEY_PUBLIC
-void test_public(void) { }
+void
+test_public(void) { }
 
 HEDLEY_PRIVATE
-void test_private(void) { }
+void
+test_private(void) { }
 
 int main() {
   test_public();
