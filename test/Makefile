@@ -56,6 +56,7 @@ NULL =
 
 TESTS = \
 	array-param \
+	cast \
 	const \
 	deprecated \
 	likely \

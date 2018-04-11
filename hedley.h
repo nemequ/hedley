@@ -491,6 +491,61 @@
 #  define HEDLEY_DIAGNOSTIC_POP
 #endif
 
+#if defined(HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED)
+#  undef HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED
+#endif
+#if HEDLEY_HAS_WARNING("-Wdeprecated-declarations")
+#  define HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED _Pragma("clang diagnostic ignored \"-Wdeprecated-declarations\"")
+#elif HEDLEY_INTEL_VERSION_CHECK(16,0,0)
+#  define HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED _Pragma("warning(disable:1478 1786)")
+#elif HEDLEY_PGI_VERSION_CHECK(17,10,0)
+#  define HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED _Pragma("diag_suppress 1215,1444")
+#elif HEDLEY_GNUC_VERSION_CHECK(4,3,0)
+#  define HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED _Pragma("GCC diagnostic ignored \"-Wdeprecated-declarations\"")
+#elif HEDLEY_MSVC_VERSION_CHECK(15,0,0)
+#  define HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED __pragma(warning(disable:4996))
+#elif HEDLEY_TI_VERSION_CHECK(8,0,0)
+#  define HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED _Pragma("diag_suppress 1291")
+#elif HEDLEY_SUNPRO_VERSION_CHECK(5,13,0) && !defined(__cplusplus)
+#  define HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED _Pragma("error_messages(off,E_DEPRECATED_ATT,E_DEPRECATED_ATT_MESS)")
+#elif HEDLEY_SUNPRO_VERSION_CHECK(5,13,0) && defined(__cplusplus)
+#  define HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED _Pragma("error_messages(off,symdeprecated,symdeprecated2)")
+#else
+#  define HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED
+#endif
+
+#if defined(HEDLEY_DIAGNOSTIC_DISABLE_UNKNOWN_PRAGMAS)
+#  undef HEDLEY_DIAGNOSTIC_DISABLE_UNKNOWN_PRAGMAS
+#endif
+#if HEDLEY_HAS_WARNING("-Wunknown-pragmas")
+#  define HEDLEY_DIAGNOSTIC_DISABLE_UNKNOWN_PRAGMAS _Pragma("clang diagnostic ignored \"-Wunknown-pragmas\"")
+#elif HEDLEY_INTEL_VERSION_CHECK(16,0,0)
+#  define HEDLEY_DIAGNOSTIC_DISABLE_UNKNOWN_PRAGMAS _Pragma("warning(disable:161)")
+#elif HEDLEY_PGI_VERSION_CHECK(17,10,0)
+#  define HEDLEY_DIAGNOSTIC_DISABLE_UNKNOWN_PRAGMAS _Pragma("diag_suppress 1675")
+#elif HEDLEY_GNUC_VERSION_CHECK(4,3,0)
+#  define HEDLEY_DIAGNOSTIC_DISABLE_UNKNOWN_PRAGMAS _Pragma("GCC diagnostic ignored \"-Wunknown-pragmas\"")
+#elif HEDLEY_MSVC_VERSION_CHECK(15,0,0)
+#  define HEDLEY_DIAGNOSTIC_DISABLE_UNKNOWN_PRAGMAS __pragma(warning(disable:4068))
+#elif HEDLEY_TI_VERSION_CHECK(8,0,0)
+#  define HEDLEY_DIAGNOSTIC_DISABLE_UNKNOWN_PRAGMAS _Pragma("diag_suppress 163")
+#else
+#  define HEDLEY_DIAGNOSTIC_DISABLE_UNKNOWN_PRAGMAS
+#endif
+
+#if defined(HEDLEY_DIAGNOSTIC_DISABLE_CAST_QUAL)
+#  undef HEDLEY_DIAGNOSTIC_DISABLE_CAST_QUAL
+#endif
+#if HEDLEY_HAS_WARNING("-Wcast-qual")
+#  define HEDLEY_DIAGNOSTIC_DISABLE_CAST_QUAL _Pragma("clang diagnostic ignored \"-Wcast-qual\"")
+#elif HEDLEY_INTEL_VERSION_CHECK(17,0,0)
+#  define HEDLEY_DIAGNOSTIC_DISABLE_CAST_QUAL _Pragma("warning(disable:2203)")
+#elif HEDLEY_GNUC_VERSION_CHECK(3,0,0)
+#  define HEDLEY_DIAGNOSTIC_DISABLE_CAST_QUAL _Pragma("GCC diagnostic ignored \"-Wcast-qual\"")
+#else
+#  define HEDLEY_DIAGNOSTIC_DISABLE_CAST_QUAL
+#endif
+
 #if defined(HEDLEY_DEPRECATED)
 #  undef HEDLEY_DEPRECATED
 #endif
@@ -923,13 +978,15 @@ HEDLEY_DIAGNOSTIC_POP
 #if defined(HEDLEY_STATIC_ASSERT)
 #  undef HEDLEY_STATIC_ASSERT
 #endif
-#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L
+#if \
+  (defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 201112L)) || \
+  defined(_Static_assert)
 #  define HEDLEY_STATIC_ASSERT(expr, message) _Static_assert(expr, message)
 #elif defined(__cplusplus) && __cplusplus >= 201103L
 #  define HEDLEY_STATIC_ASSERT(expr, message) static_assert(expr, message)
 #elif \
   HEDLEY_GNUC_HAS_FEATURE(c_static_assert,4,6,0) || \
-  HEDLEY_INTEL_VERSION_CHECK(16,0,0)
+  HEDLEY_INTEL_VERSION_CHECK(15,0,0)
 #  define HEDLEY_STATIC_ASSERT(expr, message) _Static_assert(expr, message)
 #elif HEDLEY_MSVC_VERSION_CHECK(16,0,0)
 #  define HEDLEY_STATIC_ASSERT(expr, message) static_assert(expr, message)
@@ -937,46 +994,38 @@ HEDLEY_DIAGNOSTIC_POP
 #  define HEDLEY_STATIC_ASSERT(expr, message)
 #endif
 
-#if defined(HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED)
-#  undef HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED
+#if defined(HEDLEY_CONST_CAST)
+#  undef HEDLEY_CONST_CAST
 #endif
-#if HEDLEY_HAS_WARNING("-Wdeprecated-declarations")
-#  define HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED _Pragma("clang diagnostic ignored \"-Wdeprecated-declarations\"")
-#elif HEDLEY_INTEL_VERSION_CHECK(16,0,0)
-#  define HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED _Pragma("warning(disable:1478 1786)")
-#elif HEDLEY_PGI_VERSION_CHECK(17,10,0)
-#  define HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED _Pragma("diag_suppress 1215,1444")
-#elif HEDLEY_GNUC_VERSION_CHECK(4,3,0)
-#  define HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED _Pragma("GCC diagnostic ignored \"-Wdeprecated-declarations\"")
-#elif HEDLEY_MSVC_VERSION_CHECK(15,0,0)
-#  define HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED __pragma(warning(disable:4996))
-#elif HEDLEY_TI_VERSION_CHECK(8,0,0)
-#  define HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED _Pragma("diag_suppress 1291")
-#elif HEDLEY_SUNPRO_VERSION_CHECK(5,13,0) && !defined(__cplusplus)
-#  define HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED _Pragma("error_messages(off,E_DEPRECATED_ATT,E_DEPRECATED_ATT_MESS)")
-#elif HEDLEY_SUNPRO_VERSION_CHECK(5,13,0) && defined(__cplusplus)
-#  define HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED _Pragma("error_messages(off,symdeprecated,symdeprecated2)")
+#if defined(__cplusplus)
+#  define HEDLEY_CONST_CAST(T, expr) (const_cast<T>(expr))
+#elif HEDLEY_GNUC_HAS_WARNING("-Wcast-qual",3,0,0)
+#  define HEDLEY_CONST_CAST(T, expr) (__extension__ ({ \
+      HEDLEY_DIAGNOSTIC_PUSH \
+      HEDLEY_DIAGNOSTIC_DISABLE_CAST_QUAL \
+      ((T) (expr)); \
+      HEDLEY_DIAGNOSTIC_POP \
+    }))
 #else
-#  define HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED
+#  define HEDLEY_CONST_CAST(T, expr) ((T) (expr))
 #endif
 
-#if defined(HEDLEY_DIAGNOSTIC_DISABLE_UNKNOWN_PRAGMAS)
-#  undef HEDLEY_DIAGNOSTIC_DISABLE_UNKNOWN_PRAGMAS
+#if defined(HEDLEY_REINTERPRET_CAST)
+#  undef HEDLEY_REINTERPRET_CAST
 #endif
-#if HEDLEY_HAS_WARNING("-Wunknown-pragmas")
-#  define HEDLEY_DIAGNOSTIC_DISABLE_UNKNOWN_PRAGMAS _Pragma("clang diagnostic ignored \"-Wunknown-pragmas\"")
-#elif HEDLEY_INTEL_VERSION_CHECK(16,0,0)
-#  define HEDLEY_DIAGNOSTIC_DISABLE_UNKNOWN_PRAGMAS _Pragma("warning(disable:161)")
-#elif HEDLEY_PGI_VERSION_CHECK(17,10,0)
-#  define HEDLEY_DIAGNOSTIC_DISABLE_UNKNOWN_PRAGMAS _Pragma("diag_suppress 1675")
-#elif HEDLEY_GNUC_VERSION_CHECK(4,3,0)
-#  define HEDLEY_DIAGNOSTIC_DISABLE_UNKNOWN_PRAGMAS _Pragma("GCC diagnostic ignored \"-Wunknown-pragmas\"")
-#elif HEDLEY_MSVC_VERSION_CHECK(15,0,0)
-#  define HEDLEY_DIAGNOSTIC_DISABLE_UNKNOWN_PRAGMAS __pragma(warning(disable:4068))
-#elif HEDLEY_TI_VERSION_CHECK(8,0,0)
-#  define HEDLEY_DIAGNOSTIC_DISABLE_UNKNOWN_PRAGMAS _Pragma("diag_suppress 163")
+#if defined(__cplusplus)
+#  define HEDLEY_REINTERPRET_CAST(T, expr) (reinterpret_cast<T>(expr))
 #else
-#  define HEDLEY_DIAGNOSTIC_DISABLE_UNKNOWN_PRAGMAS
+#  define HEDLEY_REINTERPRET_CAST(T, expr) (*((T*) &(expr)))
+#endif
+
+#if defined(HEDLEY_STATIC_CAST)
+#  undef HEDLEY_STATIC_CAST
+#endif
+#if defined(__cplusplus)
+#  define HEDLEY_STATIC_CAST(T, expr) (static_cast<T>(expr))
+#else
+#  define HEDLEY_STATIC_CAST(T, expr) ((T) (expr))
 #endif
 
 #if defined(HEDLEY_MESSAGE)
