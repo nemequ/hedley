@@ -11,7 +11,7 @@ HEDLEY_PRIVATE
 void
 test_private(void) { }
 
-int main() {
+int main(void) {
   test_public();
   test_private();
 

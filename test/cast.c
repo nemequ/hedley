@@ -1,6 +1,6 @@
 #include "../hedley.h"
 
-int main() {
+int main(void) {
   int foo = 0;
   long bar = HEDLEY_STATIC_CAST(long, foo);
   const char* baz = "Hello, world!";
