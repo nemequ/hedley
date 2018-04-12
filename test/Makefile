@@ -19,7 +19,7 @@ else ifeq ($(notdir $(CC)), xlc)
   CFLAGS ?= $(CLANG_C_FLAGS)
   C_OUTPUT_FILE := -o
 else ifeq ($(notdir $(CC)), icc)
-  CFLAGS ?= $(GCC_C_FLAGS)
+  CFLAGS ?= -w3 -Werror
   C_OUTPUT_FILE := -o
 else
   CFLAGS ?= $(filter-out -Werror,$(GCC_C_FLAGS))

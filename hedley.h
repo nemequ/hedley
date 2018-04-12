@@ -667,7 +667,7 @@
 #endif
 
 HEDLEY_DIAGNOSTIC_PUSH
-#if HEDLEY_GNUC_HAS_WARNING("-Wvariadic-macros",4,0,0)
+#if HEDLEY_GNUC_HAS_WARNING("-Wvariadic-macros",4,0,0) && !defined(HEDLEY_INTEL_VERSION)
 #  if defined(__clang__)
 #    pragma clang diagnostic ignored "-Wvariadic-macros"
 #  elif defined(__GNUC__)
@@ -1034,7 +1034,7 @@ HEDLEY_DIAGNOSTIC_POP
 #if HEDLEY_HAS_WARNING("-Wunknown-pragmas")
 #  define HEDLEY_MESSAGE(msg) \
   HEDLEY_DIAGNOSTIC_PUSH \
-  _Pragma("clang diagnostic ignored \"-Wunknown-pragmas\"") \
+  HEDLEY_DIAGNOSTIC_DISABLE_UNKNOWN_PRAGMAS \
   HEDLEY_PRAGMA(message msg) \
   HEDLEY_DIAGNOSTIC_POP
 #elif \
@@ -1053,7 +1053,7 @@ HEDLEY_DIAGNOSTIC_POP
 #if HEDLEY_HAS_WARNING("-Wunknown-pragmas")
 #  define HEDLEY_WARNING(msg) \
   HEDLEY_DIAGNOSTIC_PUSH \
-  _Pragma("clang diagnostic ignored \"-Wunknown-pragmas\"") \
+  HEDLEY_DIAGNOSTIC_DISABLE_UNKNOWN_PRAGMAS \
   HEDLEY_PRAGMA(clang warning msg) \
   HEDLEY_DIAGNOSTIC_POP
 #elif \
