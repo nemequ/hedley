@@ -1,5 +1,8 @@
 #include "../hedley.h"
 
+#include <stddef.h>
+#include <assert.h>
+
 static void
 clear_buffer (int* buffer_size, unsigned char buffer[HEDLEY_ARRAY_PARAM(*buffer_size)]) {
   int p;
@@ -8,11 +11,10 @@ clear_buffer (int* buffer_size, unsigned char buffer[HEDLEY_ARRAY_PARAM(*buffer_
 }
 
 int main(int argc, char* argv[HEDLEY_ARRAY_PARAM(argc)]) {
-  (void) argc;
-  (void) argv;
-
   unsigned char foo[8192];
   int foo_l = (int) sizeof(foo);
+
+  assert(argv[argc - 1] != NULL);
 
   clear_buffer(&foo_l, foo);
 
