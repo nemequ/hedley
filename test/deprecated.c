@@ -16,11 +16,11 @@ static int cube(int x) {
   return x * x * x;
 }
 
+HEDLEY_DIAGNOSTIC_PUSH
+HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED
 int main (void) {
-  HEDLEY_DIAGNOSTIC_PUSH
-  HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED
   struct Foo foo;
   foo.x = value;
   return cube(foo.x);
-  HEDLEY_DIAGNOSTIC_POP
 }
+HEDLEY_DIAGNOSTIC_POP

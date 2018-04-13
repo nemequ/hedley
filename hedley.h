@@ -999,7 +999,7 @@ HEDLEY_DIAGNOSTIC_POP
 #endif
 #if defined(__cplusplus)
 #  define HEDLEY_CONST_CAST(T, expr) (const_cast<T>(expr))
-#elif HEDLEY_GNUC_HAS_WARNING("-Wcast-qual",3,0,0)
+#elif HEDLEY_GNUC_HAS_WARNING("-Wcast-qual",4,6,0)
 #  define HEDLEY_CONST_CAST(T, expr) (__extension__ ({ \
       HEDLEY_DIAGNOSTIC_PUSH \
       HEDLEY_DIAGNOSTIC_DISABLE_CAST_QUAL \
