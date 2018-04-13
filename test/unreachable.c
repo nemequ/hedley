@@ -2,6 +2,8 @@
 
 #if HEDLEY_TI_VERSION_CHECK(8,0,0)
 #  pragma diag_suppress 994
+#elif HEDLEY_IAR_VERSION_CHECK(8,0,0)
+#  pragma diag_suppress=Pe940
 #endif
 
 enum Foo {

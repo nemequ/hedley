@@ -19,10 +19,7 @@ static int test_unused_result(void) {
   return 1729;
 }
 
-int main(int argc, char* argv[HEDLEY_ARRAY_PARAM(argc)]) {
-  (void) argc;
-  (void) argv;
-
+int main(void) {
   test_unused_result();
 
   if (test_unused_result() != 1729)

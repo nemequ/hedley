@@ -1,5 +1,9 @@
 #include "../hedley.h"
 
+#if defined(HEDLEY_IAR_VERSION)
+#  pragma diag_suppress=Pe082
+#endif
+
 #if !defined(HEDLEY_TI_VERSION)
 #  include <stdlib.h>
 #endif

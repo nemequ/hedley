@@ -4,10 +4,7 @@ HEDLEY_UNAVAILABLE(3.14)
 static void
 test_unavailable(void) { }
 
-int main(int argc, char* argv[HEDLEY_ARRAY_PARAM(argc)]) {
-  (void) argc;
-  (void) argv;
-
+int main(void) {
   test_unavailable();
 
   return 0;

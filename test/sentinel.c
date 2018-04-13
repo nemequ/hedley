@@ -10,21 +10,20 @@
 #  pragma GCC diagnostic warning "-Wformat"
 #endif
 
+#include <assert.h>
+
 #if !defined(NULL)
-#  define NULL ((void*)0)
+#  define NULL HEDLEY_STATIC_CAST(void*, 0)
 #endif
 
 HEDLEY_SENTINEL(0)
 static int test_sentinel(void* ptr, ...) {
-  (void) ptr;
+  assert(ptr == NULL);
 
   return 42;
 }
 
-int main(int argc, char* argv[HEDLEY_ARRAY_PARAM(argc)]) {
-  (void) argc;
-  (void) argv;
-
+int main(void) {
   test_sentinel(NULL, 1, NULL);
   test_sentinel(NULL, 1);
 
