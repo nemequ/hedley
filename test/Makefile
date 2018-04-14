@@ -21,6 +21,9 @@ else ifeq ($(notdir $(CC)), xlc)
 else ifeq ($(notdir $(CC)), icc)
   CFLAGS ?= -w3 -Werror
   C_OUTPUT_FILE := -o
+else ifeq ($(notdir $(CC)), tcc)
+  CFLAGS ?=
+  C_OUTPUT_FILE := -o
 else
   CFLAGS ?= $(filter-out -Werror,$(GCC_C_FLAGS))
 endif
@@ -76,12 +79,18 @@ TESTS = \
 	warn-unused-result \
 	$(NULL)
 
+ifneq ($(CXX), none)
+CXXTESTS = $(TESTS:=-cpp)
+else
+CXXTESTS =
+endif
+
 CLEANFILES = \
 	$(TESTS) \
 	$(TESTS:=-cpp) \
 	$(TESTS:=.cpp)
 
-all: $(TESTS) $(TESTS:=-cpp) .gitignore Makefile.msvc Makefile.iar
+all: $(TESTS) $(CXXTESTS) .gitignore Makefile.msvc Makefile.iar
 
 %.cpp: %.c
 	cp -a $^ $@

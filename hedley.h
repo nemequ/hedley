@@ -259,6 +259,22 @@
 #  define HEDLEY_IAR_VERSION_CHECK(major,minor,patch) (0)
 #endif
 
+#if defined(HEDLEY_TINYC_VERSION)
+#  undef HEDLEY_TINYC_VERSION
+#endif
+#if defined(__TINYC__)
+#  define HEDLEY_TINYC_VERSION HEDLEY_VERSION_ENCODE(__TINYC__ / 1000, (__TINYC__ / 100) % 10, __TINYC__ % 100)
+#endif
+
+#if defined(HEDLEY_TINYC_VERSION_CHECK)
+#  undef HEDLEY_TINYC_VERSION_CHECK
+#endif
+#if defined(HEDLEY_TINYC_VERSION)
+#  define HEDLEY_TINYC_VERSION_CHECK(major,minor,patch) (HEDLEY_TINYC_VERSION >= HEDLEY_VERSION_ENCODE(major, minor, patch))
+#else
+#  define HEDLEY_TINYC_VERSION_CHECK(major,minor,patch) (0)
+#endif
+
 #if defined(HEDLEY_GCC_VERSION)
 #  undef HEDLEY_GCC_VERSION
 #endif
@@ -744,7 +760,8 @@ HEDLEY_DIAGNOSTIC_POP
   HEDLEY_SUNPRO_VERSION_CHECK(5,12,0) || \
   HEDLEY_ARM_VERSION_CHECK(4,1,0) || \
   HEDLEY_IBM_VERSION_CHECK(10,1,0) || \
-  HEDLEY_TI_VERSION_CHECK(7,3,0)
+  HEDLEY_TI_VERSION_CHECK(7,3,0) || \
+  HEDLEY_TINYC_VERSION_CHECK(0,9,27)
 #  define HEDLEY_LIKELY(expr) __builtin_expect(!!(expr), 1)
 #  define HEDLEY_UNLIKELY(expr) __builtin_expect(!!(expr), 0)
 #else
@@ -823,6 +840,8 @@ HEDLEY_DIAGNOSTIC_POP
 #  define HEDLEY_RESTRICT __restrict
 #elif HEDLEY_SUNPRO_VERSION_CHECK(5,3,0) && !defined(__cplusplus)
 #  define HEDLEY_RESTRICT _Restrict
+#else
+#  define HEDLEY_RESTRICT
 #endif
 
 #if defined(HEDLEY_INLINE)
@@ -984,7 +1003,11 @@ HEDLEY_DIAGNOSTIC_POP
 #if defined(HEDLEY_ARRAY_PARAM)
 #  undef HEDLEY_ARRAY_PARAM
 #endif
-#if defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901L) && !defined(__STDC_NO_VLA__) && !defined(__cplusplus) && !defined(__PGI)
+#if defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901L) && \
+  !defined(__STDC_NO_VLA__) && \
+  !defined(__cplusplus) && \
+  !defined(HEDLEY_PGI_VERSION) && \
+  !defined(HEDLEY_TINYC_VERSION)
 #  define HEDLEY_ARRAY_PARAM(name) (name)
 #else
 #  define HEDLEY_ARRAY_PARAM(name)
