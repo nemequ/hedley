@@ -275,6 +275,22 @@
 #  define HEDLEY_TINYC_VERSION_CHECK(major,minor,patch) (0)
 #endif
 
+#if defined(HEDLEY_DMC_VERSION)
+#  undef HEDLEY_DMC_VERSION
+#endif
+#if defined(__DMC__)
+#  define HEDLEY_DMC_VERSION HEDLEY_VERSION_ENCODE(__DMC__ >> 8, (__DMC__ >> 4) & 0xf, __DMC__ & 0xf)
+#endif
+
+#if defined(HEDLEY_DMC_VERSION_CHECK)
+#  undef HEDLEY_DMC_VERSION_CHECK
+#endif
+#if defined(HEDLEY_DMC_VERSION)
+#  define HEDLEY_DMC_VERSION_CHECK(major,minor,patch) (HEDLEY_DMC_VERSION >= HEDLEY_VERSION_ENCODE(major, minor, patch))
+#else
+#  define HEDLEY_DMC_VERSION_CHECK(major,minor,patch) (0)
+#endif
+
 #if defined(HEDLEY_GCC_VERSION)
 #  undef HEDLEY_GCC_VERSION
 #endif

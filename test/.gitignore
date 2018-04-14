@@ -10,6 +10,8 @@
 /array-param-cpp.obj
 /array-param-cpp.lib
 /array-param.o
+/array-param.map
+/array-param-cpp.map
 /cast
 /cast.exe
 /cast.cpp
@@ -21,6 +23,8 @@
 /cast-cpp.obj
 /cast-cpp.lib
 /cast.o
+/cast.map
+/cast-cpp.map
 /const
 /const.exe
 /const.cpp
@@ -32,6 +36,8 @@
 /const-cpp.obj
 /const-cpp.lib
 /const.o
+/const.map
+/const-cpp.map
 /deprecated
 /deprecated.exe
 /deprecated.cpp
@@ -43,6 +49,8 @@
 /deprecated-cpp.obj
 /deprecated-cpp.lib
 /deprecated.o
+/deprecated.map
+/deprecated-cpp.map
 /likely
 /likely.exe
 /likely.cpp
@@ -54,6 +62,8 @@
 /likely-cpp.obj
 /likely-cpp.lib
 /likely.o
+/likely.map
+/likely-cpp.map
 /message
 /message.exe
 /message.cpp
@@ -65,6 +75,8 @@
 /message-cpp.obj
 /message-cpp.lib
 /message.o
+/message.map
+/message-cpp.map
 /noinline
 /noinline.exe
 /noinline.cpp
@@ -76,6 +88,8 @@
 /noinline-cpp.obj
 /noinline-cpp.lib
 /noinline.o
+/noinline.map
+/noinline-cpp.map
 /no-return
 /no-return.exe
 /no-return.cpp
@@ -87,6 +101,8 @@
 /no-return-cpp.obj
 /no-return-cpp.lib
 /no-return.o
+/no-return.map
+/no-return-cpp.map
 /pure
 /pure.exe
 /pure.cpp
@@ -98,6 +114,8 @@
 /pure-cpp.obj
 /pure-cpp.lib
 /pure.o
+/pure.map
+/pure-cpp.map
 /restrict
 /restrict.exe
 /restrict.cpp
@@ -109,6 +127,8 @@
 /restrict-cpp.obj
 /restrict-cpp.lib
 /restrict.o
+/restrict.map
+/restrict-cpp.map
 /sentinel
 /sentinel.exe
 /sentinel.cpp
@@ -120,6 +140,8 @@
 /sentinel-cpp.obj
 /sentinel-cpp.lib
 /sentinel.o
+/sentinel.map
+/sentinel-cpp.map
 /static-assert
 /static-assert.exe
 /static-assert.cpp
@@ -131,6 +153,8 @@
 /static-assert-cpp.obj
 /static-assert-cpp.lib
 /static-assert.o
+/static-assert.map
+/static-assert-cpp.map
 /stringify
 /stringify.exe
 /stringify.cpp
@@ -142,6 +166,8 @@
 /stringify-cpp.obj
 /stringify-cpp.lib
 /stringify.o
+/stringify.map
+/stringify-cpp.map
 /unknown-pragmas
 /unknown-pragmas.exe
 /unknown-pragmas.cpp
@@ -153,6 +179,8 @@
 /unknown-pragmas-cpp.obj
 /unknown-pragmas-cpp.lib
 /unknown-pragmas.o
+/unknown-pragmas.map
+/unknown-pragmas-cpp.map
 /unavailable
 /unavailable.exe
 /unavailable.cpp
@@ -164,6 +192,8 @@
 /unavailable-cpp.obj
 /unavailable-cpp.lib
 /unavailable.o
+/unavailable.map
+/unavailable-cpp.map
 /unreachable
 /unreachable.exe
 /unreachable.cpp
@@ -175,6 +205,8 @@
 /unreachable-cpp.obj
 /unreachable-cpp.lib
 /unreachable.o
+/unreachable.map
+/unreachable-cpp.map
 /visibility
 /visibility.exe
 /visibility.cpp
@@ -186,6 +218,8 @@
 /visibility-cpp.obj
 /visibility-cpp.lib
 /visibility.o
+/visibility.map
+/visibility-cpp.map
 /warn
 /warn.exe
 /warn.cpp
@@ -197,6 +231,8 @@
 /warn-cpp.obj
 /warn-cpp.lib
 /warn.o
+/warn.map
+/warn-cpp.map
 /warn-unused-result
 /warn-unused-result.exe
 /warn-unused-result.cpp
@@ -208,4 +244,6 @@
 /warn-unused-result-cpp.obj
 /warn-unused-result-cpp.lib
 /warn-unused-result.o
+/warn-unused-result.map
+/warn-unused-result-cpp.map
 /.gitignore
