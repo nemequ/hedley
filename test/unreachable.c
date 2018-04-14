@@ -1,11 +1,5 @@
 #include "../hedley.h"
 
-#if HEDLEY_TI_VERSION_CHECK(8,0,0)
-#  pragma diag_suppress 994
-#elif HEDLEY_IAR_VERSION_CHECK(8,0,0)
-#  pragma diag_suppress=Pe940
-#endif
-
 enum Foo {
   FOO_BAR,
   FOO_BAZ,
@@ -23,6 +17,8 @@ static int test_unreachable(enum Foo code) {
   default:
     HEDLEY_UNREACHABLE();
   }
+
+  HEDLEY_UNREACHABLE_RETURN(0);
 }
 
 int main(void) {

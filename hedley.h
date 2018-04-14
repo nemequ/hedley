@@ -695,6 +695,9 @@
 #if defined(HEDLEY_UNREACHABLE)
 #  undef HEDLEY_UNREACHABLE
 #endif
+#if defined(HEDLEY_UNREACHABLE_RETURN)
+#  undef HEDLEY_UNREACHABLE_RETURN
+#endif
 #if (HEDLEY_GNUC_HAS_BUILTIN(__builtin_unreachable,4,5,0) && !defined(__CC_ARM)) || HEDLEY_INTEL_VERSION_CHECK(16,0,0)
 #  define HEDLEY_UNREACHABLE() __builtin_unreachable()
 #elif HEDLEY_MSVC_VERSION_CHECK(13,10,0)
@@ -705,10 +708,15 @@
 #  else
 #    define HEDLEY_UNREACHABLE() _nassert(0)
 #  endif
+#  define HEDLEY_UNREACHABLE_RETURN(value) return value
 #elif defined(EXIT_FAILURE)
 #  define HEDLEY_UNREACHABLE() abort()
 #else
 #  define HEDLEY_UNREACHABLE()
+#  define HEDLEY_UNREACHABLE_RETURN(value) return value
+#endif
+#if !defined(HEDLEY_UNREACHABLE_RETURN)
+#  define HEDLEY_UNREACHABLE_RETURN(value) HEDLEY_UNREACHABLE()
 #endif
 
 HEDLEY_DIAGNOSTIC_PUSH
