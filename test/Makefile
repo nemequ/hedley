@@ -61,6 +61,7 @@ TESTS = \
 	array-param \
 	cast \
 	const \
+	constant \
 	deprecated \
 	likely \
 	message \

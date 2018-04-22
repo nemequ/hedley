@@ -9,6 +9,7 @@ TESTS = \
 	array-param.o array-param-cpp.o \
 	cast.o cast-cpp.o \
 	const.o const-cpp.o \
+	constant.o constant-cpp.o \
 	deprecated.o deprecated-cpp.o \
 	likely.o likely-cpp.o \
 	message.o message-cpp.o \
@@ -31,6 +32,7 @@ CLEANFILES = $(TESTS) \
 	array-param.cpp array-param.o array-param-cpp.o \
 	cast.cpp cast.o cast-cpp.o \
 	const.cpp const.o const-cpp.o \
+	constant.cpp constant.o constant-cpp.o \
 	deprecated.cpp deprecated.o deprecated-cpp.o \
 	likely.cpp likely.o likely-cpp.o \
 	message.cpp message.o message-cpp.o \
@@ -73,6 +75,13 @@ const.o: const.c
 const.cpp: const.c
 	copy /Y $(?) $(@) >NUL
 const-cpp.o: const.cpp
+	$(CXX) $(CXXFLAGS) --output $(@) $(?)
+
+constant.o: constant.c
+	$(CC) $(CFLAGS) --output $(@) $(?)
+constant.cpp: constant.c
+	copy /Y $(?) $(@) >NUL
+constant-cpp.o: constant.cpp
 	$(CXX) $(CXXFLAGS) --output $(@) $(?)
 
 deprecated.o: deprecated.c

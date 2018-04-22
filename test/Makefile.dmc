@@ -9,6 +9,7 @@ TESTS = \
 	array-param.exe array-param-cpp.exe \
 	cast.exe cast-cpp.exe \
 	const.exe const-cpp.exe \
+	constant.exe constant-cpp.exe \
 	deprecated.exe deprecated-cpp.exe \
 	likely.exe likely-cpp.exe \
 	message.exe message-cpp.exe \
@@ -31,6 +32,7 @@ CLEANFILES = $(TESTS) \
 	array-param.cpp array-param.exe array-param-cpp.exe array-param.map array-param-cpp.map \
 	cast.cpp cast.exe cast-cpp.exe cast.map cast-cpp.map \
 	const.cpp const.exe const-cpp.exe const.map const-cpp.map \
+	constant.cpp constant.exe constant-cpp.exe constant.map constant-cpp.map \
 	deprecated.cpp deprecated.exe deprecated-cpp.exe deprecated.map deprecated-cpp.map \
 	likely.cpp likely.exe likely-cpp.exe likely.map likely-cpp.map \
 	message.cpp message.exe message-cpp.exe message.map message-cpp.map \
@@ -73,6 +75,13 @@ const.exe: const.c
 const.cpp: const.c
 	copy /Y $(?) $(@) >NUL
 const-cpp.exe: const.cpp
+	$(CXX) $(CXXFLAGS) -o $(@) $(?)
+
+constant.exe: constant.c
+	$(CC) $(CFLAGS) -o $(@) $(?)
+constant.cpp: constant.c
+	copy /Y $(?) $(@) >NUL
+constant-cpp.exe: constant.cpp
 	$(CXX) $(CXXFLAGS) -o $(@) $(?)
 
 deprecated.exe: deprecated.c
