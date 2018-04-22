@@ -1060,10 +1060,12 @@ HEDLEY_DIAGNOSTIC_POP
 #  undef HEDLEY_STATIC_ASSERT
 #endif
 #if \
-  (defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 201112L) && !defined(__cplusplus)) || \
-  (HEDLEY_GNUC_HAS_FEATURE(c_static_assert,6,0,0) && !defined(__cplusplus)) || \
-  HEDLEY_INTEL_VERSION_CHECK(15,0,0) || \
-  defined(_Static_assert)
+  !defined(__cplusplus) && ( \
+      (defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 201112L)) || \
+      HEDLEY_GNUC_HAS_FEATURE(c_static_assert,6,0,0) || \
+      HEDLEY_INTEL_VERSION_CHECK(15,0,0) || \
+      defined(_Static_assert) \
+    )
 #  define HEDLEY_STATIC_ASSERT(expr, message) _Static_assert(expr, message)
 #elif \
   (defined(__cplusplus) && (__cplusplus >= 201703L)) || \
