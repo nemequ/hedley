@@ -295,7 +295,7 @@
 #  undef HEDLEY_GCC_VERSION
 #endif
 #if \
-  defined(HEDELY_GNUC_VERSION) && \
+  defined(HEDLEY_GNUC_VERSION) && \
   !defined(__clang) && \
   !defined(HEDLEY_INTEL_VERSION) && \
   !defined(HEDLEY_PGI_VERSION) && \
@@ -825,7 +825,7 @@ HEDLEY_DIAGNOSTIC_POP
   HEDLEY_PGI_VERSION_CHECK(17,10,0)
 #  define HEDLEY_PURE __attribute__((__pure__))
 #elif HEDLEY_TI_VERSION_CHECK(6,0,0) && defined(__cplusplus)
-#  define HEDLEY_NO_RETURN _Pragma("FUNC_IS_PURE;")
+#  define HEDLEY_PURE _Pragma("FUNC_IS_PURE;")
 #else
 #  define HEDLEY_PURE
 #endif
@@ -929,7 +929,7 @@ HEDLEY_DIAGNOSTIC_POP
 #elif HEDLEY_IAR_VERSION_CHECK(8,0,0)
 #  define HEDLEY_NEVER_INLINE _Pragma("inline=never")
 #else
-#  define HEDLEY_NEVER_INLINE HEDLEY_INLINE
+#  define HEDLEY_NEVER_INLINE
 #endif
 
 #if defined(HEDLEY_PRIVATE)
@@ -949,7 +949,7 @@ HEDLEY_DIAGNOSTIC_POP
     HEDLEY_ARM_VERSION_CHECK(4,1,0) || \
     HEDLEY_IBM_VERSION_CHECK(13,1,0) || \
     HEDLEY_TI_VERSION_CHECK(8,0,0) || \
-    (HEDLEY_TI_VERSION_CHECK(7,3,0) && defined(__TI_EABI__))
+    (HEDLEY_TI_VERSION_CHECK(7,3,0) && defined(__TI_EABI__) && defined(__TI_GNU_ATTRIBUTE_SUPPORT__))
 #    define HEDLEY_PRIVATE __attribute__((__visibility__("hidden")))
 #  else
 #    define HEDLEY_PRIVATE
