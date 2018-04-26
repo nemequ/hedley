@@ -135,6 +135,17 @@ matrix:
     ###
     - os: osx
 
+    ###
+    ## mingw
+    ###
+    - env: C_COMPILER=x86_64-w64-mingw32-gcc CXX_COMPILER=x86_64-w64-mingw32-g++
+      addons:
+        apt:
+          packages:
+          - gcc-mingw-w64-x86-64
+          - g++-mingw-w64-x86-64
+          - binutils-mingw-w64-x86-64
+
 before_install:
 - if [ "${C_COMPILER}" = "pgcc" ]; then wget -q -O /dev/stdout 'https://raw.githubusercontent.com/nemequ/pgi-travis/master/install-pgi.sh' | /bin/sh; fi
 - if [ -n "${C_COMPILER}" ]; then export CC="${C_COMPILER}"; fi

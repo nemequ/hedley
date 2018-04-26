@@ -942,18 +942,7 @@ HEDLEY_DIAGNOSTIC_POP
 #  undef HEDLEY_IMPORT
 #endif
 #if defined(_WIN32) || defined(__CYGWIN__)
-#  if \
-    HEDLEY_GNUC_VERSION_CHECK(3,3,0) || \
-    HEDLEY_SUNPRO_VERSION_CHECK(5,11,0) || \
-    HEDLEY_INTEL_VERSION_CHECK(16,0,0) || \
-    HEDLEY_ARM_VERSION_CHECK(4,1,0) || \
-    HEDLEY_IBM_VERSION_CHECK(13,1,0) || \
-    HEDLEY_TI_VERSION_CHECK(8,0,0) || \
-    (HEDLEY_TI_VERSION_CHECK(7,3,0) && defined(__TI_EABI__) && defined(__TI_GNU_ATTRIBUTE_SUPPORT__))
-#    define HEDLEY_PRIVATE __attribute__((__visibility__("hidden")))
-#  else
-#    define HEDLEY_PRIVATE
-#  endif
+#  define HEDLEY_PRIVATE
 #  define HEDLEY_PUBLIC   __declspec(dllexport)
 #  define HEDLEY_IMPORT   __declspec(dllimport)
 #else

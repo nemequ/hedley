@@ -24,6 +24,12 @@ else ifeq ($(notdir $(CC)), icc)
 else ifeq ($(notdir $(CC)), tcc)
   CFLAGS ?=
   C_OUTPUT_FILE := -o
+else ifeq ($(notdir $(CC)), gcc)
+  CFLAGS ?= $(GCC_C_FLAGS)
+  C_OUTPUT_FILE := -o
+else ifeq ($(notdir $(CC)), x86_64-w64-mingw32-gcc)
+  CFLAGS ?= $(GCC_C_FLAGS)
+  C_OUTPUT_FILE := -o
 else
   CFLAGS ?= $(filter-out -Werror,$(GCC_C_FLAGS))
 endif
@@ -48,6 +54,12 @@ else ifeq ($(notdir $(CXX)), xlc++)
 else ifeq ($(notdir $(CXX)), icpc)
   CXXFLAGS ?= $(GCC_CXX_FLAGS)
   CXX_OUTPUT_FILE := -o
+else ifeq ($(notdir $(CC)), g++)
+  CFLAGS ?= $(GCC_CXX_FLAGS)
+  C_OUTPUT_FILE := -o
+else ifeq ($(notdir $(CC)), x86_64-w64-mingw32-g++)
+  CFLAGS ?= $(GCC_CXX_FLAGS)
+  C_OUTPUT_FILE := -o
 else
   CXXFLAGS ?= $(filter-out -Werror,$(GCC_CXX_FLAGS))
 endif
@@ -193,8 +205,12 @@ clean:
 
 ifeq ($(notdir $(CC)), gcc)
 $(foreach tgt,unavailable warn unknown-pragmas,$(eval $(call GEN_GCC_C_WARNINGS,$(tgt))))
+else ifeq ($(notdir $(CC)), x86_64-w64-mingw32-gcc)
+$(foreach tgt,unavailable warn unknown-pragmas,$(eval $(call GEN_GCC_C_WARNINGS,$(tgt))))
 endif
 
 ifeq ($(notdir $(CXX)), g++)
+$(foreach tgt,unavailable warn unknown-pragmas,$(eval $(call GEN_GCC_CXX_WARNINGS,$(tgt))))
+else ifeq ($(notdir $(CXX)), x86_64-w64-mingw32-g++)
 $(foreach tgt,unavailable warn unknown-pragmas,$(eval $(call GEN_GCC_CXX_WARNINGS,$(tgt))))
 endif
