@@ -875,7 +875,7 @@ HEDLEY_DIAGNOSTIC_POP
   (defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901L)) || \
   (defined(__cplusplus) && (__cplusplus >= 199711L))
 #  define HEDLEY_INLINE inline
-#elif defined(__GNUC_STDC_INLINE__) || HEDLEY_ARM_VERSION_CHECK(6,2,0)
+#elif defined(HEDLEY_GNUC_VERSION) || HEDLEY_ARM_VERSION_CHECK(6,2,0)
 #  define HEDLEY_INLINE __inline__
 #elif \
   HEDLEY_MSVC_VERSION_CHECK(12,0,0) || \
@@ -897,7 +897,7 @@ HEDLEY_DIAGNOSTIC_POP
   HEDLEY_IBM_VERSION_CHECK(10,1,0) || \
   HEDLEY_TI_VERSION_CHECK(8,0,0) || \
   (HEDLEY_TI_VERSION_CHECK(7,3,0) && defined(__TI_GNU_ATTRIBUTE_SUPPORT__))
-#  define HEDLEY_ALWAYS_INLINE __attribute__((__always_inline__))
+#  define HEDLEY_ALWAYS_INLINE __attribute__((__always_inline__)) HEDLEY_INLINE
 #elif HEDLEY_MSVC_VERSION_CHECK(12,0,0)
 #  define HEDLEY_ALWAYS_INLINE __forceinline
 #elif HEDLEY_TI_VERSION_CHECK(7,0,0) && defined(__cplusplus)
@@ -1038,50 +1038,63 @@ HEDLEY_DIAGNOSTIC_POP
 #if defined(HEDLEY__IS_CONSTEXPR)
 #  undef HEDLEY__IS_CONSTEXPR
 #endif
+
 #if \
   HEDLEY_GNUC_VERSION_CHECK(3,1,0) || \
   HEDLEY_INTEL_VERSION_CHECK(16,0,0) || \
   HEDLEY_TINYC_VERSION_CHECK(0,9,19) || \
-  HEDLEY_ARM_VERSION_CHECK(5,4,0)
+  HEDLEY_ARM_VERSION_CHECK(5,4,0) || \
+  HEDLEY_IBM_VERSION_CHECK(13,1,0)
 #  define HEDLEY_IS_CONSTANT(expr) __builtin_constant_p(expr)
 #endif
-#if \
-  !defined(__cplusplus) && \
-  (defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 201112L)) && \
-  !defined(HEDLEY_SUNPRO_VERSION)
-#  if defined(__INTPTR_TYPE__)
-#    define HEDLEY__IS_CONSTEXPR(expr) _Generic((1 ? (void*) ((__INTPTR_TYPE__) ((expr) * 0)) : (int*) 0), int*: 1, void*: 0)
-#  else
-#    include <stdint.h>
-#    define HEDLEY__IS_CONSTEXPR(expr) _Generic((1 ? (void*) ((intptr_t) * 0) : (int*) 0), int*: 1, void*: 0)
-#  endif
-#elif \
-  !defined(__cplusplus) && ( \
-      defined(HEDLEY_GNUC_VERSION) || \
-      defined(HEDLEY_INTEL_VERSION) || \
-      defined(HEDLEY_TINYC_VERSION) || \
-      defined(HEDLEY_TI_VERSION) \
-    )
-#  define HEDLEY__IS_CONSTEXPR(expr) ( \
-       sizeof(void) !=	\
-       sizeof(*( \
-         1 ? \
-           ((void*) ((expr) * 0L) ) : \
-           ((struct { char v[sizeof(void) * 2]; } *) 1) \
+#if !defined(__cplusplus)
+#  if \
+       HEDLEY_GNUC_VERSION_CHECK(3,1,0) || \
+       HEDLEY_INTEL_VERSION_CHECK(16,0,0) || \
+       HEDLEY_IBM_VERSION_CHECK(13,1,0)
+#    if defined(__INTPTR_TYPE__)
+#      define HEDLEY__IS_CONSTEXPR(expr) __builtin_types_compatible_p(__typeof__((1 ? (void*) ((__INTPTR_TYPE__) ((expr) * 0)) : (int*) 0)), int*)
+#    else
+#      include <stdint.h>
+#      define HEDLEY__IS_CONSTEXPR(expr) __builtin_types_compatible_p(__typeof__((1 ? (void*) ((intptr_t) ((expr) * 0)) : (int*) 0)), int*)
+#    endif
+#  elif \
+       (defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 201112L) && !defined(HEDLEY_SUNPRO_VERSION) && !defined(HEDLEY_PGI_VERSION)) || \
+       HEDLEY_GNUC_HAS_EXTENSION(c_generic_selections,4,9,0) || \
+       HEDLEY_INTEL_VERSION_CHECK(16,0,0) || \
+       HEDLEY_IBM_VERSION_CHECK(12,1,0)
+#    if defined(__INTPTR_TYPE__)
+#      define HEDLEY__IS_CONSTEXPR(expr) _Generic((1 ? (void*) ((__INTPTR_TYPE__) ((expr) * 0)) : (int*) 0), int*: 1, void*: 0)
+#    else
+#      include <stdint.h>
+#      define HEDLEY__IS_CONSTEXPR(expr) _Generic((1 ? (void*) ((intptr_t) * 0) : (int*) 0), int*: 1, void*: 0)
+#    endif
+#  elif \
+       defined(HEDLEY_GNUC_VERSION) || \
+       defined(HEDLEY_INTEL_VERSION) || \
+       defined(HEDLEY_TINYC_VERSION) || \
+       defined(HEDLEY_TI_VERSION)
+#    define HEDLEY__IS_CONSTEXPR(expr) ( \
+         sizeof(void) != \
+         sizeof(*( \
+           1 ? \
+             ((void*) ((expr) * 0L) ) : \
+             ((struct { char v[sizeof(void) * 2]; } *) 1) \
+           ) \
          ) \
-       ) \
-     )
+       )
+#  endif
+#endif
+#if defined(HEDLEY__IS_CONSTEXPR)
+#  if !defined(HEDLEY_IS_CONSTANT)
+#    define HEDLEY_IS_CONSTANT(expr) HEDLEY__IS_CONSTEXPR(expr)
+#  endif
+#  define HEDLEY_REQUIRE_CONSTEXPR(expr) (HEDLEY__IS_CONSTEXPR(expr) ? (expr) : (-1))
 #else
 #  if !defined(HEDLEY_IS_CONSTANT)
 #    define HEDLEY_IS_CONSTANT(expr) (0)
 #  endif
 #  define HEDLEY_REQUIRE_CONSTEXPR(expr) (expr)
-#endif
-#if !defined(HEDLEY_IS_CONSTANT)
-#  define HEDLEY_IS_CONSTANT(expr) HEDLEY__IS_CONSTEXPR(expr)
-#endif
-#if !defined(HEDLEY_REQUIRE_CONSTEXPR)
-#  define HEDLEY_REQUIRE_CONSTEXPR(expr) (HEDLEY__IS_CONSTEXPR(expr) ? (expr) : (-1))
 #endif
 
 #if defined(HEDLEY_BEGIN_C_DECLS)

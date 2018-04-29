@@ -10,9 +10,8 @@ int main(int argc, char* argv[HEDLEY_ARRAY_PARAM(argc)]) {
   assert(foo[0] == 0);
 
 #if defined(HEDLEY__IS_CONSTEXPR)
-  assert(HEDLEY_IS_CONSTANT(1729) == 1);
-#else
-  assert(HEDLEY_IS_CONSTANT(1729) == 0);
+  assert(HEDLEY__IS_CONSTEXPR(1729) == 1);
+  assert(HEDLEY__IS_CONSTEXPR(argc) == 0);
 #endif
 
   assert(HEDLEY_IS_CONSTANT(argc) == 0);
