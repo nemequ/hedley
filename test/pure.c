@@ -1,10 +1,16 @@
 #include "../hedley.h"
 
+static int* b;
+
 HEDLEY_PURE
-static int test_pure(int a, int b) {
-  return a * b;
+static int taxi(int a) {
+  return
+    (a * a * a) +
+    (*b * *b * *b);
 }
 
 int main(void) {
-  return test_pure(9, 9);
+  *b = 10;
+
+  return taxi(9);
 }

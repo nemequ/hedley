@@ -17,11 +17,13 @@ make it easier to do so.  This code can be used to improve:
    before they become a real issue.
  * Optimizations — compiler hints help speed up your code.
  * Manage public APIs
-  * Visibility — keeping internal symbols private can make your code
-    faster and smaller.
-  * Versioning — help consumers avoid functions which are deprecated
-    or too new for all the platforms they want to support.
- * *… and more!*
+   * Visibility — keeping internal symbols private can make your code
+     faster and smaller.
+   * Versioning — help consumers avoid functions which are deprecated
+     or too new for all the platforms they want to support.
+ * C/C++ interoperability — make it easier to use code in both C and
+   C++ compilers.
+* *… and more!*
 
 You can safely use Hedley in your *public* API.  If someone else
 includes a newer version of Hedley later on, the newer Hedley will

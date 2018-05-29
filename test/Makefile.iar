@@ -11,12 +11,18 @@ TESTS = \
 	const.o const-cpp.o \
 	constant.o constant-cpp.o \
 	deprecated.o deprecated-cpp.o \
+	fallthrough.o fallthrough-cpp.o \
+	inline.o inline-cpp.o \
 	likely.o likely-cpp.o \
+	malloc.o malloc-cpp.o \
 	message.o message-cpp.o \
 	noinline.o noinline-cpp.o \
 	no-return.o no-return-cpp.o \
+	non-null.o non-null-cpp.o \
+	printf-format.o printf-format-cpp.o \
 	pure.o pure-cpp.o \
 	restrict.o restrict-cpp.o \
+	returns-non-null.o returns-non-null-cpp.o \
 	sentinel.o sentinel-cpp.o \
 	static-assert.o static-assert-cpp.o \
 	stringify.o stringify-cpp.o \
@@ -34,12 +40,18 @@ CLEANFILES = $(TESTS) \
 	const.cpp const.o const-cpp.o \
 	constant.cpp constant.o constant-cpp.o \
 	deprecated.cpp deprecated.o deprecated-cpp.o \
+	fallthrough.cpp fallthrough.o fallthrough-cpp.o \
+	inline.cpp inline.o inline-cpp.o \
 	likely.cpp likely.o likely-cpp.o \
+	malloc.cpp malloc.o malloc-cpp.o \
 	message.cpp message.o message-cpp.o \
 	noinline.cpp noinline.o noinline-cpp.o \
 	no-return.cpp no-return.o no-return-cpp.o \
+	non-null.cpp non-null.o non-null-cpp.o \
+	printf-format.cpp printf-format.o printf-format-cpp.o \
 	pure.cpp pure.o pure-cpp.o \
 	restrict.cpp restrict.o restrict-cpp.o \
+	returns-non-null.cpp returns-non-null.o returns-non-null-cpp.o \
 	sentinel.cpp sentinel.o sentinel-cpp.o \
 	static-assert.cpp static-assert.o static-assert-cpp.o \
 	stringify.cpp stringify.o stringify-cpp.o \
@@ -91,11 +103,32 @@ deprecated.cpp: deprecated.c
 deprecated-cpp.o: deprecated.cpp
 	$(CXX) $(CXXFLAGS) --output $(@) $(?)
 
+fallthrough.o: fallthrough.c
+	$(CC) $(CFLAGS) --output $(@) $(?)
+fallthrough.cpp: fallthrough.c
+	copy /Y $(?) $(@) >NUL
+fallthrough-cpp.o: fallthrough.cpp
+	$(CXX) $(CXXFLAGS) --output $(@) $(?)
+
+inline.o: inline.c
+	$(CC) $(CFLAGS) --output $(@) $(?)
+inline.cpp: inline.c
+	copy /Y $(?) $(@) >NUL
+inline-cpp.o: inline.cpp
+	$(CXX) $(CXXFLAGS) --output $(@) $(?)
+
 likely.o: likely.c
 	$(CC) $(CFLAGS) --output $(@) $(?)
 likely.cpp: likely.c
 	copy /Y $(?) $(@) >NUL
 likely-cpp.o: likely.cpp
+	$(CXX) $(CXXFLAGS) --output $(@) $(?)
+
+malloc.o: malloc.c
+	$(CC) $(CFLAGS) --output $(@) $(?)
+malloc.cpp: malloc.c
+	copy /Y $(?) $(@) >NUL
+malloc-cpp.o: malloc.cpp
 	$(CXX) $(CXXFLAGS) --output $(@) $(?)
 
 message.o: message.c
@@ -119,6 +152,20 @@ no-return.cpp: no-return.c
 no-return-cpp.o: no-return.cpp
 	$(CXX) $(CXXFLAGS) --output $(@) $(?)
 
+non-null.o: non-null.c
+	$(CC) $(CFLAGS) --output $(@) $(?)
+non-null.cpp: non-null.c
+	copy /Y $(?) $(@) >NUL
+non-null-cpp.o: non-null.cpp
+	$(CXX) $(CXXFLAGS) --output $(@) $(?)
+
+printf-format.o: printf-format.c
+	$(CC) $(CFLAGS) --output $(@) $(?)
+printf-format.cpp: printf-format.c
+	copy /Y $(?) $(@) >NUL
+printf-format-cpp.o: printf-format.cpp
+	$(CXX) $(CXXFLAGS) --output $(@) $(?)
+
 pure.o: pure.c
 	$(CC) $(CFLAGS) --output $(@) $(?)
 pure.cpp: pure.c
@@ -131,6 +178,13 @@ restrict.o: restrict.c
 restrict.cpp: restrict.c
 	copy /Y $(?) $(@) >NUL
 restrict-cpp.o: restrict.cpp
+	$(CXX) $(CXXFLAGS) --output $(@) $(?)
+
+returns-non-null.o: returns-non-null.c
+	$(CC) $(CFLAGS) --output $(@) $(?)
+returns-non-null.cpp: returns-non-null.c
+	copy /Y $(?) $(@) >NUL
+returns-non-null-cpp.o: returns-non-null.cpp
 	$(CXX) $(CXXFLAGS) --output $(@) $(?)
 
 sentinel.o: sentinel.c

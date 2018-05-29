@@ -75,12 +75,18 @@ TESTS = \
 	const \
 	constant \
 	deprecated \
+	fallthrough \
+	inline \
 	likely \
+	malloc \
 	message \
 	noinline \
 	no-return \
+	non-null \
+	printf-format \
 	pure \
 	restrict \
+	returns-non-null \
 	sentinel \
 	static-assert \
 	stringify \

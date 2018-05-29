@@ -11,12 +11,18 @@ TESTS = \
 	const.exe const-cpp.exe \
 	constant.exe constant-cpp.exe \
 	deprecated.exe deprecated-cpp.exe \
+	fallthrough.exe fallthrough-cpp.exe \
+	inline.exe inline-cpp.exe \
 	likely.exe likely-cpp.exe \
+	malloc.exe malloc-cpp.exe \
 	message.exe message-cpp.exe \
 	noinline.exe noinline-cpp.exe \
 	no-return.exe no-return-cpp.exe \
+	non-null.exe non-null-cpp.exe \
+	printf-format.exe printf-format-cpp.exe \
 	pure.exe pure-cpp.exe \
 	restrict.exe restrict-cpp.exe \
+	returns-non-null.exe returns-non-null-cpp.exe \
 	sentinel.exe sentinel-cpp.exe \
 	static-assert.exe static-assert-cpp.exe \
 	stringify.exe stringify-cpp.exe \
@@ -34,12 +40,18 @@ CLEANFILES = $(TESTS) \
 	const.cpp const.exe const-cpp.exe const.map const-cpp.map \
 	constant.cpp constant.exe constant-cpp.exe constant.map constant-cpp.map \
 	deprecated.cpp deprecated.exe deprecated-cpp.exe deprecated.map deprecated-cpp.map \
+	fallthrough.cpp fallthrough.exe fallthrough-cpp.exe fallthrough.map fallthrough-cpp.map \
+	inline.cpp inline.exe inline-cpp.exe inline.map inline-cpp.map \
 	likely.cpp likely.exe likely-cpp.exe likely.map likely-cpp.map \
+	malloc.cpp malloc.exe malloc-cpp.exe malloc.map malloc-cpp.map \
 	message.cpp message.exe message-cpp.exe message.map message-cpp.map \
 	noinline.cpp noinline.exe noinline-cpp.exe noinline.map noinline-cpp.map \
 	no-return.cpp no-return.exe no-return-cpp.exe no-return.map no-return-cpp.map \
+	non-null.cpp non-null.exe non-null-cpp.exe non-null.map non-null-cpp.map \
+	printf-format.cpp printf-format.exe printf-format-cpp.exe printf-format.map printf-format-cpp.map \
 	pure.cpp pure.exe pure-cpp.exe pure.map pure-cpp.map \
 	restrict.cpp restrict.exe restrict-cpp.exe restrict.map restrict-cpp.map \
+	returns-non-null.cpp returns-non-null.exe returns-non-null-cpp.exe returns-non-null.map returns-non-null-cpp.map \
 	sentinel.cpp sentinel.exe sentinel-cpp.exe sentinel.map sentinel-cpp.map \
 	static-assert.cpp static-assert.exe static-assert-cpp.exe static-assert.map static-assert-cpp.map \
 	stringify.cpp stringify.exe stringify-cpp.exe stringify.map stringify-cpp.map \
@@ -91,11 +103,32 @@ deprecated.cpp: deprecated.c
 deprecated-cpp.exe: deprecated.cpp
 	$(CXX) $(CXXFLAGS) -o $(@) $(?)
 
+fallthrough.exe: fallthrough.c
+	$(CC) $(CFLAGS) -o $(@) $(?)
+fallthrough.cpp: fallthrough.c
+	copy /Y $(?) $(@) >NUL
+fallthrough-cpp.exe: fallthrough.cpp
+	$(CXX) $(CXXFLAGS) -o $(@) $(?)
+
+inline.exe: inline.c
+	$(CC) $(CFLAGS) -o $(@) $(?)
+inline.cpp: inline.c
+	copy /Y $(?) $(@) >NUL
+inline-cpp.exe: inline.cpp
+	$(CXX) $(CXXFLAGS) -o $(@) $(?)
+
 likely.exe: likely.c
 	$(CC) $(CFLAGS) -o $(@) $(?)
 likely.cpp: likely.c
 	copy /Y $(?) $(@) >NUL
 likely-cpp.exe: likely.cpp
+	$(CXX) $(CXXFLAGS) -o $(@) $(?)
+
+malloc.exe: malloc.c
+	$(CC) $(CFLAGS) -o $(@) $(?)
+malloc.cpp: malloc.c
+	copy /Y $(?) $(@) >NUL
+malloc-cpp.exe: malloc.cpp
 	$(CXX) $(CXXFLAGS) -o $(@) $(?)
 
 message.exe: message.c
@@ -119,6 +152,20 @@ no-return.cpp: no-return.c
 no-return-cpp.exe: no-return.cpp
 	$(CXX) $(CXXFLAGS) -o $(@) $(?)
 
+non-null.exe: non-null.c
+	$(CC) $(CFLAGS) -o $(@) $(?)
+non-null.cpp: non-null.c
+	copy /Y $(?) $(@) >NUL
+non-null-cpp.exe: non-null.cpp
+	$(CXX) $(CXXFLAGS) -o $(@) $(?)
+
+printf-format.exe: printf-format.c
+	$(CC) $(CFLAGS) -o $(@) $(?)
+printf-format.cpp: printf-format.c
+	copy /Y $(?) $(@) >NUL
+printf-format-cpp.exe: printf-format.cpp
+	$(CXX) $(CXXFLAGS) -o $(@) $(?)
+
 pure.exe: pure.c
 	$(CC) $(CFLAGS) -o $(@) $(?)
 pure.cpp: pure.c
@@ -131,6 +178,13 @@ restrict.exe: restrict.c
 restrict.cpp: restrict.c
 	copy /Y $(?) $(@) >NUL
 restrict-cpp.exe: restrict.cpp
+	$(CXX) $(CXXFLAGS) -o $(@) $(?)
+
+returns-non-null.exe: returns-non-null.c
+	$(CC) $(CFLAGS) -o $(@) $(?)
+returns-non-null.cpp: returns-non-null.c
+	copy /Y $(?) $(@) >NUL
+returns-non-null-cpp.exe: returns-non-null.cpp
 	$(CXX) $(CXXFLAGS) -o $(@) $(?)
 
 sentinel.exe: sentinel.c
