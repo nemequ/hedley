@@ -3,11 +3,11 @@
 ## Documentation
 
 For documentation, see [https://nemequ.github.io/hedley/](https://nemequ.github.io/hedley/).
-There is an easy-to-read user guide, and full API documentation.
+There is an easy-to-read user guide and full API documentation.
 
 ## Brief Description
 
-Hedley is C a header file designed to smooth over some
+Hedley is C/C++ a header file designed to smooth over some
 platform-specific annoyances.  The idea is to get rid of a bunch of
 the #ifdefs in your code and put them in Hedley instead or, if you
 haven't bothered with platform-specific functionality in your code, to
@@ -17,8 +17,8 @@ make it easier to do so.  This code can be used to improve:
    before they become a real issue.
  * Optimizations — compiler hints help speed up your code.
  * Manage public APIs
-   * Visibility — keeping internal symbols private can make your code
-     faster and smaller.
+   * Visibility — keeping internal symbols private can make your
+     program faster and smaller.
    * Versioning — help consumers avoid functions which are deprecated
      or too new for all the platforms they want to support.
  * C/C++ interoperability — make it easier to use code in both C and
