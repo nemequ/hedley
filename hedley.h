@@ -1212,6 +1212,28 @@ HEDLEY_DIAGNOSTIC_POP
 #  define HEDLEY_WARNING(msg) HEDLEY_MESSAGE(msg)
 #endif
 
+#if defined(HEDLEY_REQUIRE_MSG)
+#  undef HEDLEY_REQUIRE_MSG
+#endif
+#if HEDLEY_HAS_ATTRIBUTE(diagnose_if)
+#  if HEDLEY_HAS_WARNING("-Wgcc-compat")
+#    define HEDLEY_REQUIRE_MSG(expr, msg) \
+  HEDLEY_DIAGNOSTIC_PUSH \
+  _Pragma("clang diagnostic ignored \"-Wgcc-compat\"") \
+  __attribute__((__diagnose_if__(!(expr), msg, "error"))) \
+  HEDLEY_DIAGNOSTIC_POP
+#  else
+#    define HEDLEY_REQUIRE_MSG(expr, msg) __attribute__((__diagnose_if__(!(expr), msg, "error")))
+#  endif
+#else
+#  define HEDLEY_REQUIRE_MSG(expr, msg)
+#endif
+
+#if defined(HEDLEY_REQUIRE)
+#  undef HEDLEY_REQUIRE
+#endif
+#define HEDLEY_REQUIRE(expr) HEDLEY_REQUIRE_MSG(expr, #expr)
+
 /* Remaining macros are deprecated. */
 
 #if defined(HEDLEY_GCC_NOT_CLANG_VERSION_CHECK)

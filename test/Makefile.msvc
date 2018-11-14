@@ -21,6 +21,7 @@ TESTS = \
 	non-null.exe non-null-cpp.exe \
 	printf-format.exe printf-format-cpp.exe \
 	pure.exe pure-cpp.exe \
+	require.exe require-cpp.exe \
 	restrict.exe restrict-cpp.exe \
 	returns-non-null.exe returns-non-null-cpp.exe \
 	sentinel.exe sentinel-cpp.exe \
@@ -50,6 +51,7 @@ CLEANFILES = $(TESTS) \
 	non-null.cpp non-null.obj non-null.lib non-null-cpp.exp non-null-cpp.lib \
 	printf-format.cpp printf-format.obj printf-format.lib printf-format-cpp.exp printf-format-cpp.lib \
 	pure.cpp pure.obj pure.lib pure-cpp.exp pure-cpp.lib \
+	require.cpp require.obj require.lib require-cpp.exp require-cpp.lib \
 	restrict.cpp restrict.obj restrict.lib restrict-cpp.exp restrict-cpp.lib \
 	returns-non-null.cpp returns-non-null.obj returns-non-null.lib returns-non-null-cpp.exp returns-non-null-cpp.lib \
 	sentinel.cpp sentinel.obj sentinel.lib sentinel-cpp.exp sentinel-cpp.lib \
@@ -171,6 +173,13 @@ pure.exe: pure.c
 pure.cpp: pure.c
 	copy /Y $(?) $(@) >NUL
 pure-cpp.exe: pure.cpp
+	$(CXX) $(CXXFLAGS) /Fe$(@) $(?)
+
+require.exe: require.c
+	$(CC) $(CFLAGS) /Fe$(@) $(?)
+require.cpp: require.c
+	copy /Y $(?) $(@) >NUL
+require-cpp.exe: require.cpp
 	$(CXX) $(CXXFLAGS) /Fe$(@) $(?)
 
 restrict.exe: restrict.c

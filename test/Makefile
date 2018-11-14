@@ -85,6 +85,7 @@ TESTS = \
 	non-null \
 	printf-format \
 	pure \
+	require \
 	restrict \
 	returns-non-null \
 	sentinel \

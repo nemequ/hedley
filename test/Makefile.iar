@@ -21,6 +21,7 @@ TESTS = \
 	non-null.o non-null-cpp.o \
 	printf-format.o printf-format-cpp.o \
 	pure.o pure-cpp.o \
+	require.o require-cpp.o \
 	restrict.o restrict-cpp.o \
 	returns-non-null.o returns-non-null-cpp.o \
 	sentinel.o sentinel-cpp.o \
@@ -50,6 +51,7 @@ CLEANFILES = $(TESTS) \
 	non-null.cpp non-null.o non-null-cpp.o \
 	printf-format.cpp printf-format.o printf-format-cpp.o \
 	pure.cpp pure.o pure-cpp.o \
+	require.cpp require.o require-cpp.o \
 	restrict.cpp restrict.o restrict-cpp.o \
 	returns-non-null.cpp returns-non-null.o returns-non-null-cpp.o \
 	sentinel.cpp sentinel.o sentinel-cpp.o \
@@ -171,6 +173,13 @@ pure.o: pure.c
 pure.cpp: pure.c
 	copy /Y $(?) $(@) >NUL
 pure-cpp.o: pure.cpp
+	$(CXX) $(CXXFLAGS) --output $(@) $(?)
+
+require.o: require.c
+	$(CC) $(CFLAGS) --output $(@) $(?)
+require.cpp: require.c
+	copy /Y $(?) $(@) >NUL
+require-cpp.o: require.cpp
 	$(CXX) $(CXXFLAGS) --output $(@) $(?)
 
 restrict.o: restrict.c
