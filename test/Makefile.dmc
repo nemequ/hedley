@@ -12,6 +12,7 @@ TESTS = \
 	constant.exe constant-cpp.exe \
 	deprecated.exe deprecated-cpp.exe \
 	fallthrough.exe fallthrough-cpp.exe \
+	flags.exe flags-cpp.exe \
 	inline.exe inline-cpp.exe \
 	likely.exe likely-cpp.exe \
 	malloc.exe malloc-cpp.exe \
@@ -42,6 +43,7 @@ CLEANFILES = $(TESTS) \
 	constant.cpp constant.exe constant-cpp.exe constant.map constant-cpp.map \
 	deprecated.cpp deprecated.exe deprecated-cpp.exe deprecated.map deprecated-cpp.map \
 	fallthrough.cpp fallthrough.exe fallthrough-cpp.exe fallthrough.map fallthrough-cpp.map \
+	flags.cpp flags.exe flags-cpp.exe flags.map flags-cpp.map \
 	inline.cpp inline.exe inline-cpp.exe inline.map inline-cpp.map \
 	likely.cpp likely.exe likely-cpp.exe likely.map likely-cpp.map \
 	malloc.cpp malloc.exe malloc-cpp.exe malloc.map malloc-cpp.map \
@@ -110,6 +112,13 @@ fallthrough.exe: fallthrough.c
 fallthrough.cpp: fallthrough.c
 	copy /Y $(?) $(@) >NUL
 fallthrough-cpp.exe: fallthrough.cpp
+	$(CXX) $(CXXFLAGS) -o $(@) $(?)
+
+flags.exe: flags.c
+	$(CC) $(CFLAGS) -o $(@) $(?)
+flags.cpp: flags.c
+	copy /Y $(?) $(@) >NUL
+flags-cpp.exe: flags.cpp
 	$(CXX) $(CXXFLAGS) -o $(@) $(?)
 
 inline.exe: inline.c

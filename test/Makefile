@@ -76,6 +76,7 @@ TESTS = \
 	constant \
 	deprecated \
 	fallthrough \
+	flags \
 	inline \
 	likely \
 	malloc \

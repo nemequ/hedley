@@ -12,6 +12,7 @@ TESTS = \
 	constant.o constant-cpp.o \
 	deprecated.o deprecated-cpp.o \
 	fallthrough.o fallthrough-cpp.o \
+	flags.o flags-cpp.o \
 	inline.o inline-cpp.o \
 	likely.o likely-cpp.o \
 	malloc.o malloc-cpp.o \
@@ -42,6 +43,7 @@ CLEANFILES = $(TESTS) \
 	constant.cpp constant.o constant-cpp.o \
 	deprecated.cpp deprecated.o deprecated-cpp.o \
 	fallthrough.cpp fallthrough.o fallthrough-cpp.o \
+	flags.cpp flags.o flags-cpp.o \
 	inline.cpp inline.o inline-cpp.o \
 	likely.cpp likely.o likely-cpp.o \
 	malloc.cpp malloc.o malloc-cpp.o \
@@ -110,6 +112,13 @@ fallthrough.o: fallthrough.c
 fallthrough.cpp: fallthrough.c
 	copy /Y $(?) $(@) >NUL
 fallthrough-cpp.o: fallthrough.cpp
+	$(CXX) $(CXXFLAGS) --output $(@) $(?)
+
+flags.o: flags.c
+	$(CC) $(CFLAGS) --output $(@) $(?)
+flags.cpp: flags.c
+	copy /Y $(?) $(@) >NUL
+flags-cpp.o: flags.cpp
 	$(CXX) $(CXXFLAGS) --output $(@) $(?)
 
 inline.o: inline.c

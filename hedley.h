@@ -1171,6 +1171,15 @@ HEDLEY_DIAGNOSTIC_POP
 #  define HEDLEY_STATIC_CAST(T, expr) ((T) (expr))
 #endif
 
+#if defined(HEDLEY_CPP_CAST)
+#  undef HEDLEY_CPP_CAST
+#endif
+#if defined(__cplusplus)
+#  define HEDLEY_CPP_CAST(T, expr) static_cast<T>(expr)
+#else
+#  define HEDLEY_CPP_CAST(T, expr) (expr)
+#endif
+
 #if defined(HEDLEY_MESSAGE)
 #  undef HEDLEY_MESSAGE
 #endif
@@ -1233,6 +1242,13 @@ HEDLEY_DIAGNOSTIC_POP
 #  undef HEDLEY_REQUIRE
 #endif
 #define HEDLEY_REQUIRE(expr) HEDLEY_REQUIRE_MSG(expr, #expr)
+
+#if defined(HEDLEY_FLAGS)
+#  undef HEDLEY_FLAGS
+#endif
+#if HEDLEY_HAS_ATTRIBUTE(flag_enum)
+#  define HEDLEY_FLAGS __attribute__((__flag_enum__))
+#endif
 
 /* Remaining macros are deprecated. */
 
