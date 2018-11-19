@@ -9,11 +9,11 @@
  * For details, see <http://creativecommons.org/publicdomain/zero/1.0/>.
  */
 
-#if !defined(HEDLEY_VERSION) || (HEDLEY_VERSION < 8)
+#if !defined(HEDLEY_VERSION) || (HEDLEY_VERSION < 9)
 #if defined(HEDLEY_VERSION)
 #  undef HEDLEY_VERSION
 #endif
-#define HEDLEY_VERSION 8
+#define HEDLEY_VERSION 9
 
 #if defined(HEDLEY_STRINGIFY_EX)
 #  undef HEDLEY_STRINGIFY_EX
