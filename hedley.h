@@ -772,6 +772,18 @@ HEDLEY_DIAGNOSTIC_POP
 #  define HEDLEY_PRINTF_FORMAT(string_idx,first_to_check)
 #endif
 
+#if defined(HEDLEY_CONSTEXPR)
+#  undef HEDLEY_CONSTEXPR
+#endif
+#if defined(__cplusplus)
+#  if __cplusplus >= 201103L
+#    define HEDLEY_CONSTEXPR constexpr
+#  endif
+#endif
+#if !defined(HEDLEY_CONSTEXPR)
+#  define HEDLEY_CONSTEXPR
+#endif
+
 #if defined(HEDLEY_PREDICT)
 #  undef HEDLEY_PREDICT
 #endif

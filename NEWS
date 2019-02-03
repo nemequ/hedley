@@ -5,6 +5,7 @@ Version 9
   * HEDLEY_PREDICT
   * HEDLEY_PREDICT_TRUE
   * HEDLEY_PREDICT_FALSE
+  * HEDLEY_CONSTEXPR
 
 Version 8
 =========
