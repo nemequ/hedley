@@ -807,23 +807,24 @@ HEDLEY_DIAGNOSTIC_POP
   HEDLEY_IBM_VERSION_CHECK(10,1,0) || \
   HEDLEY_TI_VERSION_CHECK(7,3,0) || \
   HEDLEY_TINYC_VERSION_CHECK(0,9,27)
-#  define HEDLEY_PREDICT(expr, value, probability) (((probability) >= 0.9) ? __builtin_expect((expr), (value)) : (expr))
+#  define HEDLEY_PREDICT(expr, expected, probability) \
+  (((probability) >= 0.9) ? __builtin_expect((expr), (expected)) : (((void) (expected)), (expr)))
 #  define HEDLEY_PREDICT_TRUE(expr, probability) \
      (__extension__ ({ \
-       double probability_ = (probability); \
-       ((probability_ >= 0.9) ? __builtin_expect(!!(expr), 1) : ((probability_ <= 0.1) ? __builtin_expect(!!(expr), 0) : !!(expr))); \
+       HEDLEY_CONSTEXPR double hedley_probability_ = (probability); \
+       ((hedley_probability_ >= 0.9) ? __builtin_expect(!!(expr), 1) : ((hedley_probability_ <= 0.1) ? __builtin_expect(!!(expr), 0) : !!(expr))); \
      }))
 #  define HEDLEY_PREDICT_FALSE(expr, probability) \
      (__extension__ ({ \
-       double probability_ = (probability); \
-       ((probability_ >= 0.9) ? __builtin_expect(!!(expr), 0) : ((probability_ <= 0.1) ? __builtin_expect(!!(expr), 1) : !!(expr))); \
+       HEDLEY_CONSTEXPR double hedley_probability_ = (probability); \
+       ((hedley_probability_ >= 0.9) ? __builtin_expect(!!(expr), 0) : ((hedley_probability_ <= 0.1) ? __builtin_expect(!!(expr), 1) : !!(expr))); \
      }))
-#  define HEDLEY_LIKELY(expr) __builtin_expect(!!(expr), 1)
+#  define HEDLEY_LIKELY(expr)   __builtin_expect(!!(expr), 1)
 #  define HEDLEY_UNLIKELY(expr) __builtin_expect(!!(expr), 0)
 #else
-#  define HEDLEY_PREDICT(expr, value, probability) (expr)
-#  define HEDLEY_PREDICT_TRUE(expr, value, probability) (!!(expr))
-#  define HEDLEY_PREDICT_FALSE(expr, value, probability) (!!(expr))
+#  define HEDLEY_PREDICT(expr, expected, probability) (((void) (expected)), (expr))
+#  define HEDLEY_PREDICT_TRUE(expr, probability) (!!(expr))
+#  define HEDLEY_PREDICT_FALSE(expr, probability) (!!(expr))
 #  define HEDLEY_LIKELY(expr) (!!(expr))
 #  define HEDLEY_UNLIKELY(expr) (!!(expr))
 #endif
