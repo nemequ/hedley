@@ -1022,12 +1022,12 @@ HEDLEY_DIAGNOSTIC_POP
 #    define HEDLEY_FALL_THROUGH [[fallthrough]]
 #  elif (__cplusplus >= 201103L) && HEDLEY_HAS_CPP_ATTRIBUTE(clang::fallthrough)
 #    define HEDLEY_FALL_THROUGH [[clang::fallthrough]]
-#  elif (__cplusplus >= 201103L) && HEDLEY_GNUC_HAS_CPP_ATTRIBUTE(gnu::fallthrough,7,0,0)
+#  elif (__cplusplus >= 201103L) && HEDLEY_GNUC_HAS_CPP_ATTRIBUTE(gnu::fallthrough,7,0,0) && !defined(HEDLEY_PGI_VERSION)
 #    define HEDLEY_FALL_THROUGH [[gnu::fallthrough]]
 #  endif
 #endif
 #if !defined(HEDLEY_FALL_THROUGH)
-#  if HEDLEY_GNUC_HAS_ATTRIBUTE(fallthrough,7,0,0)
+#  if HEDLEY_GNUC_HAS_ATTRIBUTE(fallthrough,7,0,0) && !defined(HEDLEY_PGI_VERSION)
 #    define HEDLEY_FALL_THROUGH __attribute__((__fallthrough__))
 #  elif defined(__fallthrough) /* SAL */
 #    define HEDLEY_FALL_THROUGH __fallthrough
@@ -1040,7 +1040,7 @@ HEDLEY_DIAGNOSTIC_POP
 #  undef HEDLEY_RETURNS_NON_NULL
 #endif
 #if \
-  HEDLEY_GNUC_HAS_ATTRIBUTE(returns_nonnull,4,9,0) || \
+  (HEDLEY_GNUC_HAS_ATTRIBUTE(returns_nonnull,4,9,0) && !defined(HEDLEY_PGI_VERSION)) || \
   HEDLEY_INTEL_VERSION_CHECK(16,0,0)
 #  define HEDLEY_RETURNS_NON_NULL __attribute__((__returns_nonnull__))
 #elif defined(_Ret_notnull_) /* SAL */
