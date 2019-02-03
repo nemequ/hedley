@@ -7,6 +7,7 @@ CXXFLAGS = --c++ $(CFLAGS)
 
 TESTS = \
 	array-param.o array-param-cpp.o \
+	assume.o assume-cpp.o \
 	cast.o cast-cpp.o \
 	const.o const-cpp.o \
 	constant.o constant-cpp.o \
@@ -39,6 +40,7 @@ TESTS = \
 
 CLEANFILES = $(TESTS) \
 	array-param.cpp array-param.o array-param-cpp.o \
+	assume.cpp assume.o assume-cpp.o \
 	cast.cpp cast.o cast-cpp.o \
 	const.cpp const.o const-cpp.o \
 	constant.cpp constant.o constant-cpp.o \
@@ -79,6 +81,13 @@ array-param.o: array-param.c
 array-param.cpp: array-param.c
 	copy /Y $(?) $(@) >NUL
 array-param-cpp.o: array-param.cpp
+	$(CXX) $(CXXFLAGS) --output $(@) $(?)
+
+assume.o: assume.c
+	$(CC) $(CFLAGS) --output $(@) $(?)
+assume.cpp: assume.c
+	copy /Y $(?) $(@) >NUL
+assume-cpp.o: assume.cpp
 	$(CXX) $(CXXFLAGS) --output $(@) $(?)
 
 cast.o: cast.c

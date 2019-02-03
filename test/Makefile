@@ -71,6 +71,7 @@ NULL =
 
 TESTS = \
 	array-param \
+	assume \
 	cast \
 	const \
 	constant \

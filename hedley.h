@@ -735,6 +735,26 @@
 #  define HEDLEY_UNREACHABLE_RETURN(value) HEDLEY_UNREACHABLE()
 #endif
 
+#if defined(HEDLEY_ASSUME)
+#  undef HEDLEY_ASSUME
+#endif
+#if HEDLEY_MSVC_VERSION_CHECK(13,10,0) || HEDLEY_INTEL_VERSION_CHECK(16,0,0)
+#  define HEDLEY_ASSUME(expr) __assume(expr)
+#elif HEDLEY_HAS_BUILTIN(__builtin_assume)
+#  define HEDLEY_ASSUME(expr) __builtin_assume(expr)
+#elif HEDLEY_TI_VERSION_CHECK(6,0,0)
+#  if defined(__cplusplus)
+#    define HEDLEY_ASSUME(expr) std::_nassert(expr)
+#  else
+#    define HEDLEY_ASSUME(expr) _nassert(expr)
+#  endif
+#elif (HEDLEY_GNUC_HAS_BUILTIN(__builtin_unreachable,4,5,0) && !defined(__CC_ARM)) || HEDLEY_INTEL_VERSION_CHECK(16,0,0)
+#  define HEDLEY_ASSUME(expr) ((void) ((expr) ? 1 : (__builtin_unreachable(), 1)))
+#else
+#  define HEDLEY_ASSUME(expr) ((void) (expr))
+#endif
+
+
 HEDLEY_DIAGNOSTIC_PUSH
 #if HEDLEY_GNUC_HAS_WARNING("-Wvariadic-macros",4,0,0) && !defined(HEDLEY_INTEL_VERSION)
 #  if defined(__clang__)
