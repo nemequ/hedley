@@ -1,5 +1,9 @@
 #include "../hedley.h"
 
+#if defined(HEDLEY_TI_VERSION)
+#  pragma diag_remark 190
+#endif
+
 enum Foo {
   FOO_BAR = 1 << 0,
   FOO_BAZ = 1 << 1,

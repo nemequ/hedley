@@ -20,6 +20,7 @@ TESTS = \
 	noinline.exe noinline-cpp.exe \
 	no-return.exe no-return-cpp.exe \
 	non-null.exe non-null-cpp.exe \
+	predict.exe predict-cpp.exe \
 	printf-format.exe printf-format-cpp.exe \
 	pure.exe pure-cpp.exe \
 	require.exe require-cpp.exe \
@@ -51,6 +52,7 @@ CLEANFILES = $(TESTS) \
 	noinline.cpp noinline.obj noinline.lib noinline-cpp.exp noinline-cpp.lib \
 	no-return.cpp no-return.obj no-return.lib no-return-cpp.exp no-return-cpp.lib \
 	non-null.cpp non-null.obj non-null.lib non-null-cpp.exp non-null-cpp.lib \
+	predict.cpp predict.obj predict.lib predict-cpp.exp predict-cpp.lib \
 	printf-format.cpp printf-format.obj printf-format.lib printf-format-cpp.exp printf-format-cpp.lib \
 	pure.cpp pure.obj pure.lib pure-cpp.exp pure-cpp.lib \
 	require.cpp require.obj require.lib require-cpp.exp require-cpp.lib \
@@ -168,6 +170,13 @@ non-null.exe: non-null.c
 non-null.cpp: non-null.c
 	copy /Y $(?) $(@) >NUL
 non-null-cpp.exe: non-null.cpp
+	$(CXX) $(CXXFLAGS) /Fe$(@) $(?)
+
+predict.exe: predict.c
+	$(CC) $(CFLAGS) /Fe$(@) $(?)
+predict.cpp: predict.c
+	copy /Y $(?) $(@) >NUL
+predict-cpp.exe: predict.cpp
 	$(CXX) $(CXXFLAGS) /Fe$(@) $(?)
 
 printf-format.exe: printf-format.c

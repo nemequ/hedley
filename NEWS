@@ -1,3 +1,11 @@
+Version 9
+=========
+
+* New macros:
+  * HEDLEY_PREDICT
+  * HEDLEY_PREDICT_TRUE
+  * HEDLEY_PREDICT_FALSE
+
 Version 8
 =========
 

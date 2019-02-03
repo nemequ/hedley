@@ -20,6 +20,7 @@ TESTS = \
 	noinline.o noinline-cpp.o \
 	no-return.o no-return-cpp.o \
 	non-null.o non-null-cpp.o \
+	predict.o predict-cpp.o \
 	printf-format.o printf-format-cpp.o \
 	pure.o pure-cpp.o \
 	require.o require-cpp.o \
@@ -51,6 +52,7 @@ CLEANFILES = $(TESTS) \
 	noinline.cpp noinline.o noinline-cpp.o \
 	no-return.cpp no-return.o no-return-cpp.o \
 	non-null.cpp non-null.o non-null-cpp.o \
+	predict.cpp predict.o predict-cpp.o \
 	printf-format.cpp printf-format.o printf-format-cpp.o \
 	pure.cpp pure.o pure-cpp.o \
 	require.cpp require.o require-cpp.o \
@@ -168,6 +170,13 @@ non-null.o: non-null.c
 non-null.cpp: non-null.c
 	copy /Y $(?) $(@) >NUL
 non-null-cpp.o: non-null.cpp
+	$(CXX) $(CXXFLAGS) --output $(@) $(?)
+
+predict.o: predict.c
+	$(CC) $(CFLAGS) --output $(@) $(?)
+predict.cpp: predict.c
+	copy /Y $(?) $(@) >NUL
+predict-cpp.o: predict.cpp
 	$(CXX) $(CXXFLAGS) --output $(@) $(?)
 
 printf-format.o: printf-format.c

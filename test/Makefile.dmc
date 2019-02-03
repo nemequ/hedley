@@ -20,6 +20,7 @@ TESTS = \
 	noinline.exe noinline-cpp.exe \
 	no-return.exe no-return-cpp.exe \
 	non-null.exe non-null-cpp.exe \
+	predict.exe predict-cpp.exe \
 	printf-format.exe printf-format-cpp.exe \
 	pure.exe pure-cpp.exe \
 	require.exe require-cpp.exe \
@@ -51,6 +52,7 @@ CLEANFILES = $(TESTS) \
 	noinline.cpp noinline.exe noinline-cpp.exe noinline.map noinline-cpp.map \
 	no-return.cpp no-return.exe no-return-cpp.exe no-return.map no-return-cpp.map \
 	non-null.cpp non-null.exe non-null-cpp.exe non-null.map non-null-cpp.map \
+	predict.cpp predict.exe predict-cpp.exe predict.map predict-cpp.map \
 	printf-format.cpp printf-format.exe printf-format-cpp.exe printf-format.map printf-format-cpp.map \
 	pure.cpp pure.exe pure-cpp.exe pure.map pure-cpp.map \
 	require.cpp require.exe require-cpp.exe require.map require-cpp.map \
@@ -168,6 +170,13 @@ non-null.exe: non-null.c
 non-null.cpp: non-null.c
 	copy /Y $(?) $(@) >NUL
 non-null-cpp.exe: non-null.cpp
+	$(CXX) $(CXXFLAGS) -o $(@) $(?)
+
+predict.exe: predict.c
+	$(CC) $(CFLAGS) -o $(@) $(?)
+predict.cpp: predict.c
+	copy /Y $(?) $(@) >NUL
+predict-cpp.exe: predict.cpp
 	$(CXX) $(CXXFLAGS) -o $(@) $(?)
 
 printf-format.exe: printf-format.c

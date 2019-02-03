@@ -772,13 +772,22 @@ HEDLEY_DIAGNOSTIC_POP
 #  define HEDLEY_PRINTF_FORMAT(string_idx,first_to_check)
 #endif
 
+#if defined(HEDLEY_PREDICT)
+#  undef HEDLEY_PREDICT
+#endif
 #if defined(HEDLEY_LIKELY)
 #  undef HEDLEY_LIKELY
 #endif
 #if defined(HEDLEY_UNLIKELY)
 #  undef HEDLEY_UNLIKELY
 #endif
-#if \
+#if HEDLEY_GNUC_HAS_BUILTIN(__builtin_expect_with_probability,9,0,0)
+#  define HEDLEY_PREDICT(expr, value, probability) __builtin_expect_with_probability(expr, value, probability)
+#  define HEDLEY_PREDICT_TRUE(expr, probability) __builtin_expect_with_probability(!!(expr), 1, probability)
+#  define HEDLEY_PREDICT_FALSE(expr, probability) __builtin_expect_with_probability(!!(expr), 0, probability)
+#  define HEDLEY_LIKELY(expr) __builtin_expect(!!(expr), 1)
+#  define HEDLEY_UNLIKELY(expr) __builtin_expect(!!(expr), 0)
+#elif \
   HEDLEY_GNUC_HAS_BUILTIN(__builtin_expect,3,0,0) || \
   HEDLEY_INTEL_VERSION_CHECK(16,0,0) || \
   HEDLEY_SUNPRO_VERSION_CHECK(5,12,0) || \
@@ -786,9 +795,23 @@ HEDLEY_DIAGNOSTIC_POP
   HEDLEY_IBM_VERSION_CHECK(10,1,0) || \
   HEDLEY_TI_VERSION_CHECK(7,3,0) || \
   HEDLEY_TINYC_VERSION_CHECK(0,9,27)
+#  define HEDLEY_PREDICT(expr, value, probability) (((probability) >= 0.9) ? __builtin_expect((expr), (value)) : (expr))
+#  define HEDLEY_PREDICT_TRUE(expr, probability) \
+     (__extension__ ({ \
+       double probability_ = (probability); \
+       ((probability_ >= 0.9) ? __builtin_expect(!!(expr), 1) : ((probability_ <= 0.1) ? __builtin_expect(!!(expr), 0) : !!(expr))); \
+     }))
+#  define HEDLEY_PREDICT_FALSE(expr, probability) \
+     (__extension__ ({ \
+       double probability_ = (probability); \
+       ((probability_ >= 0.9) ? __builtin_expect(!!(expr), 0) : ((probability_ <= 0.1) ? __builtin_expect(!!(expr), 1) : !!(expr))); \
+     }))
 #  define HEDLEY_LIKELY(expr) __builtin_expect(!!(expr), 1)
 #  define HEDLEY_UNLIKELY(expr) __builtin_expect(!!(expr), 0)
 #else
+#  define HEDLEY_PREDICT(expr, value, probability) (expr)
+#  define HEDLEY_PREDICT_TRUE(expr, value, probability) (!!(expr))
+#  define HEDLEY_PREDICT_FALSE(expr, value, probability) (!!(expr))
 #  define HEDLEY_LIKELY(expr) (!!(expr))
 #  define HEDLEY_UNLIKELY(expr) (!!(expr))
 #endif

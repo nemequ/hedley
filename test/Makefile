@@ -84,6 +84,7 @@ TESTS = \
 	noinline \
 	no-return \
 	non-null \
+	predict \
 	printf-format \
 	pure \
 	require \
