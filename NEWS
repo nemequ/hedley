@@ -8,6 +8,8 @@ Version 9
   * HEDLEY_CONSTEXPR
   * HEDLEY_ASSUME
 * Most tests now use HEDLEY_GCC_* instead of HEDLEY_GNUC_*
+* New compiler support:
+  * CompCert
 
 Version 8
 =========

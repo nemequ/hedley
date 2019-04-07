@@ -30,6 +30,9 @@ else ifeq ($(notdir $(CC)), gcc)
 else ifeq ($(notdir $(CC)), x86_64-w64-mingw32-gcc)
   CFLAGS ?= $(GCC_C_FLAGS)
   C_OUTPUT_FILE := -o
+else ifeq ($(notdir $(CC)), ccomp)
+  CFLAGS ?= -Wall
+  C_OUTPUT_FILE := -o
 else
   CFLAGS ?= $(filter-out -Werror,$(GCC_C_FLAGS))
 endif

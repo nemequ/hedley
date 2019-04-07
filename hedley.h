@@ -291,6 +291,22 @@
 #  define HEDLEY_DMC_VERSION_CHECK(major,minor,patch) (0)
 #endif
 
+#if defined(HEDLEY_COMPCERT_VERSION)
+#  undef HEDLEY_COMPCERT_VERSION
+#endif
+#if defined(__COMPCERT_VERSION__)
+#  define HEDLEY_COMPCERT_VERSION HEDLEY_VERSION_ENCODE(__COMPCERT_VERSION__ / 10000, (__COMPCERT_VERSION__ / 100) % 100, __COMPCERT_VERSION__ % 100)
+#endif
+
+#if defined(HEDLEY_COMPCERT_VERSION_CHECK)
+#  undef HEDLEY_COMPCERT_VERSION_CHECK
+#endif
+#if defined(HEDLEY_COMPCERT_VERSION)
+#  define HEDLEY_COMPCERT_VERSION_CHECK(major,minor,patch) (HEDLEY_COMPCERT_VERSION >= HEDLEY_VERSION_ENCODE(major, minor, patch))
+#else
+#  define HEDLEY_COMPCERT_VERSION_CHECK(major,minor,patch) (0)
+#endif
+
 #if defined(HEDLEY_GCC_VERSION)
 #  undef HEDLEY_GCC_VERSION
 #endif
@@ -300,7 +316,8 @@
   !defined(HEDLEY_INTEL_VERSION) && \
   !defined(HEDLEY_PGI_VERSION) && \
   !defined(HEDLEY_ARM_VERSION) && \
-  !defined(HEDLEY_TI_VERSION)
+  !defined(HEDLEY_TI_VERSION) && \
+  !defined(__COMPCERT__)
 #  define HEDLEY_GCC_VERSION HEDLEY_GNUC_VERSION
 #endif
 
@@ -718,6 +735,8 @@
 #  define HEDLEY_NO_RETURN __declspec(noreturn)
 #elif HEDLEY_TI_VERSION_CHECK(6,0,0) && defined(__cplusplus)
 #  define HEDLEY_NO_RETURN _Pragma("FUNC_NEVER_RETURNS;")
+#elif HEDLEY_COMPCERT_VERSION_CHECK(3,2,0)
+#  define HEDLEY_NO_RETURN __attribute((noreturn))
 #else
 #  define HEDLEY_NO_RETURN
 #endif
@@ -1025,6 +1044,8 @@ HEDLEY_DIAGNOSTIC_POP
 #  define HEDLEY_NEVER_INLINE _Pragma("FUNC_CANNOT_INLINE;")
 #elif HEDLEY_IAR_VERSION_CHECK(8,0,0)
 #  define HEDLEY_NEVER_INLINE _Pragma("inline=never")
+#elif HEDLEY_COMPCERT_VERSION_CHECK(3,2,0)
+#  define HEDLEY_NEVER_INLINE __attribute((noinline))
 #else
 #  define HEDLEY_NEVER_INLINE
 #endif
