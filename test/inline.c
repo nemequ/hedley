@@ -16,8 +16,8 @@ static int test_never_inline(int a, int b) {
 }
 
 int main(void) {
-  return
-    test_inline(
-        test_always_inline(1, 2),
-        test_never_inline(3, 4));
+  int a = test_always_inline(1, 2);
+  int b = test_never_inline(3, 4);
+
+  return test_inline(a, b);
 }

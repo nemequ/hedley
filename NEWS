@@ -8,6 +8,8 @@ Version 9
   * HEDLEY_CONSTEXPR
   * HEDLEY_ASSUME
 * Most tests now use HEDLEY_GCC_* instead of HEDLEY_GNUC_*
+* Intel C/C++ Compiler implementations now go down to version 13
+  instead of version 16.
 * New compiler support:
   * CompCert
 

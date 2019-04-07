@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 
-#if HEDLEY_HAS_WARNING("-Wnonnull")
+#if HEDLEY_HAS_WARNING("-Wformat")
 #  pragma clang diagnostic warning "-Wformat"
 #elif defined(HEDLEY_TI_VERSION)
 #  pragma diag_remark 183
@@ -11,6 +11,8 @@
 #  pragma diag_remark 181
 #elif defined(HEDLEY_GCC_VERSION)
 #  pragma GCC diagnostic warning "-Wformat"
+#elif defined(HEDLEY_INTEL_VERSION)
+#  pragma warning(disable:181)
 #endif
 
 HEDLEY_PRINTF_FORMAT(1,2)
