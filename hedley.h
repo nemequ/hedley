@@ -1378,6 +1378,20 @@ HEDLEY_DIAGNOSTIC_POP
 #  define HEDLEY_FLAGS __attribute__((__flag_enum__))
 #endif
 
+#if defined(HEDLEY_FLAGS_CAST)
+#  undef HEDLEY_FLAGS_CAST
+#endif
+#if HEDLEY_INTEL_VERSION_CHECK(19,0,0)
+#  define HEDLEY_FLAGS_CAST(T, expr) (__extension__ ({ \
+  HEDLEY_DIAGNOSTIC_PUSH \
+      _Pragma("warning(disable:188)") \
+      ((T) (expr)); \
+      HEDLEY_DIAGNOSTIC_POP \
+    }))
+#else
+#  define HEDLEY_FLAGS_CAST(T, expr) HEDLEY_STATIC_CAST(T, expr)
+#endif
+
 /* Remaining macros are deprecated. */
 
 #if defined(HEDLEY_GCC_NOT_CLANG_VERSION_CHECK)

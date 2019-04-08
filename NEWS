@@ -7,6 +7,7 @@ Version 9
   * HEDLEY_PREDICT_FALSE
   * HEDLEY_CONSTEXPR
   * HEDLEY_ASSUME
+  * HEDLEY_FLAGS_CAST
 * Most tests now use HEDLEY_GCC_* instead of HEDLEY_GNUC_*
 * Intel C/C++ Compiler implementations now go down to version 13
   instead of version 16.
