@@ -862,6 +862,12 @@ HEDLEY_DIAGNOSTIC_POP
 #if defined(HEDLEY_UNLIKELY)
 #  undef HEDLEY_UNLIKELY
 #endif
+#if defined(HEDLEY_UNPREDICTABLE)
+#  undef HEDLEY_UNPREDICTABLE
+#endif
+#if HEDLEY_HAS_BUILTIN(__builtin_unpredictable)
+#  define HEDLEY_UNPREDICTABLE(expr) __builtin_unpredictable(!!(expr))
+#endif
 #if \
   HEDLEY_HAS_BUILTIN(__builtin_expect_with_probability) || \
   HEDLEY_GCC_VERSION_CHECK(9,0,0)
@@ -870,6 +876,9 @@ HEDLEY_DIAGNOSTIC_POP
 #  define HEDLEY_PREDICT_FALSE(expr, probability) __builtin_expect_with_probability(!!(expr), 0, probability)
 #  define HEDLEY_LIKELY(expr) __builtin_expect(!!(expr), 1)
 #  define HEDLEY_UNLIKELY(expr) __builtin_expect(!!(expr), 0)
+#  if !defined(HEDLEY_BUILTIN_UNPREDICTABLE)
+#    define HEDLEY_BUILTIN_UNPREDICTABLE(expr) __builtin_expect_with_probability(!!(expr), 1, 0.5)
+#  endif
 #elif \
   HEDLEY_HAS_BUILTIN(__builtin_expect) || \
   HEDLEY_GCC_VERSION_CHECK(3,0,0) || \
@@ -880,7 +889,7 @@ HEDLEY_DIAGNOSTIC_POP
   HEDLEY_TI_VERSION_CHECK(7,3,0) || \
   HEDLEY_TINYC_VERSION_CHECK(0,9,27)
 #  define HEDLEY_PREDICT(expr, expected, probability) \
-  (((probability) >= 0.9) ? __builtin_expect((expr), (expected)) : (((void) (expected)), (expr)))
+  (((probability) >= 0.9) ? __builtin_expect(!!(expr), (expected)) : (((void) (expected)), !!(expr)))
 #  define HEDLEY_PREDICT_TRUE(expr, probability) \
      (__extension__ ({ \
        HEDLEY_CONSTEXPR double hedley_probability_ = (probability); \
@@ -894,11 +903,14 @@ HEDLEY_DIAGNOSTIC_POP
 #  define HEDLEY_LIKELY(expr)   __builtin_expect(!!(expr), 1)
 #  define HEDLEY_UNLIKELY(expr) __builtin_expect(!!(expr), 0)
 #else
-#  define HEDLEY_PREDICT(expr, expected, probability) (((void) (expected)), (expr))
+#  define HEDLEY_PREDICT(expr, expected, probability) (((void) (expected)), !!(expr))
 #  define HEDLEY_PREDICT_TRUE(expr, probability) (!!(expr))
 #  define HEDLEY_PREDICT_FALSE(expr, probability) (!!(expr))
 #  define HEDLEY_LIKELY(expr) (!!(expr))
 #  define HEDLEY_UNLIKELY(expr) (!!(expr))
+#endif
+#if !defined(HEDLEY_UNPREDICTABLE)
+#  define HEDLEY_UNPREDICTABLE(expr) HEDLEY_PREDICT(expr, 1, 0.5)
 #endif
 
 #if defined(HEDLEY_MALLOC)

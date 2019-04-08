@@ -21,5 +21,7 @@ int main(void) {
   y += HEDLEY_PREDICT_FALSE(x, 0.15);
   y += HEDLEY_PREDICT_FALSE(x, 0.05);
 
+  y += HEDLEY_UNPREDICTABLE(x);
+
   return y;
 }
