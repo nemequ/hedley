@@ -75,6 +75,7 @@ NULL =
 TESTS = \
 	array-param \
 	assume \
+	assume-aligned \
 	cast \
 	const \
 	constant \

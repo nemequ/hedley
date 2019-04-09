@@ -8,6 +8,7 @@ CXXFLAGS = -wc $(CFLAGS)
 TESTS = \
 	array-param.exe array-param-cpp.exe \
 	assume.exe assume-cpp.exe \
+	assume-aligned.exe assume-aligned-cpp.exe \
 	cast.exe cast-cpp.exe \
 	const.exe const-cpp.exe \
 	constant.exe constant-cpp.exe \
@@ -41,6 +42,7 @@ TESTS = \
 CLEANFILES = $(TESTS) \
 	array-param.cpp array-param.exe array-param-cpp.exe array-param.map array-param-cpp.map \
 	assume.cpp assume.exe assume-cpp.exe assume.map assume-cpp.map \
+	assume-aligned.cpp assume-aligned.exe assume-aligned-cpp.exe assume-aligned.map assume-aligned-cpp.map \
 	cast.cpp cast.exe cast-cpp.exe cast.map cast-cpp.map \
 	const.cpp const.exe const-cpp.exe const.map const-cpp.map \
 	constant.cpp constant.exe constant-cpp.exe constant.map constant-cpp.map \
@@ -88,6 +90,13 @@ assume.exe: assume.c
 assume.cpp: assume.c
 	copy /Y $(?) $(@) >NUL
 assume-cpp.exe: assume.cpp
+	$(CXX) $(CXXFLAGS) -o $(@) $(?)
+
+assume-aligned.exe: assume-aligned.c
+	$(CC) $(CFLAGS) -o $(@) $(?)
+assume-aligned.cpp: assume-aligned.c
+	copy /Y $(?) $(@) >NUL
+assume-aligned-cpp.exe: assume-aligned.cpp
 	$(CXX) $(CXXFLAGS) -o $(@) $(?)
 
 cast.exe: cast.c

@@ -8,6 +8,7 @@ CXXFLAGS = --c++ $(CFLAGS)
 TESTS = \
 	array-param.o array-param-cpp.o \
 	assume.o assume-cpp.o \
+	assume-aligned.o assume-aligned-cpp.o \
 	cast.o cast-cpp.o \
 	const.o const-cpp.o \
 	constant.o constant-cpp.o \
@@ -41,6 +42,7 @@ TESTS = \
 CLEANFILES = $(TESTS) \
 	array-param.cpp array-param.o array-param-cpp.o \
 	assume.cpp assume.o assume-cpp.o \
+	assume-aligned.cpp assume-aligned.o assume-aligned-cpp.o \
 	cast.cpp cast.o cast-cpp.o \
 	const.cpp const.o const-cpp.o \
 	constant.cpp constant.o constant-cpp.o \
@@ -88,6 +90,13 @@ assume.o: assume.c
 assume.cpp: assume.c
 	copy /Y $(?) $(@) >NUL
 assume-cpp.o: assume.cpp
+	$(CXX) $(CXXFLAGS) --output $(@) $(?)
+
+assume-aligned.o: assume-aligned.c
+	$(CC) $(CFLAGS) --output $(@) $(?)
+assume-aligned.cpp: assume-aligned.c
+	copy /Y $(?) $(@) >NUL
+assume-aligned-cpp.o: assume-aligned.cpp
 	$(CXX) $(CXXFLAGS) --output $(@) $(?)
 
 cast.o: cast.c
