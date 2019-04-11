@@ -307,6 +307,22 @@
 #  define HEDLEY_COMPCERT_VERSION_CHECK(major,minor,patch) (0)
 #endif
 
+#if defined(HEDLEY_PELLES_VERSION)
+#  undef HEDLEY_PELLES_VERSION
+#endif
+#if defined(__POCC__)
+#  define HEDLEY_PELLES_VERSION HEDLEY_VERSION_ENCODE(__POCC__ / 100, __POCC__ % 100, 0)
+#endif
+
+#if defined(HEDLEY_PELLES_VERSION_CHECK)
+#  undef HEDLEY_PELLES_VERSION_CHECK
+#endif
+#if defined(HEDLEY_PELLES_VERSION)
+#  define HEDLEY_PELLES_VERSION_CHECK(major,minor,patch) (HEDLEY_PELLES_VERSION >= HEDLEY_VERSION_ENCODE(major, minor, patch))
+#else
+#  define HEDLEY_PELLES_VERSION_CHECK(major,minor,patch) (0)
+#endif
+
 #if defined(HEDLEY_GCC_VERSION)
 #  undef HEDLEY_GCC_VERSION
 #endif
@@ -563,6 +579,9 @@
 #elif HEDLEY_TI_VERSION_CHECK(8,1,0)
 #  define HEDLEY_DIAGNOSTIC_PUSH _Pragma("diag_push")
 #  define HEDLEY_DIAGNOSTIC_POP _Pragma("diag_pop")
+#elif HEDLEY_PELLES_VERSION_CHECK(2,90,0)
+#  define HEDLEY_DIAGNOSTIC_PUSH _Pragma("warning(push)")
+#  define HEDLEY_DIAGNOSTIC_POP _Pragma("warning(pop)")
 #else
 #  define HEDLEY_DIAGNOSTIC_PUSH
 #  define HEDLEY_DIAGNOSTIC_POP
@@ -589,6 +608,8 @@
 #  define HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED _Pragma("error_messages(off,symdeprecated,symdeprecated2)")
 #elif HEDLEY_IAR_VERSION_CHECK(8,0,0)
 #  define HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED _Pragma("diag_suppress=Pe1444,Pe1215")
+#elif HEDLEY_PELLES_VERSION_CHECK(2,90,0)
+#  define HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED _Pragma("warn(disable:2241)")
 #else
 #  define HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED
 #endif
@@ -656,7 +677,9 @@
 #elif HEDLEY_MSVC_VERSION_CHECK(14,0,0)
 #  define HEDLEY_DEPRECATED(since) __declspec(deprecated("Since " # since))
 #  define HEDLEY_DEPRECATED_FOR(since, replacement) __declspec(deprecated("Since " #since "; use " #replacement))
-#elif HEDLEY_MSVC_VERSION_CHECK(13,10,0)
+#elif \
+  HEDLEY_MSVC_VERSION_CHECK(13,10,0) || \
+  HEDLEY_PELLES_VERSION_CHECK(6,50,0)
 #  define HEDLEY_DEPRECATED(since) _declspec(deprecated)
 #  define HEDLEY_DEPRECATED_FOR(since, replacement) __declspec(deprecated)
 #elif HEDLEY_IAR_VERSION_CHECK(8,0,0)
@@ -738,6 +761,8 @@
 #  define HEDLEY_NO_RETURN _Pragma("FUNC_NEVER_RETURNS;")
 #elif HEDLEY_COMPCERT_VERSION_CHECK(3,2,0)
 #  define HEDLEY_NO_RETURN __attribute((noreturn))
+#elif HEDLEY_PELLES_VERSION_CHECK(9,0,0)
+#  define HEDLEY_NO_RETURN __declspec(noreturn)
 #else
 #  define HEDLEY_NO_RETURN
 #endif
@@ -837,6 +862,8 @@ HEDLEY_DIAGNOSTIC_POP
   HEDLEY_TI_VERSION_CHECK(8,0,0) || \
   (HEDLEY_TI_VERSION_CHECK(7,3,0) && defined(__TI_GNU_ATTRIBUTE_SUPPORT__))
 #  define HEDLEY_PRINTF_FORMAT(string_idx,first_to_check) __attribute__((__format__(__printf__, string_idx, first_to_check)))
+#elif HEDLEY_PELLES_VERSION_CHECK(6,0,0)
+#  define HEDLEY_PRINTF_FORMAT(string_idx,first_to_check) __declspec(vaformat(printf,string_idx,first_to_check))
 #else
 #  define HEDLEY_PRINTF_FORMAT(string_idx,first_to_check)
 #endif
@@ -1059,6 +1086,8 @@ HEDLEY_DIAGNOSTIC_POP
 #  define HEDLEY_NEVER_INLINE _Pragma("inline=never")
 #elif HEDLEY_COMPCERT_VERSION_CHECK(3,2,0)
 #  define HEDLEY_NEVER_INLINE __attribute((noinline))
+#elif HEDLEY_PELLES_VERSION_CHECK(9,0,0)
+#  define HEDLEY_NEVER_INLINE __declspec(noinline)
 #else
 #  define HEDLEY_NEVER_INLINE
 #endif
@@ -1337,6 +1366,8 @@ HEDLEY_DIAGNOSTIC_POP
 #elif HEDLEY_CRAY_VERSION_CHECK(5,0,0)
 #  define HEDLEY_MESSAGE(msg) HEDLEY_PRAGMA(_CRI message msg)
 #elif HEDLEY_IAR_VERSION_CHECK(8,0,0)
+#  define HEDLEY_MESSAGE(msg) HEDLEY_PRAGMA(message(msg))
+#elif HEDLEY_PELLES_VERSION_CHECK(2,0,0)
 #  define HEDLEY_MESSAGE(msg) HEDLEY_PRAGMA(message(msg))
 #else
 #  define HEDLEY_MESSAGE(msg)
