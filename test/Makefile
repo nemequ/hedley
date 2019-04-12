@@ -7,7 +7,7 @@ else ifeq ($(notdir $(CC)), suncc)
   CFLAGS ?= -errwarn -errtags
   C_OUTPUT_FILE := -o
 else ifeq ($(notdir $(CC)), cl6x)
-  CFLAGS ?= --display_error_number --emit_warnings_as_errors --issue_remarks -i $(dir $(CC))../include
+  CFLAGS ?= --display_error_number --emit_warnings_as_errors --issue_remarks -i $(dir $(shell readlink -f $(CC)))../include
   C_OUTPUT_FILE := --output_file=
 else ifeq ($(notdir $(CC)), pgcc)
   CFLAGS ?= -Minform=inform -c11
