@@ -1210,19 +1210,25 @@ HEDLEY_DIAGNOSTIC_POP
 
 #if \
   HEDLEY_HAS_BUILTIN(__builtin_constant_p) || \
-  HEDLEY_GCC_VERSION_CHECK(3,1,0) || \
+  HEDLEY_GCC_VERSION_CHECK(3,4,0) || \
   HEDLEY_INTEL_VERSION_CHECK(13,0,0) || \
   HEDLEY_TINYC_VERSION_CHECK(0,9,19) || \
   HEDLEY_ARM_VERSION_CHECK(4,1,0) || \
   HEDLEY_IBM_VERSION_CHECK(13,1,0) || \
-  HEDLEY_TI_VERSION_CHECK(6,1,0)
+  HEDLEY_TI_VERSION_CHECK(6,1,0) || \
+  HEDLEY_SUNPRO_VERSION_CHECK(5,10,0) || \
+  HEDLEY_CRAY_VERSION_CHECK(8,1,0)
 #  define HEDLEY_IS_CONSTANT(expr) __builtin_constant_p(expr)
 #endif
 #if !defined(__cplusplus)
 #  if \
-       HEDLEY_GNUC_VERSION_CHECK(3,1,0) || \
+       HEDLEY_HAS_BUILTIN(__builtin_types_compatible_p) || \
+       HEDLEY_GCC_VERSION_CHECK(3,4,0) || \
        HEDLEY_INTEL_VERSION_CHECK(13,0,0) || \
-       HEDLEY_IBM_VERSION_CHECK(13,1,0)
+       HEDLEY_IBM_VERSION_CHECK(13,1,0) || \
+       HEDLEY_CRAY_VERSION_CHECK(8,1,0) || \
+       HEDLEY_ARM_VERSION_CHECK(5,4,0) || \
+       HEDLEY_TINYC_VERSION_CHECK(0,9,24)
 #    if defined(__INTPTR_TYPE__)
 #      define HEDLEY__IS_CONSTEXPR(expr) __builtin_types_compatible_p(__typeof__((1 ? (void*) ((__INTPTR_TYPE__) ((expr) * 0)) : (int*) 0)), int*)
 #    else
