@@ -781,7 +781,8 @@
 #if \
   (HEDLEY_HAS_BUILTIN(__builtin_unreachable) && (!defined(HEDLEY_ARM_VERSION))) || \
   HEDLEY_GCC_VERSION_CHECK(4,5,0) || \
-  HEDLEY_INTEL_VERSION_CHECK(13,0,0)
+  HEDLEY_INTEL_VERSION_CHECK(13,0,0) || \
+  HEDLEY_IBM_VERSION_CHECK(13,1,5)
 #  define HEDLEY_UNREACHABLE() __builtin_unreachable()
 #elif HEDLEY_MSVC_VERSION_CHECK(13,10,0)
 #  define HEDLEY_UNREACHABLE() __assume(0)
@@ -820,7 +821,8 @@
 #elif \
   (HEDLEY_HAS_BUILTIN(__builtin_unreachable) && !defined(HEDLEY_ARM_VERSION)) || \
   HEDLEY_GCC_VERSION_CHECK(4,5,0) || \
-  HEDLEY_INTEL_VERSION_CHECK(13,0,0)
+  HEDLEY_INTEL_VERSION_CHECK(13,0,0) || \
+  HEDLEY_IBM_VERSION_CHECK(13,1,5)
 #  define HEDLEY_ASSUME(expr) ((void) ((expr) ? 1 : (__builtin_unreachable(), 1)))
 #else
 #  define HEDLEY_ASSUME(expr) ((void) (expr))
