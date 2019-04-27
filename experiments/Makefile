@@ -74,6 +74,7 @@ NULL =
 
 TESTS = \
 	statement-expressions \
+	typeof \
 	$(NULL)
 
 ifneq ($(CXX), none)

@@ -7,10 +7,12 @@ CXXFLAGS = --c++ $(CFLAGS)
 
 TESTS = \
 	statement-expressions.o statement-expressions-cpp.o \
+	typeof.o typeof-cpp.o \
 	$(NULL)
 
 CLEANFILES = $(TESTS) \
 	statement-expressions.cpp statement-expressions.o statement-expressions-cpp.o \
+	typeof.cpp typeof.o typeof-cpp.o \
 	$(NULL)
 
 all: $(TESTS)
@@ -23,5 +25,12 @@ statement-expressions.o: statement-expressions.c
 statement-expressions.cpp: statement-expressions.c
 	copy /Y $(?) $(@) >NUL
 statement-expressions-cpp.o: statement-expressions.cpp
+	$(CXX) $(CXXFLAGS) --output $(@) $(?)
+
+typeof.o: typeof.c
+	$(CC) $(CFLAGS) --output $(@) $(?)
+typeof.cpp: typeof.c
+	copy /Y $(?) $(@) >NUL
+typeof-cpp.o: typeof.cpp
 	$(CXX) $(CXXFLAGS) --output $(@) $(?)
 

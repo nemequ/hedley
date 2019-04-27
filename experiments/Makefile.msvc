@@ -7,10 +7,12 @@ CXXFLAGS = $(CFLAGS)
 
 TESTS = \
 	statement-expressions.exe statement-expressions-cpp.exe \
+	typeof.exe typeof-cpp.exe \
 	$(NULL)
 
 CLEANFILES = $(TESTS) \
 	statement-expressions.cpp statement-expressions.obj statement-expressions.lib statement-expressions-cpp.exp statement-expressions-cpp.lib \
+	typeof.cpp typeof.obj typeof.lib typeof-cpp.exp typeof-cpp.lib \
 	$(NULL)
 
 all: $(TESTS)
@@ -23,5 +25,12 @@ statement-expressions.exe: statement-expressions.c
 statement-expressions.cpp: statement-expressions.c
 	copy /Y $(?) $(@) >NUL
 statement-expressions-cpp.exe: statement-expressions.cpp
+	$(CXX) $(CXXFLAGS) /Fe$(@) $(?)
+
+typeof.exe: typeof.c
+	$(CC) $(CFLAGS) /Fe$(@) $(?)
+typeof.cpp: typeof.c
+	copy /Y $(?) $(@) >NUL
+typeof-cpp.exe: typeof.cpp
 	$(CXX) $(CXXFLAGS) /Fe$(@) $(?)
 
