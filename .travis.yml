@@ -231,4 +231,4 @@ before_install:
 - if [ -n "${CXX_COMPILER}" ]; then export CXX="${CXX_COMPILER}"; fi
 
 script:
-- cd test && make
+- (cd test && make) && (cd experiments && make)
