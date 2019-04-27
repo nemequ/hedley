@@ -73,6 +73,7 @@ CXX_OUTPUT_FILE ?= --output=
 NULL =
 
 TESTS = \
+	assume-aligned \
 	statement-expressions \
 	typeof \
 	$(NULL)
