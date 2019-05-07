@@ -7,6 +7,7 @@
  * any warranty.
  *
  * For details, see <http://creativecommons.org/publicdomain/zero/1.0/>.
+ * SPDX-License-Identifier: CC0-1.0
  */
 
 #if !defined(HEDLEY_VERSION) || (HEDLEY_VERSION < 9)
