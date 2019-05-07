@@ -1151,8 +1151,13 @@ HEDLEY_DIAGNOSTIC_POP
 #if defined(HEDLEY_FALL_THROUGH)
 #  undef HEDLEY_FALL_THROUGH
 #endif
-#if defined(__cplusplus) && (!defined(__SUNPRO_CC) || HEDLEY_SUNPRO_VERSION_CHECK(5,15,0))
-#  if (__cplusplus >= 201703L)
+#if \
+     defined(__cplusplus) && \
+     (!defined(HEDLEY_SUNPRO_VERSION) || HEDLEY_SUNPRO_VERSION_CHECK(5,15,0)) && \
+     !defined(HEDLEY_PGI_VERSION)
+#  if \
+     (__cplusplus >= 201703L) || \
+     ((__cplusplus >= 201103L) && HEDLEY_HAS_CPP_ATTRIBUTE(fallthrough))
 #    define HEDLEY_FALL_THROUGH [[fallthrough]]
 #  elif (__cplusplus >= 201103L) && HEDLEY_HAS_CPP_ATTRIBUTE(clang::fallthrough)
 #    define HEDLEY_FALL_THROUGH [[clang::fallthrough]]
