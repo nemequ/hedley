@@ -79,6 +79,7 @@ TESTS = \
 	const \
 	constant \
 	deprecated \
+	empty-bases \
 	fallthrough \
 	flags \
 	inline \
@@ -197,6 +198,10 @@ Makefile.msvc: Makefile
 	@echo -e "CFLAGS = /nologo /Wall /wd4464 /wd4514\r" >> $@
 	@echo -e "CXXFLAGS = \x24(CFLAGS)\r" >> $@
 	@echo -e "\r" >> $@
+
+	@echo -e "TESTS = \x5c\r" >> $@
+	@$(foreach file,$(TESTS),echo -e "\t$(file:=.exe) $(file:=-cpp.exe) \x5c\r" >> $@;)
+	@echo -e "\t\x24(NULL)\r\n\r" >> $@
 
 	@echo -e "TESTS = \x5c\r" >> $@
 	@$(foreach file,$(TESTS),echo -e "\t$(file:=.exe) $(file:=-cpp.exe) \x5c\r" >> $@;)

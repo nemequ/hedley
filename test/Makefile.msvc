@@ -12,6 +12,41 @@ TESTS = \
 	const.exe const-cpp.exe \
 	constant.exe constant-cpp.exe \
 	deprecated.exe deprecated-cpp.exe \
+	empty-bases.exe empty-bases-cpp.exe \
+	fallthrough.exe fallthrough-cpp.exe \
+	flags.exe flags-cpp.exe \
+	inline.exe inline-cpp.exe \
+	likely.exe likely-cpp.exe \
+	malloc.exe malloc-cpp.exe \
+	message.exe message-cpp.exe \
+	noinline.exe noinline-cpp.exe \
+	no-return.exe no-return-cpp.exe \
+	non-null.exe non-null-cpp.exe \
+	predict.exe predict-cpp.exe \
+	printf-format.exe printf-format-cpp.exe \
+	pure.exe pure-cpp.exe \
+	require.exe require-cpp.exe \
+	restrict.exe restrict-cpp.exe \
+	returns-non-null.exe returns-non-null-cpp.exe \
+	sentinel.exe sentinel-cpp.exe \
+	static-assert.exe static-assert-cpp.exe \
+	stringify.exe stringify-cpp.exe \
+	unknown-pragmas.exe unknown-pragmas-cpp.exe \
+	unavailable.exe unavailable-cpp.exe \
+	unreachable.exe unreachable-cpp.exe \
+	visibility.exe visibility-cpp.exe \
+	warn.exe warn-cpp.exe \
+	warn-unused-result.exe warn-unused-result-cpp.exe \
+	$(NULL)
+
+TESTS = \
+	array-param.exe array-param-cpp.exe \
+	assume.exe assume-cpp.exe \
+	cast.exe cast-cpp.exe \
+	const.exe const-cpp.exe \
+	constant.exe constant-cpp.exe \
+	deprecated.exe deprecated-cpp.exe \
+	empty-bases.exe empty-bases-cpp.exe \
 	fallthrough.exe fallthrough-cpp.exe \
 	flags.exe flags-cpp.exe \
 	inline.exe inline-cpp.exe \
@@ -45,6 +80,7 @@ CLEANFILES = $(TESTS) \
 	const.cpp const.obj const.lib const-cpp.exp const-cpp.lib \
 	constant.cpp constant.obj constant.lib constant-cpp.exp constant-cpp.lib \
 	deprecated.cpp deprecated.obj deprecated.lib deprecated-cpp.exp deprecated-cpp.lib \
+	empty-bases.cpp empty-bases.obj empty-bases.lib empty-bases-cpp.exp empty-bases-cpp.lib \
 	fallthrough.cpp fallthrough.obj fallthrough.lib fallthrough-cpp.exp fallthrough-cpp.lib \
 	flags.cpp flags.obj flags.lib flags-cpp.exp flags-cpp.lib \
 	inline.cpp inline.obj inline.lib inline-cpp.exp inline-cpp.lib \
@@ -116,6 +152,13 @@ deprecated.exe: deprecated.c
 deprecated.cpp: deprecated.c
 	copy /Y $(?) $(@) >NUL
 deprecated-cpp.exe: deprecated.cpp
+	$(CXX) $(CXXFLAGS) /Fe$(@) $(?)
+
+empty-bases.exe: empty-bases.c
+	$(CC) $(CFLAGS) /Fe$(@) $(?)
+empty-bases.cpp: empty-bases.c
+	copy /Y $(?) $(@) >NUL
+empty-bases-cpp.exe: empty-bases.cpp
 	$(CXX) $(CXXFLAGS) /Fe$(@) $(?)
 
 fallthrough.exe: fallthrough.c

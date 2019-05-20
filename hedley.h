@@ -1456,6 +1456,15 @@ HEDLEY_DIAGNOSTIC_POP
 #  define HEDLEY_FLAGS_CAST(T, expr) HEDLEY_STATIC_CAST(T, expr)
 #endif
 
+#if defined(HEDLEY_EMPTY_BASES)
+#  undef HEDLEY_EMPTY_BASES
+#endif
+#if HEDLEY_MSVC_VERSION_CHECK(19,0,23918) && !HEDLEY_MSVC_VERSION_CHECK(20,0,0)
+#  define HEDLEY_EMPTY_BASES __declspec(empty_bases)
+#else
+#  define HEDLEY_EMPTY_BASES
+#endif
+
 /* Remaining macros are deprecated. */
 
 #if defined(HEDLEY_GCC_NOT_CLANG_VERSION_CHECK)
