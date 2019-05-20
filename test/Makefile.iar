@@ -12,6 +12,7 @@ TESTS = \
 	const.o const-cpp.o \
 	constant.o constant-cpp.o \
 	deprecated.o deprecated-cpp.o \
+	empty-bases.o empty-bases-cpp.o \
 	fallthrough.o fallthrough-cpp.o \
 	flags.o flags-cpp.o \
 	inline.o inline-cpp.o \
@@ -45,6 +46,7 @@ CLEANFILES = $(TESTS) \
 	const.cpp const.o const-cpp.o \
 	constant.cpp constant.o constant-cpp.o \
 	deprecated.cpp deprecated.o deprecated-cpp.o \
+	empty-bases.cpp empty-bases.o empty-bases-cpp.o \
 	fallthrough.cpp fallthrough.o fallthrough-cpp.o \
 	flags.cpp flags.o flags-cpp.o \
 	inline.cpp inline.o inline-cpp.o \
@@ -116,6 +118,13 @@ deprecated.o: deprecated.c
 deprecated.cpp: deprecated.c
 	copy /Y $(?) $(@) >NUL
 deprecated-cpp.o: deprecated.cpp
+	$(CXX) $(CXXFLAGS) --output $(@) $(?)
+
+empty-bases.o: empty-bases.c
+	$(CC) $(CFLAGS) --output $(@) $(?)
+empty-bases.cpp: empty-bases.c
+	copy /Y $(?) $(@) >NUL
+empty-bases-cpp.o: empty-bases.cpp
 	$(CXX) $(CXXFLAGS) --output $(@) $(?)
 
 fallthrough.o: fallthrough.c

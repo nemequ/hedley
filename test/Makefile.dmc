@@ -12,6 +12,7 @@ TESTS = \
 	const.exe const-cpp.exe \
 	constant.exe constant-cpp.exe \
 	deprecated.exe deprecated-cpp.exe \
+	empty-bases.exe empty-bases-cpp.exe \
 	fallthrough.exe fallthrough-cpp.exe \
 	flags.exe flags-cpp.exe \
 	inline.exe inline-cpp.exe \
@@ -45,6 +46,7 @@ CLEANFILES = $(TESTS) \
 	const.cpp const.exe const-cpp.exe const.map const-cpp.map \
 	constant.cpp constant.exe constant-cpp.exe constant.map constant-cpp.map \
 	deprecated.cpp deprecated.exe deprecated-cpp.exe deprecated.map deprecated-cpp.map \
+	empty-bases.cpp empty-bases.exe empty-bases-cpp.exe empty-bases.map empty-bases-cpp.map \
 	fallthrough.cpp fallthrough.exe fallthrough-cpp.exe fallthrough.map fallthrough-cpp.map \
 	flags.cpp flags.exe flags-cpp.exe flags.map flags-cpp.map \
 	inline.cpp inline.exe inline-cpp.exe inline.map inline-cpp.map \
@@ -116,6 +118,13 @@ deprecated.exe: deprecated.c
 deprecated.cpp: deprecated.c
 	copy /Y $(?) $(@) >NUL
 deprecated-cpp.exe: deprecated.cpp
+	$(CXX) $(CXXFLAGS) -o $(@) $(?)
+
+empty-bases.exe: empty-bases.c
+	$(CC) $(CFLAGS) -o $(@) $(?)
+empty-bases.cpp: empty-bases.c
+	copy /Y $(?) $(@) >NUL
+empty-bases-cpp.exe: empty-bases.cpp
 	$(CXX) $(CXXFLAGS) -o $(@) $(?)
 
 fallthrough.exe: fallthrough.c
