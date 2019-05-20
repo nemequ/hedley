@@ -13,4 +13,5 @@ HEDLEY_STATIC_ASSERT(sizeof(Derived3) == sizeof(Empty2), "empty base optimizatio
 #endif /* __cplusplus */
 
 int main(void) {
+  return 0;
 }
