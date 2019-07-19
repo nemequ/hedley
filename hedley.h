@@ -686,7 +686,7 @@
 #elif \
   HEDLEY_MSVC_VERSION_CHECK(13,10,0) || \
   HEDLEY_PELLES_VERSION_CHECK(6,50,0)
-#  define HEDLEY_DEPRECATED(since) _declspec(deprecated)
+#  define HEDLEY_DEPRECATED(since) __declspec(deprecated)
 #  define HEDLEY_DEPRECATED_FOR(since, replacement) __declspec(deprecated)
 #elif HEDLEY_IAR_VERSION_CHECK(8,0,0)
 #  define HEDLEY_DEPRECATED(since) _Pragma("deprecated")

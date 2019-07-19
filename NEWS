@@ -1,7 +1,9 @@
 Version 10
 ==========
 
-
+* New macros:
+  * HEDLEY_EMPTY_BASES
+* Fix HEDLEY_DEPRECATED macro for Visual Studio 2003
 
 Version 9
 =========
