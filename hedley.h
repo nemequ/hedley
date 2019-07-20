@@ -761,6 +761,8 @@
   HEDLEY_TI_VERSION_CHECK(18,0,0) || \
   (HEDLEY_TI_VERSION_CHECK(17,3,0) && defined(__TI_GNU_ATTRIBUTE_SUPPORT__))
 #  define HEDLEY_NO_RETURN __attribute__((__noreturn__))
+#elif HEDLEY_SUNPRO_VERSION_CHECK(5,10,0)
+#  define HEDLEY_NO_RETURN _Pragma("does_not_return")
 #elif HEDLEY_MSVC_VERSION_CHECK(13,10,0)
 #  define HEDLEY_NO_RETURN __declspec(noreturn)
 #elif HEDLEY_TI_VERSION_CHECK(6,0,0) && defined(__cplusplus)
@@ -961,6 +963,8 @@ HEDLEY_DIAGNOSTIC_POP
   HEDLEY_TI_VERSION_CHECK(8,0,0) || \
   (HEDLEY_TI_VERSION_CHECK(7,3,0) && defined(__TI_GNU_ATTRIBUTE_SUPPORT__))
 #  define HEDLEY_MALLOC __attribute__((__malloc__))
+#elif HEDLEY_SUNPRO_VERSION_CHECK(5,10,0)
+#  define HEDLEY_MALLOC _Pragma("returns_new_memory")
 #elif HEDLEY_MSVC_VERSION_CHECK(14, 0, 0)
 #  define HEDLEY_MALLOC __declspec(restrict)
 #else
@@ -981,6 +985,8 @@ HEDLEY_DIAGNOSTIC_POP
   (HEDLEY_TI_VERSION_CHECK(7,3,0) && defined(__TI_GNU_ATTRIBUTE_SUPPORT__)) || \
   HEDLEY_PGI_VERSION_CHECK(17,10,0)
 #  define HEDLEY_PURE __attribute__((__pure__))
+#elif HEDLEY_SUNPRO_VERSION_CHECK(5,10,0)
+#  define HEDLEY_PURE _Pragma("does_not_write_global_data")
 #elif HEDLEY_TI_VERSION_CHECK(6,0,0) && defined(__cplusplus)
 #  define HEDLEY_PURE _Pragma("FUNC_IS_PURE;")
 #else
@@ -1001,6 +1007,9 @@ HEDLEY_DIAGNOSTIC_POP
   (HEDLEY_TI_VERSION_CHECK(7,3,0) && defined(__TI_GNU_ATTRIBUTE_SUPPORT__)) || \
   HEDLEY_PGI_VERSION_CHECK(17,10,0)
 #  define HEDLEY_CONST __attribute__((__const__))
+#elif \
+  HEDLEY_SUNPRO_VERSION_CHECK(5,10,0)
+#  define HEDLEY_CONST _Pragma("no_side_effect")
 #else
 #  define HEDLEY_CONST HEDLEY_PURE
 #endif
