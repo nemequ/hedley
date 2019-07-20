@@ -3,7 +3,9 @@ Version 10
 
 * New macros:
   * HEDLEY_EMPTY_BASES
-* Fix HEDLEY_DEPRECATED macro for Visual Studio 2003
+* Bug fixes:
+  * HEDLEY_DEPRECATED macro for Visual Studio 2003
+  * HEDLEY_IS_CONSTANT macro for ODS in C++ mode
 
 Version 9
 =========
