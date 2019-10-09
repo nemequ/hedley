@@ -6,11 +6,15 @@ branches:
 environment:
   matrix:
     - VS_VERSION: 9.0
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+      VS_YEAR: 2019
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      VS_YEAR: 2017
     - VS_VERSION: 14.0
     - VS_VERSION: 12.0
     - VS_VERSION: 11.0
     - VS_VERSION: 10.0
 
 build_script:
-  - call "C:\Program Files (x86)\Microsoft Visual Studio %VS_VERSION%\VC\vcvarsall.bat"
+  - if NOT [] == [%VS_VERSION%] ( call "C:\Program Files (x86)\Microsoft Visual Studio %VS_VERSION%\VC\vcvarsall.bat" ) else ( call "C:\Program Files (x86)\Microsoft Visual Studio\%VS_YEAR%\Community\VC\Auxiliary\Build\vcvarsall.bat" x86 )
   - cd test && nmake /f Makefile.msvc
