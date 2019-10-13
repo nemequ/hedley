@@ -4,7 +4,14 @@
 #  pragma diag_suppress=Pe082
 #endif
 
-#include <stdlib.h>
+#if defined(_MSC_VER)
+  HEDLEY_DIAGNOSTIC_PUSH
+  #pragma warning(disable:4255 4668)
+  #include <stdlib.h>
+  HEDLEY_DIAGNOSTIC_POP
+#else
+  #include <stdlib.h>
+#endif
 
 HEDLEY_NO_RETURN
 static void

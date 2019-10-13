@@ -1,5 +1,13 @@
-#include <assert.h>
-#include <stddef.h>
+#if defined(_MSC_VER)
+  #pragma warning(push)
+  #pragma warning(disable:4668)
+  #include <assert.h>
+  #include <stddef.h>
+  #pragma warning(pop)
+#else
+  #include <assert.h>
+  #include <stddef.h>
+#endif
 
 #include "../hedley.h"
 

@@ -1,6 +1,13 @@
 #include "../hedley.h"
 
-#include <assert.h>
+#if defined(_MSC_VER)
+  HEDLEY_DIAGNOSTIC_PUSH
+  #pragma warning(disable:4668)
+  #include <assert.h>
+  HEDLEY_DIAGNOSTIC_POP
+#else
+  #include <assert.h>
+#endif
 
 static void acopy(int n, int* HEDLEY_RESTRICT a, int* HEDLEY_RESTRICT b) {
   int i;

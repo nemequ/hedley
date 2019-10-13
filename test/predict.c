@@ -1,7 +1,15 @@
 #include "../hedley.h"
 
-#include <stddef.h>
-#include <assert.h>
+#if defined(_MSC_VER)
+  HEDLEY_DIAGNOSTIC_PUSH
+  #pragma warning(disable:4668)
+  #include <assert.h>
+  #include <stddef.h>
+  HEDLEY_DIAGNOSTIC_POP
+#else
+  #include <assert.h>
+  #include <stddef.h>
+#endif
 
 int main(void) {
   int x = 0, y = 0;

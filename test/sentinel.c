@@ -10,7 +10,14 @@
 #  pragma GCC diagnostic warning "-Wformat"
 #endif
 
-#include <assert.h>
+#if defined(_MSC_VER)
+  HEDLEY_DIAGNOSTIC_PUSH
+  #pragma warning(disable:4668)
+  #include <assert.h>
+  HEDLEY_DIAGNOSTIC_POP
+#else
+  #include <assert.h>
+#endif
 
 HEDLEY_SENTINEL(0)
 static int test_sentinel(void* ptr, ...) {

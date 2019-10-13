@@ -1,6 +1,13 @@
 #include "../hedley.h"
 
-#include <stdio.h>
+#if defined(_MSC_VER)
+  HEDLEY_DIAGNOSTIC_PUSH
+  #pragma warning(disable:4255 4668 4710)
+  #include <stdio.h>
+  HEDLEY_DIAGNOSTIC_POP
+#else
+#  include <stdio.h>
+#endif
 
 int main(int argc, char* argv[HEDLEY_ARRAY_PARAM(argc)]) {
   switch (argc) {
