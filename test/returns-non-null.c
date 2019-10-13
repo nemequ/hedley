@@ -11,7 +11,7 @@ static const char* get_string(void) {
 
 int main(void) {
   const char* s = get_string();
-  if (s != NULL)
+  if (s != HEDLEY_NULL)
     fputs(s, stdout);
   else
     fputs("This shouldn't happen\n", stdout);

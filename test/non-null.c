@@ -18,7 +18,7 @@ static const char* non_null(const char* msg) {
 }
 
 int main (void) {
-  non_null(NULL);
+  non_null(HEDLEY_STATIC_CAST(const char*, HEDLEY_NULL));
 
   return 0;
 }

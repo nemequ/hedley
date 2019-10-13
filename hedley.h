@@ -1428,6 +1428,23 @@ HEDLEY_DIAGNOSTIC_POP
 #  define HEDLEY_CPP_CAST(T, expr) (expr)
 #endif
 
+#if defined(HEDLEY_NULL)
+#  undef HEDLEY_NULL
+#endif
+#if defined(__cplusplus)
+#  if __cplusplus >= 201103L
+#    define HEDLEY_NULL HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_(nullptr)
+#  elif defined(NULL)
+#    define HEDLEY_NULL NULL
+#  else
+#    define HEDLEY_NULL HEDLEY_STATIC_CAST(void*, 0)
+#  endif
+#elif defined(NULL)
+#  define HEDLEY_NULL NULL
+#else
+#  define HEDLEY_NULL ((void*) 0)
+#endif
+
 #if defined(HEDLEY_MESSAGE)
 #  undef HEDLEY_MESSAGE
 #endif

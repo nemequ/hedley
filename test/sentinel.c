@@ -12,20 +12,16 @@
 
 #include <assert.h>
 
-#if !defined(NULL)
-#  define NULL HEDLEY_STATIC_CAST(void*, 0)
-#endif
-
 HEDLEY_SENTINEL(0)
 static int test_sentinel(void* ptr, ...) {
-  assert(ptr == NULL);
+  assert(ptr == HEDLEY_NULL);
 
   return 42;
 }
 
 int main(void) {
-  test_sentinel(NULL, 1, NULL);
-  test_sentinel(NULL, 1);
+  test_sentinel(HEDLEY_NULL, 1, HEDLEY_NULL);
+  test_sentinel(HEDLEY_NULL, 1);
 
   return 0;
 }
