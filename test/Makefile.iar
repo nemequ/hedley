@@ -20,6 +20,7 @@ TESTS = \
 	malloc.o malloc-cpp.o \
 	message.o message-cpp.o \
 	noinline.o noinline-cpp.o \
+	no-escape.o no-escape-cpp.o \
 	no-return.o no-return-cpp.o \
 	non-null.o non-null-cpp.o \
 	predict.o predict-cpp.o \
@@ -54,6 +55,7 @@ CLEANFILES = $(TESTS) \
 	malloc.cpp malloc.o malloc-cpp.o \
 	message.cpp message.o message-cpp.o \
 	noinline.cpp noinline.o noinline-cpp.o \
+	no-escape.cpp no-escape.o no-escape-cpp.o \
 	no-return.cpp no-return.o no-return-cpp.o \
 	non-null.cpp non-null.o non-null-cpp.o \
 	predict.cpp predict.o predict-cpp.o \
@@ -174,6 +176,13 @@ noinline.o: noinline.c
 noinline.cpp: noinline.c
 	copy /Y $(?) $(@) >NUL
 noinline-cpp.o: noinline.cpp
+	$(CXX) $(CXXFLAGS) --output $(@) $(?)
+
+no-escape.o: no-escape.c
+	$(CC) $(CFLAGS) --output $(@) $(?)
+no-escape.cpp: no-escape.c
+	copy /Y $(?) $(@) >NUL
+no-escape-cpp.o: no-escape.cpp
 	$(CXX) $(CXXFLAGS) --output $(@) $(?)
 
 no-return.o: no-return.c

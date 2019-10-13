@@ -811,6 +811,15 @@
 #  define HEDLEY_NO_RETURN
 #endif
 
+#if defined(HEDLEY_NO_ESCAPE)
+#  undef HEDLEY_NO_ESCAPE
+#endif
+#if HEDLEY_HAS_ATTRIBUTE(noescape)
+#  define HEDLEY_NO_ESCAPE __attribute__((__noescape__))
+#else
+#  define HEDLEY_NO_ESCAPE
+#endif
+
 #if defined(HEDLEY_UNREACHABLE)
 #  undef HEDLEY_UNREACHABLE
 #endif

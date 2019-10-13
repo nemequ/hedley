@@ -20,6 +20,7 @@ TESTS = \
 	malloc.exe malloc-cpp.exe \
 	message.exe message-cpp.exe \
 	noinline.exe noinline-cpp.exe \
+	no-escape.exe no-escape-cpp.exe \
 	no-return.exe no-return-cpp.exe \
 	non-null.exe non-null-cpp.exe \
 	predict.exe predict-cpp.exe \
@@ -54,6 +55,7 @@ CLEANFILES = $(TESTS) \
 	malloc.cpp malloc.exe malloc-cpp.exe malloc.map malloc-cpp.map \
 	message.cpp message.exe message-cpp.exe message.map message-cpp.map \
 	noinline.cpp noinline.exe noinline-cpp.exe noinline.map noinline-cpp.map \
+	no-escape.cpp no-escape.exe no-escape-cpp.exe no-escape.map no-escape-cpp.map \
 	no-return.cpp no-return.exe no-return-cpp.exe no-return.map no-return-cpp.map \
 	non-null.cpp non-null.exe non-null-cpp.exe non-null.map non-null-cpp.map \
 	predict.cpp predict.exe predict-cpp.exe predict.map predict-cpp.map \
@@ -174,6 +176,13 @@ noinline.exe: noinline.c
 noinline.cpp: noinline.c
 	copy /Y $(?) $(@) >NUL
 noinline-cpp.exe: noinline.cpp
+	$(CXX) $(CXXFLAGS) -o $(@) $(?)
+
+no-escape.exe: no-escape.c
+	$(CC) $(CFLAGS) -o $(@) $(?)
+no-escape.cpp: no-escape.c
+	copy /Y $(?) $(@) >NUL
+no-escape-cpp.exe: no-escape.cpp
 	$(CXX) $(CXXFLAGS) -o $(@) $(?)
 
 no-return.exe: no-return.c

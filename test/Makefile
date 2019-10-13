@@ -87,6 +87,7 @@ TESTS = \
 	malloc \
 	message \
 	noinline \
+	no-escape \
 	no-return \
 	non-null \
 	predict \
