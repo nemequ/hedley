@@ -1,5 +1,9 @@
 #include "../hedley.h"
 
+#if HEDLEY_HAS_WARNING("-Wcovered-switch-default")
+#  pragma clang diagnostic warning "-Wcovered-switch-default"
+#endif
+
 enum Foo {
   FOO_BAR,
   FOO_BAZ,

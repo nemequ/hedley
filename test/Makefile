@@ -40,7 +40,7 @@ endif
 CLANG_CXX_FLAGS = -Weverything -Werror
 GCC_CXX_FLAGS = -Wall -Wextra -Werror
 
-ifeq ($(notdir $(CXX)), clang)
+ifeq ($(notdir $(CXX)), clang++)
   CXXFLAGS ?= $(CLANG_CXX_FLAGS)
 else ifeq ($(notdir $(CXX)), sunCC)
   CXXFLAGS ?= -errwarn=%all -errtags=yes

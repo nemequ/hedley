@@ -9,5 +9,5 @@ enum Foo {
 int main(void) {
   const enum Foo foo = HEDLEY_FLAGS_CAST(enum Foo, FOO_BAR | FOO_BAZ);
 
-  return (int) foo;
+  return HEDLEY_STATIC_CAST(int, foo);
 }
