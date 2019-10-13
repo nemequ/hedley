@@ -557,6 +557,21 @@
 #  define HEDLEY_GCC_HAS_WARNING(warning,major,minor,patch) HEDLEY_GCC_VERSION_CHECK(major,minor,patch)
 #endif
 
+/* HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_ is for
+   HEDLEY INTERNAL USE ONLY.  API subject to change without notice. */
+#if defined(HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_)
+#  undef HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_
+#endif
+#if defined(__cplusplus) && HEDLEY_HAS_WARNING("-Wc++98-compat")
+#  define HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_(xpr) \
+     HEDLEY_DIAGNOSTIC_PUSH \
+     _Pragma("clang diagnostic ignored \"-Wc++98-compat\"") \
+     xpr \
+     HEDLEY_DIAGNOSTIC_POP
+#else
+#  define HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_(x) x
+#endif
+
 #if \
   (defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901L)) || \
   defined(__clang__) || \
@@ -696,8 +711,8 @@
 #  undef HEDLEY_DEPRECATED_FOR
 #endif
 #if defined(__cplusplus) && (__cplusplus >= 201402L)
-#  define HEDLEY_DEPRECATED(since) [[deprecated("Since " #since)]]
-#  define HEDLEY_DEPRECATED_FOR(since, replacement) [[deprecated("Since " #since "; use " #replacement)]]
+#  define HEDLEY_DEPRECATED(since) HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_([[deprecated("Since " #since)]])
+#  define HEDLEY_DEPRECATED_FOR(since, replacement) HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_([[deprecated("Since " #since "; use " #replacement)]])
 #elif \
   HEDLEY_HAS_EXTENSION(attribute_deprecated_with_message) || \
   HEDLEY_GCC_VERSION_CHECK(4,5,0) || \
@@ -748,7 +763,7 @@
 #  undef HEDLEY_WARN_UNUSED_RESULT
 #endif
 #if defined(__cplusplus) && (__cplusplus >= 201703L)
-#  define HEDLEY_WARN_UNUSED_RESULT [[nodiscard]]
+#  define HEDLEY_WARN_UNUSED_RESULT HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_([[nodiscard]])
 #elif \
   HEDLEY_HAS_ATTRIBUTE(warn_unused_result) || \
   HEDLEY_GCC_VERSION_CHECK(3,4,0) || \
@@ -787,7 +802,7 @@
 #elif defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L
 #  define HEDLEY_NO_RETURN _Noreturn
 #elif defined(__cplusplus) && (__cplusplus >= 201103L)
-#  define HEDLEY_NO_RETURN [[noreturn]]
+#  define HEDLEY_NO_RETURN HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_([[noreturn]])
 #elif \
   HEDLEY_HAS_ATTRIBUTE(noreturn) || \
   HEDLEY_GCC_VERSION_CHECK(3,2,0) || \
@@ -928,7 +943,7 @@ HEDLEY_DIAGNOSTIC_POP
 #endif
 #if defined(__cplusplus)
 #  if __cplusplus >= 201103L
-#    define HEDLEY_CONSTEXPR constexpr
+#    define HEDLEY_CONSTEXPR HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_(constexpr)
 #  endif
 #endif
 #if !defined(HEDLEY_CONSTEXPR)
@@ -1208,9 +1223,9 @@ HEDLEY_DIAGNOSTIC_POP
 #if HEDLEY_GNUC_HAS_ATTRIBUTE(fallthrough,7,0,0) && !defined(HEDLEY_PGI_VERSION)
 #  define HEDLEY_FALL_THROUGH __attribute__((__fallthrough__))
 #elif HEDLEY_HAS_CPP_ATTRIBUTE_NS(clang,fallthrough)
-#  define HEDLEY_FALL_THROUGH [[clang::fallthrough]]
+#  define HEDLEY_FALL_THROUGH HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_([[clang::fallthrough]])
 #elif HEDLEY_HAS_CPP_ATTRIBUTE(fallthrough)
-#  define HEDLEY_FALL_THROUGH [[fallthrough]]
+#  define HEDLEY_FALL_THROUGH HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_([[fallthrough]])
 #elif defined(__fallthrough) /* SAL */
 #  define HEDLEY_FALL_THROUGH __fallthrough
 #else
@@ -1250,12 +1265,11 @@ HEDLEY_DIAGNOSTIC_POP
 #if defined(HEDLEY_REQUIRE_CONSTEXPR)
 #  undef HEDLEY_REQUIRE_CONSTEXPR
 #endif
-/* Note the double-underscore. For internal use only; no API
- * guarantees! */
+/* HEDLEY__IS_CONSTEXPR is for
+   HEDLEY INTERNAL USE ONLY.  API subject to change without notice. */
 #if defined(HEDLEY__IS_CONSTEXPR)
 #  undef HEDLEY__IS_CONSTEXPR
 #endif
-
 #if \
   HEDLEY_HAS_BUILTIN(__builtin_constant_p) || \
   HEDLEY_GCC_VERSION_CHECK(3,4,0) || \
@@ -1360,7 +1374,7 @@ HEDLEY_DIAGNOSTIC_POP
   (defined(__cplusplus) && (__cplusplus >= 201103L)) || \
   HEDLEY_MSVC_VERSION_CHECK(16,0,0) || \
   (defined(__cplusplus) && HEDLEY_TI_VERSION_CHECK(8,3,0))
-#  define HEDLEY_STATIC_ASSERT(expr, message) static_assert(expr, message)
+#  define HEDLEY_STATIC_ASSERT(expr, message) HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_(static_assert(expr, message))
 #else
 #  define HEDLEY_STATIC_ASSERT(expr, message)
 #endif
