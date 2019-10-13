@@ -891,11 +891,14 @@
 #  define HEDLEY_ASSUME(expr) ((void) (expr))
 #endif
 
-
 HEDLEY_DIAGNOSTIC_PUSH
-#if \
-  HEDLEY_HAS_WARNING("-Wvariadic-macros") || \
-  HEDLEY_GCC_VERSION_CHECK(4,0,0)
+#if HEDLEY_HAS_WARNING("-Wpedantic")
+#  pragma clang diagnostic ignored "-Wpedantic"
+#endif
+#if HEDLEY_HAS_WARNING("-Wc++98-compat-pedantic") && defined(__cplusplus)
+#  pragma clang diagnostic ignored "-Wc++98-compat-pedantic"
+#endif
+#if HEDLEY_GCC_HAS_WARNING("-Wvariadic-macros",4,0,0)
 #  if defined(__clang__)
 #    pragma clang diagnostic ignored "-Wvariadic-macros"
 #  elif defined(HEDLEY_GCC_VERSION)
