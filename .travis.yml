@@ -8,7 +8,26 @@ matrix:
     ###
     ## Linux builds using various versions of GCC.
     ###
-    - env: C_COMPILER=gcc-7 CXX_COMPILER=g++-7
+    # - dist: bionic
+    #   env: C_COMPILER=gcc-9 CXX_COMPILER=g++-9
+    #   addons:
+    #     apt:
+    #       sources:
+    #       - ubuntu-toolchain-r-test
+    #       packages:
+    #       - gcc-9
+    #       - g++-9
+    - dist: bionic
+      env: C_COMPILER=gcc-8 CXX_COMPILER=g++-8
+      addons:
+        apt:
+          sources:
+          - ubuntu-toolchain-r-test
+          packages:
+          - gcc-8
+          - g++-8
+    - dist: trusty
+      env: C_COMPILER=gcc-7 CXX_COMPILER=g++-7
       addons:
         apt:
           sources:
@@ -16,7 +35,8 @@ matrix:
           packages:
           - gcc-7
           - g++-7
-    - env: C_COMPILER=gcc-6 CXX_COMPILER=g++-6
+    - dist: trusty
+      env: C_COMPILER=gcc-6 CXX_COMPILER=g++-6
       addons:
         apt:
           sources:
@@ -24,7 +44,8 @@ matrix:
           packages:
           - gcc-6
           - g++-6
-    - env: C_COMPILER=gcc-5 CXX_COMPILER=g++-5
+    - dist: trusty
+      env: C_COMPILER=gcc-5 CXX_COMPILER=g++-5
       addons:
         apt:
           sources:
@@ -32,7 +53,8 @@ matrix:
           packages:
           - gcc-5
           - g++-5
-    - env: C_COMPILER=gcc-4.9 CXX_COMPILER=g++-4.9
+    - dist: trusty
+      env: C_COMPILER=gcc-4.9 CXX_COMPILER=g++-4.9
       addons:
         apt:
           sources:
@@ -40,7 +62,8 @@ matrix:
           packages:
           - gcc-4.9
           - g++-4.9
-    - env: C_COMPILER=gcc-4.8 CXX_COMPILER=g++-4.8
+    - dist: trusty
+      env: C_COMPILER=gcc-4.8 CXX_COMPILER=g++-4.8
       addons:
         apt:
           sources:
@@ -48,7 +71,8 @@ matrix:
           packages:
           - gcc-4.8
           - g++-4.8
-    - env: C_COMPILER=gcc-4.7 CXX_COMPILER=g++-4.7
+    - dist: trusty
+      env: C_COMPILER=gcc-4.7 CXX_COMPILER=g++-4.7
       addons:
         apt:
           sources:
@@ -56,7 +80,8 @@ matrix:
           packages:
           - gcc-4.7
           - g++-4.7
-    - env: C_COMPILER=gcc-4.6 CXX_COMPILER=g++-4.6
+    - dist: trusty
+      env: C_COMPILER=gcc-4.6 CXX_COMPILER=g++-4.6
       addons:
         apt:
           sources:
@@ -64,7 +89,8 @@ matrix:
           packages:
           - gcc-4.6
           - g++-4.6
-    - env: C_COMPILER=gcc-4.4 CXX_COMPILER=g++-4.4
+    - dist: trusty
+      env: C_COMPILER=gcc-4.4 CXX_COMPILER=g++-4.4
       addons:
         apt:
           sources:
@@ -76,31 +102,80 @@ matrix:
     ###
     ## clang on Linux
     ###
-    # - env: C_COMPILER=clang-4.0 CXX_COMPILER=clang++-4.0
+    # - dist: bionic
+    #   env: C_COMPILER=clang-9 CXX_COMPILER=clang++-9
     #   addons:
     #     apt:
     #       sources:
-    #       - llvm-toolchain-precise-4.0
+    #       - llvm-toolchain-bionic-9
     #       - ubuntu-toolchain-r-test
     #       packages:
-    #       - clang-4.0
-    - env: C_COMPILER=clang-3.9 CXX_COMPILER=clang++-3.9
+    #       - clang-9
+    - dist: bionic
+      env: C_COMPILER=clang-8 CXX_COMPILER=clang++-8
       addons:
         apt:
           sources:
-          - llvm-toolchain-precise-3.9
+          - llvm-toolchain-bionic-8
+          - ubuntu-toolchain-r-test
+          packages:
+          - clang-8
+    - dist: bionic
+      env: C_COMPILER=clang-7 CXX_COMPILER=clang++-7
+      addons:
+        apt:
+          sources:
+          - llvm-toolchain-bionic-7
+          - ubuntu-toolchain-r-test
+          packages:
+          - clang-7
+    - dist: bionic
+      env: C_COMPILER=clang-6.0 CXX_COMPILER=clang++-6.0
+      addons:
+        apt:
+          sources:
+          - llvm-toolchain-bionic-6.0
+          - ubuntu-toolchain-r-test
+          packages:
+          - clang-6.0
+    - dist: bionic
+      env: C_COMPILER=clang-5.0 CXX_COMPILER=clang++-5.0
+      addons:
+        apt:
+          sources:
+          - llvm-toolchain-bionic-5.0
+          - ubuntu-toolchain-r-test
+          packages:
+          - clang-5.0
+    - dist: xenial
+      env: C_COMPILER=clang-4.0 CXX_COMPILER=clang++-4.0
+      addons:
+        apt:
+          sources:
+          - llvm-toolchain-xenial-4.0
+          - ubuntu-toolchain-r-test
+          packages:
+          - clang-4.0
+    - dist: xenial
+      env: C_COMPILER=clang-3.9 CXX_COMPILER=clang++-3.9
+      addons:
+        apt:
+          sources:
+          - llvm-toolchain-xenial-3.9
           - ubuntu-toolchain-r-test
           packages:
           - clang-3.9
-    - env: C_COMPILER=clang-3.8 CXX_COMPILER=clang++-3.8
+    - dist: xenial
+      env: C_COMPILER=clang-3.8 CXX_COMPILER=clang++-3.8
       addons:
         apt:
           sources:
-          - llvm-toolchain-precise-3.8
+          - llvm-toolchain-xenial-3.8
           - ubuntu-toolchain-r-test
           packages:
           - clang-3.8
-    - env: C_COMPILER=clang-3.7 CXX_COMPILER=clang++-3.7
+    - dist: trusty
+      env: C_COMPILER=clang-3.7 CXX_COMPILER=clang++-3.7
       addons:
         apt:
           sources:
@@ -108,7 +183,8 @@ matrix:
           - ubuntu-toolchain-r-test
           packages:
           - clang-3.7
-    - env: C_COMPILER=clang-3.6 CXX_COMPILER=clang++-3.6
+    - dist: trusty
+      env: C_COMPILER=clang-3.6 CXX_COMPILER=clang++-3.6
       addons:
         apt:
           sources:
@@ -116,7 +192,8 @@ matrix:
           - ubuntu-toolchain-r-test
           packages:
           - clang-3.6
-    - env: C_COMPILER=clang-3.5 CXX_COMPILER=clang++-3.5
+    - dist: trusty
+      env: C_COMPILER=clang-3.5 CXX_COMPILER=clang++-3.5
       addons:
         apt:
           sources:
@@ -128,7 +205,8 @@ matrix:
     ###
     ## PGI
     ###
-    - env: C_COMPILER=pgcc CXX_COMPILER=pgc++
+    - dist: xenial
+      env: C_COMPILER=pgcc CXX_COMPILER=pgc++
 
     ###
     ## OS X
@@ -138,7 +216,8 @@ matrix:
     ###
     ## mingw
     ###
-    - env: C_COMPILER=x86_64-w64-mingw32-gcc CXX_COMPILER=x86_64-w64-mingw32-g++
+    - dist: bionic
+      env: C_COMPILER=x86_64-w64-mingw32-gcc CXX_COMPILER=x86_64-w64-mingw32-g++
       addons:
         apt:
           packages:
