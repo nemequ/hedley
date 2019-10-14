@@ -32,6 +32,7 @@ TESTS = \
 	sentinel.exe sentinel-cpp.exe \
 	static-assert.exe static-assert-cpp.exe \
 	stringify.exe stringify-cpp.exe \
+	unknown-cpp-attributes.exe unknown-cpp-attributes-cpp.exe \
 	unknown-pragmas.exe unknown-pragmas-cpp.exe \
 	unavailable.exe unavailable-cpp.exe \
 	unreachable.exe unreachable-cpp.exe \
@@ -67,6 +68,7 @@ CLEANFILES = $(TESTS) \
 	sentinel.cpp sentinel.exe sentinel-cpp.exe sentinel.map sentinel-cpp.map \
 	static-assert.cpp static-assert.exe static-assert-cpp.exe static-assert.map static-assert-cpp.map \
 	stringify.cpp stringify.exe stringify-cpp.exe stringify.map stringify-cpp.map \
+	unknown-cpp-attributes.cpp unknown-cpp-attributes.exe unknown-cpp-attributes-cpp.exe unknown-cpp-attributes.map unknown-cpp-attributes-cpp.map \
 	unknown-pragmas.cpp unknown-pragmas.exe unknown-pragmas-cpp.exe unknown-pragmas.map unknown-pragmas-cpp.map \
 	unavailable.cpp unavailable.exe unavailable-cpp.exe unavailable.map unavailable-cpp.map \
 	unreachable.cpp unreachable.exe unreachable-cpp.exe unreachable.map unreachable-cpp.map \
@@ -260,6 +262,13 @@ stringify.exe: stringify.c
 stringify.cpp: stringify.c
 	copy /Y $(?) $(@) >NUL
 stringify-cpp.exe: stringify.cpp
+	$(CXX) $(CXXFLAGS) -o $(@) $(?)
+
+unknown-cpp-attributes.exe: unknown-cpp-attributes.c
+	$(CC) $(CFLAGS) -o $(@) $(?)
+unknown-cpp-attributes.cpp: unknown-cpp-attributes.c
+	copy /Y $(?) $(@) >NUL
+unknown-cpp-attributes-cpp.exe: unknown-cpp-attributes.cpp
 	$(CXX) $(CXXFLAGS) -o $(@) $(?)
 
 unknown-pragmas.exe: unknown-pragmas.c

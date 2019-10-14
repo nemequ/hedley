@@ -32,6 +32,7 @@ TESTS = \
 	sentinel.exe sentinel-cpp.exe \
 	static-assert.exe static-assert-cpp.exe \
 	stringify.exe stringify-cpp.exe \
+	unknown-cpp-attributes.exe unknown-cpp-attributes-cpp.exe \
 	unknown-pragmas.exe unknown-pragmas-cpp.exe \
 	unavailable.exe unavailable-cpp.exe \
 	unreachable.exe unreachable-cpp.exe \
@@ -67,6 +68,7 @@ TESTS = \
 	sentinel.exe sentinel-cpp.exe \
 	static-assert.exe static-assert-cpp.exe \
 	stringify.exe stringify-cpp.exe \
+	unknown-cpp-attributes.exe unknown-cpp-attributes-cpp.exe \
 	unknown-pragmas.exe unknown-pragmas-cpp.exe \
 	unavailable.exe unavailable-cpp.exe \
 	unreachable.exe unreachable-cpp.exe \
@@ -102,6 +104,7 @@ CLEANFILES = $(TESTS) \
 	sentinel.cpp sentinel.obj sentinel.lib sentinel-cpp.exp sentinel-cpp.lib \
 	static-assert.cpp static-assert.obj static-assert.lib static-assert-cpp.exp static-assert-cpp.lib \
 	stringify.cpp stringify.obj stringify.lib stringify-cpp.exp stringify-cpp.lib \
+	unknown-cpp-attributes.cpp unknown-cpp-attributes.obj unknown-cpp-attributes.lib unknown-cpp-attributes-cpp.exp unknown-cpp-attributes-cpp.lib \
 	unknown-pragmas.cpp unknown-pragmas.obj unknown-pragmas.lib unknown-pragmas-cpp.exp unknown-pragmas-cpp.lib \
 	unavailable.cpp unavailable.obj unavailable.lib unavailable-cpp.exp unavailable-cpp.lib \
 	unreachable.cpp unreachable.obj unreachable.lib unreachable-cpp.exp unreachable-cpp.lib \
@@ -295,6 +298,13 @@ stringify.exe: stringify.c
 stringify.cpp: stringify.c
 	copy /Y $(?) $(@) >NUL
 stringify-cpp.exe: stringify.cpp
+	$(CXX) $(CXXFLAGS) /Fe$(@) $(?)
+
+unknown-cpp-attributes.exe: unknown-cpp-attributes.c
+	$(CC) $(CFLAGS) /Fe$(@) $(?)
+unknown-cpp-attributes.cpp: unknown-cpp-attributes.c
+	copy /Y $(?) $(@) >NUL
+unknown-cpp-attributes-cpp.exe: unknown-cpp-attributes.cpp
 	$(CXX) $(CXXFLAGS) /Fe$(@) $(?)
 
 unknown-pragmas.exe: unknown-pragmas.c

@@ -32,6 +32,7 @@ TESTS = \
 	sentinel.o sentinel-cpp.o \
 	static-assert.o static-assert-cpp.o \
 	stringify.o stringify-cpp.o \
+	unknown-cpp-attributes.o unknown-cpp-attributes-cpp.o \
 	unknown-pragmas.o unknown-pragmas-cpp.o \
 	unavailable.o unavailable-cpp.o \
 	unreachable.o unreachable-cpp.o \
@@ -67,6 +68,7 @@ CLEANFILES = $(TESTS) \
 	sentinel.cpp sentinel.o sentinel-cpp.o \
 	static-assert.cpp static-assert.o static-assert-cpp.o \
 	stringify.cpp stringify.o stringify-cpp.o \
+	unknown-cpp-attributes.cpp unknown-cpp-attributes.o unknown-cpp-attributes-cpp.o \
 	unknown-pragmas.cpp unknown-pragmas.o unknown-pragmas-cpp.o \
 	unavailable.cpp unavailable.o unavailable-cpp.o \
 	unreachable.cpp unreachable.o unreachable-cpp.o \
@@ -260,6 +262,13 @@ stringify.o: stringify.c
 stringify.cpp: stringify.c
 	copy /Y $(?) $(@) >NUL
 stringify-cpp.o: stringify.cpp
+	$(CXX) $(CXXFLAGS) --output $(@) $(?)
+
+unknown-cpp-attributes.o: unknown-cpp-attributes.c
+	$(CC) $(CFLAGS) --output $(@) $(?)
+unknown-cpp-attributes.cpp: unknown-cpp-attributes.c
+	copy /Y $(?) $(@) >NUL
+unknown-cpp-attributes-cpp.o: unknown-cpp-attributes.cpp
 	$(CXX) $(CXXFLAGS) --output $(@) $(?)
 
 unknown-pragmas.o: unknown-pragmas.c

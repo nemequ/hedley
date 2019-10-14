@@ -58,8 +58,8 @@ else ifeq ($(notdir $(CXX)), icpc)
   CXXFLAGS ?= $(GCC_CXX_FLAGS)
   CXX_OUTPUT_FILE := -o
 else ifeq ($(notdir $(CC)), g++)
-  CFLAGS ?= $(GCC_CXX_FLAGS)
-  C_OUTPUT_FILE := -o
+  CXXFLAGS ?= $(GCC_CXX_FLAGS)
+  CXX_OUTPUT_FILE := -o
 else ifeq ($(notdir $(CC)), x86_64-w64-mingw32-g++)
   CFLAGS ?= $(GCC_CXX_FLAGS)
   C_OUTPUT_FILE := -o
@@ -99,6 +99,7 @@ TESTS = \
 	sentinel \
 	static-assert \
 	stringify \
+	unknown-cpp-attributes \
 	unknown-pragmas \
 	unavailable \
 	unreachable \
