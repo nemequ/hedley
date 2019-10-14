@@ -1004,6 +1004,52 @@ HEDLEY_DIAGNOSTIC_POP
      }))
 #  define HEDLEY_LIKELY(expr)   __builtin_expect(!!(expr), 1)
 #  define HEDLEY_UNLIKELY(expr) __builtin_expect(!!(expr), 0)
+#elif \
+  defined(__cplusplus) && \
+  (__cplusplus >= 201103L) && \
+  HEDLEY_HAS_CPP_ATTRIBUTE(likely) && \
+  HEDLEY_HAS_CPP_ATTRIBUTE(unlikely)
+#  define HEDLEY_LIKELY(expr) \
+     ( \
+      ([](bool value){ \
+         switch (value) { \
+	   HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_([[likely]]) case true: \
+	     return true; \
+	   HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_([[unlikely]]) case false: \
+	     return false; \
+	 } \
+      })(!!(expr)))
+#  define HEDLEY_UNLIKELY(expr) \
+     ( \
+      ([](bool value){ \
+         switch (value) { \
+	   HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_([[unlikely]]) case true: \
+	     return true; \
+	   HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_([[likely]]) case false: \
+	     return false; \
+	 } \
+      })(!!(expr)))
+#  define HEDLEY_PREDICT(expr, expected, probability) \
+     (\
+      ([](int value, int expected, double probability){ \
+        if (probability <= 0.1) { \
+          switch (value == expected) { \
+            HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_([[likely]]) case true: \
+              return value; \
+            HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_([[unlikely]]) case true: \
+              return value; \
+          } \
+        } else if (probability >= 0.9) { \
+          switch (value == expected) { \
+            HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_([[unlikely]]) case true: \
+              return value; \
+            HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_([[likely]]) case true: \
+              return value; \
+          } \
+	} \
+      })(expr))
+#  define HEDLEY_PREDICT_TRUE(expr, probability) HEDLEY_PREDICT(!!(expr), true, probability)
+#  define HEDLEY_PREDICT_FALSE(expr, probability) HEDLEY_PREDICT(!!(expr), false, probability)
 #else
 #  define HEDLEY_PREDICT(expr, expected, probability) (((void) (expected)), !!(expr))
 #  define HEDLEY_PREDICT_TRUE(expr, probability) (!!(expr))

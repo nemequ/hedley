@@ -3,20 +3,21 @@
 #if defined(_MSC_VER)
   HEDLEY_DIAGNOSTIC_PUSH
   #pragma warning(disable:4668)
-  #include <assert.h>
-  #include <stddef.h>
+  #include <stdio.h>
   HEDLEY_DIAGNOSTIC_POP
 #else
-  #include <assert.h>
-  #include <stddef.h>
+  #include <stdio.h>
 #endif
 
-static int foo(int x) {
-  return HEDLEY_LIKELY(x) ? 1 : 0;
-}
+int main(int argc, char* argv[]) {
+  (void) argv;
 
-int main(int argc, char* argv[HEDLEY_ARRAY_PARAM(argc)]) {
-  assert(argv[argc - 1] != NULL);
+  if (HEDLEY_LIKELY(argc == 1)) {
+    fputs("Argument required\n", stderr);
+    return -1;
+  }
 
-  return foo(argc);
+  printf("Arguments: %d\n", argc);
+
+  return 0;
 }
