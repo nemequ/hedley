@@ -1,15 +1,19 @@
 Version 11
 ==========
 
-
+* New macros:
+  * HEDLEY_HAS_CPP_ATTRIBUTE_NS
+  * HEDLEY_DIAGNOSTIC_DISABLE_UNKNOWN_CPP_ATTRIBUTE
+  * HEDLEY_NO_ESCAPE
+  * HEDLEY_NULL
+* Assorted bug fixes and enhancements
 
 Version 10
 ==========
 
 * New macros:
   * HEDLEY_EMPTY_BASES
-* Bug fixes:
-  * Assorted bug fixes and enhancements
+* Assorted bug fixes and enhancements
 
 Version 9
 =========
