@@ -843,31 +843,6 @@
 #if defined(HEDLEY_UNREACHABLE_RETURN)
 #  undef HEDLEY_UNREACHABLE_RETURN
 #endif
-#if \
-  (HEDLEY_HAS_BUILTIN(__builtin_unreachable) && (!defined(HEDLEY_ARM_VERSION))) || \
-  HEDLEY_GCC_VERSION_CHECK(4,5,0) || \
-  HEDLEY_INTEL_VERSION_CHECK(13,0,0) || \
-  HEDLEY_IBM_VERSION_CHECK(13,1,5)
-#  define HEDLEY_UNREACHABLE() __builtin_unreachable()
-#elif HEDLEY_MSVC_VERSION_CHECK(13,10,0)
-#  define HEDLEY_UNREACHABLE() __assume(0)
-#elif HEDLEY_TI_VERSION_CHECK(6,0,0)
-#  if defined(__cplusplus)
-#    define HEDLEY_UNREACHABLE() std::_nassert(0)
-#  else
-#    define HEDLEY_UNREACHABLE() _nassert(0)
-#  endif
-#  define HEDLEY_UNREACHABLE_RETURN(value) return value
-#elif defined(EXIT_FAILURE)
-#  define HEDLEY_UNREACHABLE() abort()
-#else
-#  define HEDLEY_UNREACHABLE()
-#  define HEDLEY_UNREACHABLE_RETURN(value) return value
-#endif
-#if !defined(HEDLEY_UNREACHABLE_RETURN)
-#  define HEDLEY_UNREACHABLE_RETURN(value) HEDLEY_UNREACHABLE()
-#endif
-
 #if defined(HEDLEY_ASSUME)
 #  undef HEDLEY_ASSUME
 #endif
@@ -883,14 +858,31 @@
 #  else
 #    define HEDLEY_ASSUME(expr) _nassert(expr)
 #  endif
-#elif \
-  (HEDLEY_HAS_BUILTIN(__builtin_unreachable) && !defined(HEDLEY_ARM_VERSION)) || \
+#endif
+#if \
+  (HEDLEY_HAS_BUILTIN(__builtin_unreachable) && (!defined(HEDLEY_ARM_VERSION))) || \
   HEDLEY_GCC_VERSION_CHECK(4,5,0) || \
+  HEDLEY_PGI_VERSION_CHECK(18,10,0) || \
   HEDLEY_INTEL_VERSION_CHECK(13,0,0) || \
   HEDLEY_IBM_VERSION_CHECK(13,1,5)
-#  define HEDLEY_ASSUME(expr) ((void) ((expr) ? 1 : (__builtin_unreachable(), 1)))
+#  define HEDLEY_UNREACHABLE() __builtin_unreachable()
+#elif defined(HEDLEY_ASSUME)
+#  define HEDLEY_UNREACHABLE() HEDLEY_ASSUME(0)
+#endif
+#if !defined(HEDLEY_ASSUME)
+#  if defined(HEDLEY_UNREACHABLE)
+#    define HEDLEY_ASSUME(expr) ((void) ((expr) ? 1 : (HEDLEY_UNREACHABLE(), 1)))
+#  else
+#    define HEDLEY_ASSUME(expr) ((void) (expr))
+#  endif
+#endif
+#if defined(HEDLEY_UNREACHABLE)
+#  define HEDLEY_UNREACHABLE_RETURN(value) HEDLEY_UNREACHABLE()
 #else
-#  define HEDLEY_ASSUME(expr) ((void) (expr))
+#  define HEDLEY_UNREACHABLE_RETURN(value) return (value)
+#endif
+#if !defined(HEDLEY_UNREACHABLE)
+#  define HEDLEY_UNREACHABLE() HEDLEY_ASSUME(0)
 #endif
 
 HEDLEY_DIAGNOSTIC_PUSH
