@@ -16,14 +16,11 @@
 #endif
 
 int main(int argc, char* argv[]) {
-  (void) argv;
+  HEDLEY_STATIC_CAST(void, argv);
 
   if (argc == 1) UNPREDICTABLE {
-    fputs("Argument required\n", stderr);
     return -1;
   }
-
-  printf("Arguments: %d\n", argc);
 
   return 0;
 }

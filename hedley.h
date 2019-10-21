@@ -397,6 +397,7 @@
 #  define HEDLEY_HAS_CPP_ATTRIBUTE_NS(ns,attribute) (0)
 #elif \
   !defined(HEDLEY_PGI_VERSION) && \
+  !defined(HEDLEY_IAR_VERSION) && \
   (!defined(HEDLEY_SUNPRO_VERSION) || HEDLEY_SUNPRO_VERSION_CHECK(5,15,0)) && \
   (!defined(HEDLEY_MSVC_VERSION) || HEDLEY_MSVC_VERSION_CHECK(19,20,0))
 #  define HEDLEY_HAS_CPP_ATTRIBUTE_NS(ns,attribute) HEDLEY_HAS_CPP_ATTRIBUTE(ns::attribute)
@@ -572,6 +573,52 @@
 #  define HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_(x) x
 #endif
 
+#if defined(HEDLEY_CONST_CAST)
+#  undef HEDLEY_CONST_CAST
+#endif
+#if defined(__cplusplus)
+#  define HEDLEY_CONST_CAST(T, expr) (const_cast<T>(expr))
+#elif \
+  HEDLEY_HAS_WARNING("-Wcast-qual") || \
+  HEDLEY_GCC_VERSION_CHECK(4,6,0) || \
+  HEDLEY_INTEL_VERSION_CHECK(13,0,0)
+#  define HEDLEY_CONST_CAST(T, expr) (__extension__ ({ \
+      HEDLEY_DIAGNOSTIC_PUSH \
+      HEDLEY_DIAGNOSTIC_DISABLE_CAST_QUAL \
+      ((T) (expr)); \
+      HEDLEY_DIAGNOSTIC_POP \
+    }))
+#else
+#  define HEDLEY_CONST_CAST(T, expr) ((T) (expr))
+#endif
+
+#if defined(HEDLEY_REINTERPRET_CAST)
+#  undef HEDLEY_REINTERPRET_CAST
+#endif
+#if defined(__cplusplus)
+#  define HEDLEY_REINTERPRET_CAST(T, expr) (reinterpret_cast<T>(expr))
+#else
+#  define HEDLEY_REINTERPRET_CAST(T, expr) (*((T*) &(expr)))
+#endif
+
+#if defined(HEDLEY_STATIC_CAST)
+#  undef HEDLEY_STATIC_CAST
+#endif
+#if defined(__cplusplus)
+#  define HEDLEY_STATIC_CAST(T, expr) (static_cast<T>(expr))
+#else
+#  define HEDLEY_STATIC_CAST(T, expr) ((T) (expr))
+#endif
+
+#if defined(HEDLEY_CPP_CAST)
+#  undef HEDLEY_CPP_CAST
+#endif
+#if defined(__cplusplus)
+#  define HEDLEY_CPP_CAST(T, expr) static_cast<T>(expr)
+#else
+#  define HEDLEY_CPP_CAST(T, expr) (expr)
+#endif
+
 #if \
   (defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901L)) || \
   defined(__clang__) || \
@@ -689,6 +736,8 @@
 #  define HEDLEY_DIAGNOSTIC_DISABLE_UNKNOWN_CPP_ATTRIBUTES _Pragma("error_messages(off,attrskipunsup)")
 #elif HEDLEY_TI_VERSION_CHECK(8,0,0)
 #  define HEDLEY_DIAGNOSTIC_DISABLE_UNKNOWN_CPP_ATTRIBUTES _Pragma("diag_suppress 1173")
+#elif HEDLEY_IAR_VERSION_CHECK(8,0,0)
+#  define HEDLEY_DIAGNOSTIC_DISABLE_UNKNOWN_CPP_ATTRIBUTES _Pragma("diag_suppress=Pe1097")
 #else
 #  define HEDLEY_DIAGNOSTIC_DISABLE_UNKNOWN_CPP_ATTRIBUTES
 #endif
@@ -871,9 +920,9 @@
 #endif
 #if !defined(HEDLEY_ASSUME)
 #  if defined(HEDLEY_UNREACHABLE)
-#    define HEDLEY_ASSUME(expr) ((void) ((expr) ? 1 : (HEDLEY_UNREACHABLE(), 1)))
+#    define HEDLEY_ASSUME(expr) HEDLEY_STATIC_CAST(void, ((expr) ? 1 : (HEDLEY_UNREACHABLE(), 1)))
 #  else
-#    define HEDLEY_ASSUME(expr) ((void) (expr))
+#    define HEDLEY_ASSUME(expr) HEDLEY_STATIC_CAST(void, expr)
 #  endif
 #endif
 #if defined(HEDLEY_UNREACHABLE)
@@ -983,7 +1032,7 @@ HEDLEY_DIAGNOSTIC_POP
   HEDLEY_TI_VERSION_CHECK(6,1,0) || \
   HEDLEY_TINYC_VERSION_CHECK(0,9,27)
 #  define HEDLEY_PREDICT(expr, expected, probability) \
-  (((probability) >= 0.9) ? __builtin_expect(!!(expr), (expected)) : (((void) (expected)), !!(expr)))
+  (((probability) >= 0.9) ? __builtin_expect(!!(expr), (expected)) : (HEDLEY_STATIC_CAST(void, expected), !!(expr)))
 #  define HEDLEY_PREDICT_TRUE(expr, probability) \
      (__extension__ ({ \
        HEDLEY_CONSTEXPR double hedley_probability_ = (probability); \
@@ -997,7 +1046,7 @@ HEDLEY_DIAGNOSTIC_POP
 #  define HEDLEY_LIKELY(expr)   __builtin_expect(!!(expr), 1)
 #  define HEDLEY_UNLIKELY(expr) __builtin_expect(!!(expr), 0)
 #else
-#  define HEDLEY_PREDICT(expr, expected, probability) (((void) (expected)), !!(expr))
+#  define HEDLEY_PREDICT(expr, expected, probability) (HEDLEY_STATIC_CAST(void, expected), !!(expr))
 #  define HEDLEY_PREDICT_TRUE(expr, probability) (!!(expr))
 #  define HEDLEY_PREDICT_FALSE(expr, probability) (!!(expr))
 #  define HEDLEY_LIKELY(expr) (!!(expr))
@@ -1295,7 +1344,11 @@ HEDLEY_DIAGNOSTIC_POP
 #      define HEDLEY_IS_CONSTEXPR_(expr) __builtin_types_compatible_p(__typeof__((1 ? (void*) ((intptr_t) ((expr) * 0)) : (int*) 0)), int*)
 #    endif
 #  elif \
-       (defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 201112L) && !defined(HEDLEY_SUNPRO_VERSION) && !defined(HEDLEY_PGI_VERSION)) || \
+       ( \
+          defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 201112L) && \
+          !defined(HEDLEY_SUNPRO_VERSION) && \
+          !defined(HEDLEY_PGI_VERSION) && \
+          !defined(HEDLEY_IAR_VERSION)) || \
        HEDLEY_HAS_EXTENSION(c_generic_selections) || \
        HEDLEY_GCC_VERSION_CHECK(4,9,0) || \
        HEDLEY_INTEL_VERSION_CHECK(17,0,0) || \
@@ -1374,52 +1427,6 @@ HEDLEY_DIAGNOSTIC_POP
 #  define HEDLEY_STATIC_ASSERT(expr, message) HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_(static_assert(expr, message))
 #else
 #  define HEDLEY_STATIC_ASSERT(expr, message)
-#endif
-
-#if defined(HEDLEY_CONST_CAST)
-#  undef HEDLEY_CONST_CAST
-#endif
-#if defined(__cplusplus)
-#  define HEDLEY_CONST_CAST(T, expr) (const_cast<T>(expr))
-#elif \
-  HEDLEY_HAS_WARNING("-Wcast-qual") || \
-  HEDLEY_GCC_VERSION_CHECK(4,6,0) || \
-  HEDLEY_INTEL_VERSION_CHECK(13,0,0)
-#  define HEDLEY_CONST_CAST(T, expr) (__extension__ ({ \
-      HEDLEY_DIAGNOSTIC_PUSH \
-      HEDLEY_DIAGNOSTIC_DISABLE_CAST_QUAL \
-      ((T) (expr)); \
-      HEDLEY_DIAGNOSTIC_POP \
-    }))
-#else
-#  define HEDLEY_CONST_CAST(T, expr) ((T) (expr))
-#endif
-
-#if defined(HEDLEY_REINTERPRET_CAST)
-#  undef HEDLEY_REINTERPRET_CAST
-#endif
-#if defined(__cplusplus)
-#  define HEDLEY_REINTERPRET_CAST(T, expr) (reinterpret_cast<T>(expr))
-#else
-#  define HEDLEY_REINTERPRET_CAST(T, expr) (*((T*) &(expr)))
-#endif
-
-#if defined(HEDLEY_STATIC_CAST)
-#  undef HEDLEY_STATIC_CAST
-#endif
-#if defined(__cplusplus)
-#  define HEDLEY_STATIC_CAST(T, expr) (static_cast<T>(expr))
-#else
-#  define HEDLEY_STATIC_CAST(T, expr) ((T) (expr))
-#endif
-
-#if defined(HEDLEY_CPP_CAST)
-#  undef HEDLEY_CPP_CAST
-#endif
-#if defined(__cplusplus)
-#  define HEDLEY_CPP_CAST(T, expr) static_cast<T>(expr)
-#else
-#  define HEDLEY_CPP_CAST(T, expr) (expr)
 #endif
 
 #if defined(HEDLEY_NULL)

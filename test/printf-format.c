@@ -25,10 +25,12 @@
 
 HEDLEY_PRINTF_FORMAT(1,2)
 static void print_msg(const char* msg, ...) {
+  char buf[128];
   va_list ap;
+
   va_start(ap, msg);
 
-  vfprintf(stderr, msg, ap);
+  vsnprintf(buf, sizeof(buf), msg, ap);
 
   va_end(ap);
 }

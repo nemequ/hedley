@@ -1,13 +1,6 @@
 #include "../hedley.h"
 
-#if defined(_MSC_VER)
-  HEDLEY_DIAGNOSTIC_PUSH
-  #pragma warning(disable:4255 4668)
-  #include <stdio.h>
-  HEDLEY_DIAGNOSTIC_POP
-#else
-#  include <stdio.h>
-#endif
+#include <string.h>
 
 static const char* foo = "bar\n";
 
@@ -18,10 +11,5 @@ static const char* get_string(void) {
 
 int main(void) {
   const char* s = get_string();
-  if (s != HEDLEY_NULL)
-    fputs(s, stdout);
-  else
-    fputs("This shouldn't happen\n", stdout);
-
-  return 0;
+  return HEDLEY_STATIC_CAST(int, strlen(s));
 }
