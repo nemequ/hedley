@@ -6,7 +6,7 @@ ifeq ($(notdir $(CC)), clang)
 else ifeq ($(notdir $(CC)), suncc)
   CFLAGS ?= -errwarn -errtags
   C_OUTPUT_FILE := -o
-else ifeq ($(notdir $(CC)), cl6x)
+else ifeq ($(notdir $(CC)),$(filter $(notdir $(CC)),armcl cl2000 cl430 cl6x cl7x clpru))
   CFLAGS ?= --display_error_number --emit_warnings_as_errors --issue_remarks -i $(dir $(shell readlink -f $(CC)))../include
   C_OUTPUT_FILE := --output_file=
 else ifeq ($(notdir $(CC)), pgcc)
@@ -48,7 +48,7 @@ else ifeq ($(notdir $(CXX)), sunCC)
 else ifeq ($(notdir $(CXX)), pgc++)
   CXXFLAGS ?= --display_error_number -Minform=inform -Werror
   CXX_OUTPUT_FILE := -o
-else ifeq ($(notdir $(CC)), cl6x)
+else ifeq ($(notdir $(CXX)),$(filter $(notdir $(CC)),armcl cl2000 cl430 cl6x cl7x clpru))
   CXXFLAGS ?= --display_error_number --emit_warnings_as_errors --issue_remarks -i $(dir $(CC))../include
   CXX_OUTPUT_FILE := --output_file=
 else ifeq ($(notdir $(CXX)), xlc++)
