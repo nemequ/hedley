@@ -225,10 +225,45 @@ matrix:
           - g++-mingw-w64-x86-64
           - binutils-mingw-w64-x86-64
 
+    ###
+    ## TI Compilers
+    ###
+    - dist: xenial
+      env: C_COMPILER=armcl CXX_COMPILER=armcl INSTALL_TI_COMPILERS=y
+      addons:
+        apt:
+          packages: gcc-multilib
+    - dist: xenial
+      env: C_COMPILER=cl430 CXX_COMPILER=cl430 INSTALL_TI_COMPILERS=y
+      addons:
+        apt:
+          packages: gcc-multilib
+    - dist: xenial
+      env: C_COMPILER=cl2000 CXX_COMPILER=cl2000 INSTALL_TI_COMPILERS=y
+      addons:
+        apt:
+          packages: gcc-multilib
+    - dist: xenial
+      env: C_COMPILER=cl6x CXX_COMPILER=cl6x INSTALL_TI_COMPILERS=y
+      addons:
+        apt:
+          packages: gcc-multilib
+    - dist: xenial
+      env: C_COMPILER=cl7x CXX_COMPILER=cl7x INSTALL_TI_COMPILERS=y
+      addons:
+        apt:
+          packages: gcc-multilib
+    - dist: xenial
+      env: C_COMPILER=clpru CXX_COMPILER=clpru INSTALL_TI_COMPILERS=y
+      addons:
+        apt:
+          packages: gcc-multilib
+
 before_install:
-- if [ "${C_COMPILER}" = "pgcc" ]; then wget -q -O /dev/stdout 'https://raw.githubusercontent.com/nemequ/pgi-travis/master/install-pgi.sh' | /bin/sh; fi
 - if [ -n "${C_COMPILER}" ]; then export CC="${C_COMPILER}"; fi
 - if [ -n "${CXX_COMPILER}" ]; then export CXX="${CXX_COMPILER}"; fi
+- if [ "x${INSTALL_TI_COMPILERS}" = "xy" ]; then curl -s 'https://raw.githubusercontent.com/nemequ/ti-compiler-install-travis/master/ti-cgt-install.sh' | /bin/sh; fi
+- if [ "${C_COMPILER}" = "pgcc" ]; then wget -q -O /dev/stdout 'https://raw.githubusercontent.com/nemequ/pgi-travis/master/install-pgi.sh' | /bin/sh; fi
 
 script:
 - cd test && make

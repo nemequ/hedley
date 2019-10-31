@@ -6,7 +6,11 @@
 #  pragma warning(disable:2218)
 #elif HEDLEY_SUNPRO_VERSION_CHECK(5,15,0) && defined(__cplusplus)
 #  pragma error_messages(off,unusedresult)
-#elif defined(HEDLEY_TI_VERSION)
+#elif \
+    defined(HEDLEY_TI_VERSION) || \
+    defined(HEDLEY_TI_CL6X_VERSION) || \
+    defined(HEDLEY_TI_CL7X_VERSION) || \
+    defined(HEDLEY_TI_CLPRU_VERSION)
 #  pragma diag_remark 1490
 #elif defined(HEDLEY_PGI_VERSION)
 #  pragma diag_remark 1650
