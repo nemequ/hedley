@@ -23,10 +23,18 @@ static int test_unused_result(void) {
   return 1729;
 }
 
+HEDLEY_WARN_UNUSED_RESULT_MSG("Foo")
+static int test_unused_result_msg(void) {
+  return 1701;
+}
+
 int main(void) {
   test_unused_result();
+  test_unused_result_msg();
 
   if (test_unused_result() != 1729)
+    return 1;
+  if (test_unused_result_msg() != 1701)
     return 1;
 
   return 0;

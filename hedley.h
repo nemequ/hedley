@@ -968,8 +968,16 @@
 #if defined(HEDLEY_WARN_UNUSED_RESULT)
 #  undef HEDLEY_WARN_UNUSED_RESULT
 #endif
-#if defined(__cplusplus) && (__cplusplus >= 201703L)
+#if defined(HEDLEY_WARN_UNUSED_RESULT_MSG)
+#  undef HEDLEY_WARN_UNUSED_RESULT_MSG
+#endif
+#if (HEDLEY_HAS_CPP_ATTRIBUTE(nodiscard) >= 201907L) && \
+    (!defined(HEDLEY_MSVC_VERSION)) /* https://developercommunity.visualstudio.com/content/problem/809793/incorrect-detection-of-support-for-nodiscard-with.html */
 #  define HEDLEY_WARN_UNUSED_RESULT HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_([[nodiscard]])
+#  define HEDLEY_WARN_UNUSED_RESULT_MSG(msg) HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_([[nodiscard(msg)]])
+#elif HEDLEY_HAS_CPP_ATTRIBUTE(nodiscard)
+#  define HEDLEY_WARN_UNUSED_RESULT HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_([[nodiscard]])
+#  define HEDLEY_WARN_UNUSED_RESULT_MSG(msg) HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_([[nodiscard]])
 #elif \
   HEDLEY_HAS_ATTRIBUTE(warn_unused_result) || \
   HEDLEY_GCC_VERSION_CHECK(3,4,0) || \
@@ -988,10 +996,13 @@
   (HEDLEY_SUNPRO_VERSION_CHECK(5,15,0) && defined(__cplusplus)) || \
   HEDLEY_PGI_VERSION_CHECK(17,10,0)
 #  define HEDLEY_WARN_UNUSED_RESULT __attribute__((__warn_unused_result__))
+#  define HEDLEY_WARN_UNUSED_RESULT_MSG(msg) __attribute__((__warn_unused_result__))
 #elif defined(_Check_return_) /* SAL */
 #  define HEDLEY_WARN_UNUSED_RESULT _Check_return_
+#  define HEDLEY_WARN_UNUSED_RESULT_MSG(msg) _Check_return_
 #else
 #  define HEDLEY_WARN_UNUSED_RESULT
+#  define HEDLEY_WARN_UNUSED_RESULT_MSG(msg)
 #endif
 
 #if defined(HEDLEY_SENTINEL)
