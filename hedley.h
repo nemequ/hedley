@@ -673,13 +673,25 @@
 #if defined(HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_)
 #  undef HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_
 #endif
-#if defined(__cplusplus) && HEDLEY_HAS_WARNING("-Wc++98-compat")
-#  define HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_(xpr) \
-     HEDLEY_DIAGNOSTIC_PUSH \
-     _Pragma("clang diagnostic ignored \"-Wc++98-compat\"") \
-     xpr \
-     HEDLEY_DIAGNOSTIC_POP
-#else
+#if defined(__cplusplus)
+#  if HEDLEY_HAS_WARNING("-Wc++98-compat")
+#    if HEDLEY_HAS_WARNING("-Wc++17-extensions")
+#      define HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_(xpr) \
+         HEDLEY_DIAGNOSTIC_PUSH \
+         _Pragma("clang diagnostic ignored \"-Wc++98-compat\"") \
+         _Pragma("clang diagnostic ignored \"-Wc++17-extensions\"") \
+         xpr \
+         HEDLEY_DIAGNOSTIC_POP
+#    else
+#      define HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_(xpr) \
+         HEDLEY_DIAGNOSTIC_PUSH \
+         _Pragma("clang diagnostic ignored \"-Wc++98-compat\"") \
+         xpr \
+         HEDLEY_DIAGNOSTIC_POP
+#    endif
+#  endif
+#endif
+#if !defined(HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_)
 #  define HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_(x) x
 #endif
 
