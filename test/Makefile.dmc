@@ -24,6 +24,7 @@ TESTS = \
 	no-return.exe no-return-cpp.exe \
 	non-null.exe non-null-cpp.exe \
 	predict.exe predict-cpp.exe \
+	prefetch.exe prefetch-cpp.exe \
 	printf-format.exe printf-format-cpp.exe \
 	pure.exe pure-cpp.exe \
 	require.exe require-cpp.exe \
@@ -60,6 +61,7 @@ CLEANFILES = $(TESTS) \
 	no-return.cpp no-return.exe no-return-cpp.exe no-return.map no-return-cpp.map \
 	non-null.cpp non-null.exe non-null-cpp.exe non-null.map non-null-cpp.map \
 	predict.cpp predict.exe predict-cpp.exe predict.map predict-cpp.map \
+	prefetch.cpp prefetch.exe prefetch-cpp.exe prefetch.map prefetch-cpp.map \
 	printf-format.cpp printf-format.exe printf-format-cpp.exe printf-format.map printf-format-cpp.map \
 	pure.cpp pure.exe pure-cpp.exe pure.map pure-cpp.map \
 	require.cpp require.exe require-cpp.exe require.map require-cpp.map \
@@ -206,6 +208,13 @@ predict.exe: predict.c
 predict.cpp: predict.c
 	copy /Y $(?) $(@) >NUL
 predict-cpp.exe: predict.cpp
+	$(CXX) $(CXXFLAGS) -o $(@) $(?)
+
+prefetch.exe: prefetch.c
+	$(CC) $(CFLAGS) -o $(@) $(?)
+prefetch.cpp: prefetch.c
+	copy /Y $(?) $(@) >NUL
+prefetch-cpp.exe: prefetch.cpp
 	$(CXX) $(CXXFLAGS) -o $(@) $(?)
 
 printf-format.exe: printf-format.c

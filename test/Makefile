@@ -91,6 +91,7 @@ TESTS = \
 	no-return \
 	non-null \
 	predict \
+	prefetch \
 	printf-format \
 	pure \
 	require \

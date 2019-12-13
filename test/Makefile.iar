@@ -24,6 +24,7 @@ TESTS = \
 	no-return.o no-return-cpp.o \
 	non-null.o non-null-cpp.o \
 	predict.o predict-cpp.o \
+	prefetch.o prefetch-cpp.o \
 	printf-format.o printf-format-cpp.o \
 	pure.o pure-cpp.o \
 	require.o require-cpp.o \
@@ -60,6 +61,7 @@ CLEANFILES = $(TESTS) \
 	no-return.cpp no-return.o no-return-cpp.o \
 	non-null.cpp non-null.o non-null-cpp.o \
 	predict.cpp predict.o predict-cpp.o \
+	prefetch.cpp prefetch.o prefetch-cpp.o \
 	printf-format.cpp printf-format.o printf-format-cpp.o \
 	pure.cpp pure.o pure-cpp.o \
 	require.cpp require.o require-cpp.o \
@@ -206,6 +208,13 @@ predict.o: predict.c
 predict.cpp: predict.c
 	copy /Y $(?) $(@) >NUL
 predict-cpp.o: predict.cpp
+	$(CXX) $(CXXFLAGS) --output $(@) $(?)
+
+prefetch.o: prefetch.c
+	$(CC) $(CFLAGS) --output $(@) $(?)
+prefetch.cpp: prefetch.c
+	copy /Y $(?) $(@) >NUL
+prefetch-cpp.o: prefetch.cpp
 	$(CXX) $(CXXFLAGS) --output $(@) $(?)
 
 printf-format.o: printf-format.c
