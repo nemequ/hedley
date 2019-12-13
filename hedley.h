@@ -720,7 +720,7 @@
 #if defined(__cplusplus)
 #  define HEDLEY_REINTERPRET_CAST(T, expr) (reinterpret_cast<T>(expr))
 #else
-#  define HEDLEY_REINTERPRET_CAST(T, expr) (*((T*) &(expr)))
+#  define HEDLEY_REINTERPRET_CAST(T, expr) ((T) (expr))
 #endif
 
 #if defined(HEDLEY_STATIC_CAST)
