@@ -736,7 +736,20 @@
 #  undef HEDLEY_CPP_CAST
 #endif
 #if defined(__cplusplus)
-#  define HEDLEY_CPP_CAST(T, expr) static_cast<T>(expr)
+#  if HEDLEY_HAS_WARNING("-Wold-style-cast")
+#    define HEDLEY_CPP_CAST(T, expr) \
+       HEDLEY_DIAGNOSTIC_PUSH \
+       _Pragma("clang diagnostic ignored \"-Wold-style-cast\"") \
+       ((T) (expr)) \
+       HEDLEY_DIAGNOSTIC_POP
+#  elif HEDLEY_IAR_VERSION_CHECK(8,3,0)
+#    define HEDLEY_CPP_CAST(T, expr) \
+       HEDLEY_DIAGNOSTIC_PUSH \
+       _Pragma("diag_suppress=Pe137") \
+       HEDLEY_DIAGNOSTIC_POP \
+#  else
+#    define HEDLEY_CPP_CAST(T, expr) ((T) (expr))
+#  endif
 #else
 #  define HEDLEY_CPP_CAST(T, expr) (expr)
 #endif
