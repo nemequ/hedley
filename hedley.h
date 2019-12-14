@@ -1262,7 +1262,8 @@ HEDLEY_DIAGNOSTIC_POP
   HEDLEY_TI_CL6X_VERSION_CHECK(6,1,0) || \
   HEDLEY_TI_CL7X_VERSION_CHECK(1,2,0) || \
   HEDLEY_TI_CLPRU_VERSION_CHECK(2,1,0) || \
-  HEDLEY_TINYC_VERSION_CHECK(0,9,27)
+  HEDLEY_TINYC_VERSION_CHECK(0,9,27) || \
+  HEDLEY_CRAY_VERSION_CHECK(8,1,0)
 #  define HEDLEY_PREDICT(expr, expected, probability) \
   (((probability) >= 0.9) ? __builtin_expect(!!(expr), (expected)) : (HEDLEY_STATIC_CAST(void, expected), !!(expr)))
 #  define HEDLEY_PREDICT_TRUE(expr, probability) \
