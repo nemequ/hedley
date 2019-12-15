@@ -996,8 +996,7 @@
 #if defined(HEDLEY_WARN_UNUSED_RESULT_MSG)
 #  undef HEDLEY_WARN_UNUSED_RESULT_MSG
 #endif
-#if (HEDLEY_HAS_CPP_ATTRIBUTE(nodiscard) >= 201907L) && \
-    (!defined(HEDLEY_MSVC_VERSION)) /* https://developercommunity.visualstudio.com/content/problem/809793/incorrect-detection-of-support-for-nodiscard-with.html */
+#if (HEDLEY_HAS_CPP_ATTRIBUTE(nodiscard) >= 201907L)
 #  define HEDLEY_WARN_UNUSED_RESULT HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_([[nodiscard]])
 #  define HEDLEY_WARN_UNUSED_RESULT_MSG(msg) HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_([[nodiscard(msg)]])
 #elif HEDLEY_HAS_CPP_ATTRIBUTE(nodiscard)
