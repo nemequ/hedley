@@ -1235,19 +1235,16 @@ HEDLEY_DIAGNOSTIC_POP
 #  undef HEDLEY_UNPREDICTABLE
 #endif
 #if HEDLEY_HAS_BUILTIN(__builtin_unpredictable)
-#  define HEDLEY_UNPREDICTABLE(expr) __builtin_unpredictable(!!(expr))
+#  define HEDLEY_UNPREDICTABLE(expr) __builtin_unpredictable((expr))
 #endif
 #if \
   HEDLEY_HAS_BUILTIN(__builtin_expect_with_probability) || \
   HEDLEY_GCC_VERSION_CHECK(9,0,0)
-#  define HEDLEY_PREDICT(expr, value, probability) __builtin_expect_with_probability(expr, value, probability)
-#  define HEDLEY_PREDICT_TRUE(expr, probability) __builtin_expect_with_probability(!!(expr), 1, probability)
-#  define HEDLEY_PREDICT_FALSE(expr, probability) __builtin_expect_with_probability(!!(expr), 0, probability)
-#  define HEDLEY_LIKELY(expr) __builtin_expect(!!(expr), 1)
-#  define HEDLEY_UNLIKELY(expr) __builtin_expect(!!(expr), 0)
-#  if !defined(HEDLEY_BUILTIN_UNPREDICTABLE)
-#    define HEDLEY_BUILTIN_UNPREDICTABLE(expr) __builtin_expect_with_probability(!!(expr), 1, 0.5)
-#  endif
+#  define HEDLEY_PREDICT(expr, value, probability) __builtin_expect_with_probability(  (expr), (value), (probability))
+#  define HEDLEY_PREDICT_TRUE(expr, probability)   __builtin_expect_with_probability(!!(expr),    1   , (probability))
+#  define HEDLEY_PREDICT_FALSE(expr, probability)  __builtin_expect_with_probability(!!(expr),    0   , (probability))
+#  define HEDLEY_LIKELY(expr)                      __builtin_expect                 (!!(expr),    1                  )
+#  define HEDLEY_UNLIKELY(expr)                    __builtin_expect                 (!!(expr),    0                  )
 #elif \
   HEDLEY_HAS_BUILTIN(__builtin_expect) || \
   HEDLEY_GCC_VERSION_CHECK(3,0,0) || \
@@ -1265,21 +1262,21 @@ HEDLEY_DIAGNOSTIC_POP
   HEDLEY_TINYC_VERSION_CHECK(0,9,27) || \
   HEDLEY_CRAY_VERSION_CHECK(8,1,0)
 #  define HEDLEY_PREDICT(expr, expected, probability) \
-  (((probability) >= 0.9) ? __builtin_expect(!!(expr), (expected)) : (HEDLEY_STATIC_CAST(void, expected), !!(expr)))
+     (((probability) >= 0.9) ? __builtin_expect((expr), (expected)) : (HEDLEY_STATIC_CAST(void, expected), (expr)))
 #  define HEDLEY_PREDICT_TRUE(expr, probability) \
      (__extension__ ({ \
-       HEDLEY_CONSTEXPR double hedley_probability_ = (probability); \
+       double hedley_probability_ = (probability); \
        ((hedley_probability_ >= 0.9) ? __builtin_expect(!!(expr), 1) : ((hedley_probability_ <= 0.1) ? __builtin_expect(!!(expr), 0) : !!(expr))); \
      }))
 #  define HEDLEY_PREDICT_FALSE(expr, probability) \
      (__extension__ ({ \
-       HEDLEY_CONSTEXPR double hedley_probability_ = (probability); \
+       double hedley_probability_ = (probability); \
        ((hedley_probability_ >= 0.9) ? __builtin_expect(!!(expr), 0) : ((hedley_probability_ <= 0.1) ? __builtin_expect(!!(expr), 1) : !!(expr))); \
      }))
 #  define HEDLEY_LIKELY(expr)   __builtin_expect(!!(expr), 1)
 #  define HEDLEY_UNLIKELY(expr) __builtin_expect(!!(expr), 0)
 #else
-#  define HEDLEY_PREDICT(expr, expected, probability) (HEDLEY_STATIC_CAST(void, expected), !!(expr))
+#  define HEDLEY_PREDICT(expr, expected, probability) (HEDLEY_STATIC_CAST(void, expected), (expr))
 #  define HEDLEY_PREDICT_TRUE(expr, probability) (!!(expr))
 #  define HEDLEY_PREDICT_FALSE(expr, probability) (!!(expr))
 #  define HEDLEY_LIKELY(expr) (!!(expr))
