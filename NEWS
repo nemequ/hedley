@@ -1,3 +1,19 @@
+Version 12
+==========
+
+* New macros:
+  * HEDLEY_WARN_UNUSED_RESULT_MSG
+  * TI compilers:
+    * HEDLEY_TI_CL2000_VERSION and HEDLEY_TI_CL2000_VERSION_CHECK
+    * HEDLEY_TI_CL430_VERSION and HEDLEY_TI_CL430_VERSION_CHECK
+    * HEDLEY_TI_ARMCL_VERSION and HEDLEY_TI_ARMCL_VERSION_CHECK
+    * HEDLEY_TI_CL6X_VERSION and HEDLEY_TI_CL6X_VERSION_CHECK
+    * HEDLEY_TI_CL7X_VERSION and HEDLEY_TI_CL7X_VERSION_CHECK
+    * HEDLEY_TI_CLPRU_VERSION and HEDLEY_TI_CLPRU_VERSION_CHECK
+  * HEDLEY_TI_VERSION is now only set for MCU compilers after their
+    versions were harmonized.
+* Assorted bug fixes and enhancements
+
 Version 11
 ==========
 

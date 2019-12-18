@@ -11,12 +11,30 @@
   #include <stddef.h>
 #endif
 
-static int foo(int x) {
-  return HEDLEY_LIKELY(x) ? 1 : 0;
-}
+#if \
+     defined(HEDLEY_TI_CL6X_VERSION) || \
+     defined(HEDLEY_TI_CL7X_VERSION)
+/* __builtin_expect with second argument not equal to 0 or 1 is ignored */
+#  pragma diag_remark 1362
+#endif
 
 int main(int argc, char* argv[HEDLEY_ARRAY_PARAM(argc)]) {
-  assert(argv[argc - 1] != NULL);
+  int res;
 
-  return foo(argc);
+  (void) argv;
+
+  res = (HEDLEY_PREDICT(argc + 1, 2, 0.95) == 2);
+  assert(res);
+  res = (HEDLEY_UNPREDICTABLE(argc + 1) == 2);
+  assert(res);
+  res = (HEDLEY_PREDICT_TRUE(argc + 1, 0.95) == 1);
+  assert(res);
+  res = (HEDLEY_PREDICT_FALSE(argc + 1, 0.95) == 1);
+  assert(res);
+  res = (HEDLEY_LIKELY(argc + 1) == 1);
+  assert(res);
+  res = (HEDLEY_UNLIKELY(argc + 1) == 1);
+  assert(res);
+
+  return !res;
 }

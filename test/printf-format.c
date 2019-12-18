@@ -1,19 +1,15 @@
 #include "../hedley.h"
 
-#if defined(_MSC_VER)
-  HEDLEY_DIAGNOSTIC_PUSH
-  #pragma warning(disable:4255 4668)
-  #include <stdio.h>
-  HEDLEY_DIAGNOSTIC_POP
-#else
-#  include <stdio.h>
-#endif
-
+#include <stdio.h>
 #include <stdarg.h>
 
 #if HEDLEY_HAS_WARNING("-Wformat")
 #  pragma clang diagnostic warning "-Wformat"
-#elif defined(HEDLEY_TI_VERSION)
+#elif \
+    defined(HEDLEY_TI_VERSION) || \
+    defined(HEDLEY_TI_CL6X_VERSION) || \
+    defined(HEDLEY_TI_CL7X_VERSION) || \
+    defined(HEDLEY_TI_CLPRU_VERSION)
 #  pragma diag_remark 183
 #elif defined(HEDLEY_PGI_VERSION) && defined(__cplusplus)
 #  pragma diag_remark 181
@@ -25,10 +21,12 @@
 
 HEDLEY_PRINTF_FORMAT(1,2)
 static void print_msg(const char* msg, ...) {
+  char buf[128];
   va_list ap;
+
   va_start(ap, msg);
 
-  vfprintf(stderr, msg, ap);
+  vsnprintf(buf, sizeof(buf), msg, ap);
 
   va_end(ap);
 }
