@@ -6,11 +6,15 @@ CFLAGS = /nologo /Wall /wd4464 /wd4514
 CXXFLAGS = $(CFLAGS)
 
 TESTS = \
+	assume-aligned.exe assume-aligned-cpp.exe \
+	prefetch.exe prefetch-cpp.exe \
 	statement-expressions.exe statement-expressions-cpp.exe \
 	typeof.exe typeof-cpp.exe \
 	$(NULL)
 
 CLEANFILES = $(TESTS) \
+	assume-aligned.cpp assume-aligned.obj assume-aligned.lib assume-aligned-cpp.exp assume-aligned-cpp.lib \
+	prefetch.cpp prefetch.obj prefetch.lib prefetch-cpp.exp prefetch-cpp.lib \
 	statement-expressions.cpp statement-expressions.obj statement-expressions.lib statement-expressions-cpp.exp statement-expressions-cpp.lib \
 	typeof.cpp typeof.obj typeof.lib typeof-cpp.exp typeof-cpp.lib \
 	$(NULL)
@@ -19,6 +23,20 @@ all: $(TESTS)
 
 clean:
 	del /Q $(CLEANFILES)
+
+assume-aligned.exe: assume-aligned.c
+	$(CC) $(CFLAGS) /Fe$(@) $(?)
+assume-aligned.cpp: assume-aligned.c
+	copy /Y $(?) $(@) >NUL
+assume-aligned-cpp.exe: assume-aligned.cpp
+	$(CXX) $(CXXFLAGS) /Fe$(@) $(?)
+
+prefetch.exe: prefetch.c
+	$(CC) $(CFLAGS) /Fe$(@) $(?)
+prefetch.cpp: prefetch.c
+	copy /Y $(?) $(@) >NUL
+prefetch-cpp.exe: prefetch.cpp
+	$(CXX) $(CXXFLAGS) /Fe$(@) $(?)
 
 statement-expressions.exe: statement-expressions.c
 	$(CC) $(CFLAGS) /Fe$(@) $(?)

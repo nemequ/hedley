@@ -74,6 +74,7 @@ NULL =
 
 TESTS = \
 	assume-aligned \
+	prefetch \
 	statement-expressions \
 	typeof \
 	$(NULL)

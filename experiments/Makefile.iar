@@ -6,11 +6,15 @@ CFLAGS = --silent --remarks --warnings_are_errors
 CXXFLAGS = --c++ $(CFLAGS)
 
 TESTS = \
+	assume-aligned.o assume-aligned-cpp.o \
+	prefetch.o prefetch-cpp.o \
 	statement-expressions.o statement-expressions-cpp.o \
 	typeof.o typeof-cpp.o \
 	$(NULL)
 
 CLEANFILES = $(TESTS) \
+	assume-aligned.cpp assume-aligned.o assume-aligned-cpp.o \
+	prefetch.cpp prefetch.o prefetch-cpp.o \
 	statement-expressions.cpp statement-expressions.o statement-expressions-cpp.o \
 	typeof.cpp typeof.o typeof-cpp.o \
 	$(NULL)
@@ -19,6 +23,20 @@ all: $(TESTS)
 
 clean:
 	del /Q $(CLEANFILES)
+
+assume-aligned.o: assume-aligned.c
+	$(CC) $(CFLAGS) --output $(@) $(?)
+assume-aligned.cpp: assume-aligned.c
+	copy /Y $(?) $(@) >NUL
+assume-aligned-cpp.o: assume-aligned.cpp
+	$(CXX) $(CXXFLAGS) --output $(@) $(?)
+
+prefetch.o: prefetch.c
+	$(CC) $(CFLAGS) --output $(@) $(?)
+prefetch.cpp: prefetch.c
+	copy /Y $(?) $(@) >NUL
+prefetch-cpp.o: prefetch.cpp
+	$(CXX) $(CXXFLAGS) --output $(@) $(?)
 
 statement-expressions.o: statement-expressions.c
 	$(CC) $(CFLAGS) --output $(@) $(?)
