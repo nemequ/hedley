@@ -1566,7 +1566,9 @@ HEDLEY_DIAGNOSTIC_POP
 #if defined(HEDLEY_FALL_THROUGH)
 # undef HEDLEY_FALL_THROUGH
 #endif
-#if HEDLEY_GNUC_HAS_ATTRIBUTE(fallthrough,7,0,0) && !defined(HEDLEY_PGI_VERSION)
+#if \
+  HEDLEY_HAS_ATTRIBUTE(fallthrough) || \
+  HEDLEY_GCC_VERSION_CHECK(7,0,0)
 #  define HEDLEY_FALL_THROUGH __attribute__((__fallthrough__))
 #elif HEDLEY_HAS_CPP_ATTRIBUTE_NS(clang,fallthrough)
 #  define HEDLEY_FALL_THROUGH HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_([[clang::fallthrough]])
