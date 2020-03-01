@@ -9,6 +9,7 @@ TESTS = \
 	array-param.o array-param-cpp.o \
 	assume.o assume-cpp.o \
 	cast.o cast-cpp.o \
+	concat.o concat-cpp.o \
 	const.o const-cpp.o \
 	constant.o constant-cpp.o \
 	deprecated.o deprecated-cpp.o \
@@ -45,6 +46,7 @@ CLEANFILES = $(TESTS) \
 	array-param.cpp array-param.o array-param-cpp.o \
 	assume.cpp assume.o assume-cpp.o \
 	cast.cpp cast.o cast-cpp.o \
+	concat.cpp concat.o concat-cpp.o \
 	const.cpp const.o const-cpp.o \
 	constant.cpp constant.o constant-cpp.o \
 	deprecated.cpp deprecated.o deprecated-cpp.o \
@@ -101,6 +103,13 @@ cast.o: cast.c
 cast.cpp: cast.c
 	copy /Y $(?) $(@) >NUL
 cast-cpp.o: cast.cpp
+	$(CXX) $(CXXFLAGS) --output $(@) $(?)
+
+concat.o: concat.c
+	$(CC) $(CFLAGS) --output $(@) $(?)
+concat.cpp: concat.c
+	copy /Y $(?) $(@) >NUL
+concat-cpp.o: concat.cpp
 	$(CXX) $(CXXFLAGS) --output $(@) $(?)
 
 const.o: const.c

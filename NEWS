@@ -1,3 +1,11 @@
+Version 13
+==========
+
+* New macros:
+  * HEDLEY_CONCAT3
+* Assorted bug fixes and enhancements
+
+
 Version 12
 ==========
 

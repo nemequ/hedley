@@ -36,6 +36,16 @@
 #endif
 #define HEDLEY_CONCAT(a,b) HEDLEY_CONCAT_EX(a,b)
 
+#if defined(HEDLEY_CONCAT3_EX)
+#  undef HEDLEY_CONCAT3_EX
+#endif
+#define HEDLEY_CONCAT3_EX(a,b,c) a##b##c
+
+#if defined(HEDLEY_CONCAT3)
+#  undef HEDLEY_CONCAT3
+#endif
+#define HEDLEY_CONCAT3(a,b,c) HEDLEY_CONCAT3_EX(a,b,c)
+
 #if defined(HEDLEY_VERSION_ENCODE)
 #  undef HEDLEY_VERSION_ENCODE
 #endif

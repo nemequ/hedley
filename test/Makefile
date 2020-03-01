@@ -76,6 +76,7 @@ TESTS = \
 	array-param \
 	assume \
 	cast \
+	concat \
 	const \
 	constant \
 	deprecated \
