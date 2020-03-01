@@ -10,11 +10,11 @@
  * SPDX-License-Identifier: CC0-1.0
  */
 
-#if !defined(HEDLEY_VERSION) || (HEDLEY_VERSION < 12)
+#if !defined(HEDLEY_VERSION) || (HEDLEY_VERSION < 13)
 #if defined(HEDLEY_VERSION)
 #  undef HEDLEY_VERSION
 #endif
-#define HEDLEY_VERSION 12
+#define HEDLEY_VERSION 13
 
 #if defined(HEDLEY_STRINGIFY_EX)
 #  undef HEDLEY_STRINGIFY_EX
@@ -928,7 +928,10 @@
 #if defined(HEDLEY_DEPRECATED_FOR)
 #  undef HEDLEY_DEPRECATED_FOR
 #endif
-#if defined(__cplusplus) && (__cplusplus >= 201402L)
+#if HEDLEY_MSVC_VERSION_CHECK(14,0,0)
+#  define HEDLEY_DEPRECATED(since) __declspec(deprecated("Since " # since))
+#  define HEDLEY_DEPRECATED_FOR(since, replacement) __declspec(deprecated("Since " #since "; use " #replacement))
+#elif defined(__cplusplus) && (__cplusplus >= 201402L)
 #  define HEDLEY_DEPRECATED(since) HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_([[deprecated("Since " #since)]])
 #  define HEDLEY_DEPRECATED_FOR(since, replacement) HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_([[deprecated("Since " #since "; use " #replacement)]])
 #elif \
@@ -962,9 +965,6 @@
   HEDLEY_TI_CLPRU_VERSION_CHECK(2,1,0)
 #  define HEDLEY_DEPRECATED(since) __attribute__((__deprecated__))
 #  define HEDLEY_DEPRECATED_FOR(since, replacement) __attribute__((__deprecated__))
-#elif HEDLEY_MSVC_VERSION_CHECK(14,0,0)
-#  define HEDLEY_DEPRECATED(since) __declspec(deprecated("Since " # since))
-#  define HEDLEY_DEPRECATED_FOR(since, replacement) __declspec(deprecated("Since " #since "; use " #replacement))
 #elif \
   HEDLEY_MSVC_VERSION_CHECK(13,10,0) || \
   HEDLEY_PELLES_VERSION_CHECK(6,50,0)
