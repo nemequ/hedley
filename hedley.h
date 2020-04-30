@@ -1837,6 +1837,8 @@ HEDLEY_DIAGNOSTIC_POP
 #endif
 #if HEDLEY_HAS_ATTRIBUTE(flag_enum)
 #  define HEDLEY_FLAGS __attribute__((__flag_enum__))
+#else
+#  define HEDLEY_FLAGS
 #endif
 
 #if defined(HEDLEY_FLAGS_CAST)
