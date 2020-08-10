@@ -87,18 +87,18 @@
 #if defined(HEDLEY_MSVC_VERSION)
 #  undef HEDLEY_MSVC_VERSION
 #endif
-#if defined(_MSC_FULL_VER) && (_MSC_FULL_VER >= 140000000)
+#if defined(_MSC_FULL_VER) && (_MSC_FULL_VER >= 140000000) && !defined(__ICL)
 #  define HEDLEY_MSVC_VERSION HEDLEY_VERSION_ENCODE(_MSC_FULL_VER / 10000000, (_MSC_FULL_VER % 10000000) / 100000, (_MSC_FULL_VER % 100000) / 100)
-#elif defined(_MSC_FULL_VER)
+#elif defined(_MSC_FULL_VER) && !defined(__ICL)
 #  define HEDLEY_MSVC_VERSION HEDLEY_VERSION_ENCODE(_MSC_FULL_VER / 1000000, (_MSC_FULL_VER % 1000000) / 10000, (_MSC_FULL_VER % 10000) / 10)
-#elif defined(_MSC_VER)
+#elif defined(_MSC_VER) && !defined(__ICL)
 #  define HEDLEY_MSVC_VERSION HEDLEY_VERSION_ENCODE(_MSC_VER / 100, _MSC_VER % 100, 0)
 #endif
 
 #if defined(HEDLEY_MSVC_VERSION_CHECK)
 #  undef HEDLEY_MSVC_VERSION_CHECK
 #endif
-#if !defined(_MSC_VER)
+#if !defined(HEDLEY_MSVC_VERSION)
 #  define HEDLEY_MSVC_VERSION_CHECK(major,minor,patch) (0)
 #elif defined(_MSC_VER) && (_MSC_VER >= 1400)
 #  define HEDLEY_MSVC_VERSION_CHECK(major,minor,patch) (_MSC_FULL_VER >= ((major * 10000000) + (minor * 100000) + (patch)))
@@ -111,9 +111,9 @@
 #if defined(HEDLEY_INTEL_VERSION)
 #  undef HEDLEY_INTEL_VERSION
 #endif
-#if defined(__INTEL_COMPILER) && defined(__INTEL_COMPILER_UPDATE)
+#if defined(__INTEL_COMPILER) && defined(__INTEL_COMPILER_UPDATE) && !defined(__ICL)
 #  define HEDLEY_INTEL_VERSION HEDLEY_VERSION_ENCODE(__INTEL_COMPILER / 100, __INTEL_COMPILER % 100, __INTEL_COMPILER_UPDATE)
-#elif defined(__INTEL_COMPILER)
+#elif defined(__INTEL_COMPILER) && !defined(__ICL)
 #  define HEDLEY_INTEL_VERSION HEDLEY_VERSION_ENCODE(__INTEL_COMPILER / 100, __INTEL_COMPILER % 100, 0)
 #endif
 
@@ -124,6 +124,22 @@
 #  define HEDLEY_INTEL_VERSION_CHECK(major,minor,patch) (HEDLEY_INTEL_VERSION >= HEDLEY_VERSION_ENCODE(major, minor, patch))
 #else
 #  define HEDLEY_INTEL_VERSION_CHECK(major,minor,patch) (0)
+#endif
+
+#if defined(HEDLEY_INTEL_CL_VERSION)
+#  undef HEDLEY_INTEL_CL_VERSION
+#endif
+#if defined(__INTEL_COMPILER) && defined(__INTEL_COMPILER_UPDATE) && defined(__ICL)
+#  define HEDLEY_INTEL_CL_VERSION HEDLEY_VERSION_ENCODE(__INTEL_COMPILER, __INTEL_COMPILER_UPDATE, 0)
+#endif
+
+#if defined(HEDLEY_INTEL_CL_VERSION_CHECK)
+#  undef HEDLEY_INTEL_CL_VERSION_CHECK
+#endif
+#if defined(HEDLEY_INTEL_CL_VERSION)
+#  define HEDLEY_INTEL_CL_VERSION_CHECK(major,minor,patch) (HEDLEY_INTEL_CL_VERSION >= HEDLEY_VERSION_ENCODE(major, minor, patch))
+#else
+#  define HEDLEY_INTEL_CL_VERSION_CHECK(major,minor,patch) (0)
 #endif
 
 #if defined(HEDLEY_PGI_VERSION)
@@ -719,7 +735,7 @@
 #elif HEDLEY_GCC_VERSION_CHECK(4,6,0)
 #  define HEDLEY_DIAGNOSTIC_PUSH _Pragma("GCC diagnostic push")
 #  define HEDLEY_DIAGNOSTIC_POP _Pragma("GCC diagnostic pop")
-#elif HEDLEY_MSVC_VERSION_CHECK(15,0,0)
+#elif HEDLEY_MSVC_VERSION_CHECK(15,0,0) || HEDLEY_INTEL_CL_VERSION_CHECK(2021,0,0)
 #  define HEDLEY_DIAGNOSTIC_PUSH __pragma(warning(push))
 #  define HEDLEY_DIAGNOSTIC_POP __pragma(warning(pop))
 #elif HEDLEY_ARM_VERSION_CHECK(5,6,0)
@@ -1255,7 +1271,7 @@ HEDLEY_DIAGNOSTIC_POP
 #  define HEDLEY_LIKELY(expr)                      __builtin_expect                 (!!(expr),    1                  )
 #  define HEDLEY_UNLIKELY(expr)                    __builtin_expect                 (!!(expr),    0                  )
 #elif \
-  HEDLEY_HAS_BUILTIN(__builtin_expect) || \
+  (HEDLEY_HAS_BUILTIN(__builtin_expect) && !defined(HEDLEY_INTEL_CL_VERSION)) || \
   HEDLEY_GCC_VERSION_CHECK(3,0,0) || \
   HEDLEY_INTEL_VERSION_CHECK(13,0,0) || \
   (HEDLEY_SUNPRO_VERSION_CHECK(5,15,0) && defined(__cplusplus)) || \
@@ -1731,7 +1747,7 @@ HEDLEY_DIAGNOSTIC_POP
 #if \
   !defined(__cplusplus) && ( \
       (defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 201112L)) || \
-      HEDLEY_HAS_FEATURE(c_static_assert) || \
+      (HEDLEY_HAS_FEATURE(c_static_assert) && !defined(HEDLEY_INTEL_CL_VERSION)) || \
       HEDLEY_GCC_VERSION_CHECK(6,0,0) || \
       HEDLEY_INTEL_VERSION_CHECK(13,0,0) || \
       defined(_Static_assert) \
