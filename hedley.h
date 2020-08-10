@@ -678,6 +678,70 @@
 #  define HEDLEY_GCC_HAS_WARNING(warning,major,minor,patch) HEDLEY_GCC_VERSION_CHECK(major,minor,patch)
 #endif
 
+#if \
+  (defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901L)) || \
+  defined(__clang__) || \
+  HEDLEY_GCC_VERSION_CHECK(3,0,0) || \
+  HEDLEY_INTEL_VERSION_CHECK(13,0,0) || \
+  HEDLEY_IAR_VERSION_CHECK(8,0,0) || \
+  HEDLEY_PGI_VERSION_CHECK(18,4,0) || \
+  HEDLEY_ARM_VERSION_CHECK(4,1,0) || \
+  HEDLEY_TI_VERSION_CHECK(15,12,0) || \
+  HEDLEY_TI_ARMCL_VERSION_CHECK(4,7,0) || \
+  HEDLEY_TI_CL430_VERSION_CHECK(2,0,1) || \
+  HEDLEY_TI_CL2000_VERSION_CHECK(6,1,0) || \
+  HEDLEY_TI_CL6X_VERSION_CHECK(7,0,0) || \
+  HEDLEY_TI_CL7X_VERSION_CHECK(1,2,0) || \
+  HEDLEY_TI_CLPRU_VERSION_CHECK(2,1,0) || \
+  HEDLEY_CRAY_VERSION_CHECK(5,0,0) || \
+  HEDLEY_TINYC_VERSION_CHECK(0,9,17) || \
+  HEDLEY_SUNPRO_VERSION_CHECK(8,0,0) || \
+  (HEDLEY_IBM_VERSION_CHECK(10,1,0) && defined(__C99_PRAGMA_OPERATOR))
+#  define HEDLEY_PRAGMA(value) _Pragma(#value)
+#elif HEDLEY_MSVC_VERSION_CHECK(15,0,0)
+#  define HEDLEY_PRAGMA(value) __pragma(value)
+#else
+#  define HEDLEY_PRAGMA(value)
+#endif
+
+#if defined(HEDLEY_DIAGNOSTIC_PUSH)
+#  undef HEDLEY_DIAGNOSTIC_PUSH
+#endif
+#if defined(HEDLEY_DIAGNOSTIC_POP)
+#  undef HEDLEY_DIAGNOSTIC_POP
+#endif
+#if defined(__clang__)
+#  define HEDLEY_DIAGNOSTIC_PUSH _Pragma("clang diagnostic push")
+#  define HEDLEY_DIAGNOSTIC_POP _Pragma("clang diagnostic pop")
+#elif HEDLEY_INTEL_VERSION_CHECK(13,0,0)
+#  define HEDLEY_DIAGNOSTIC_PUSH _Pragma("warning(push)")
+#  define HEDLEY_DIAGNOSTIC_POP _Pragma("warning(pop)")
+#elif HEDLEY_GCC_VERSION_CHECK(4,6,0)
+#  define HEDLEY_DIAGNOSTIC_PUSH _Pragma("GCC diagnostic push")
+#  define HEDLEY_DIAGNOSTIC_POP _Pragma("GCC diagnostic pop")
+#elif HEDLEY_MSVC_VERSION_CHECK(15,0,0)
+#  define HEDLEY_DIAGNOSTIC_PUSH __pragma(warning(push))
+#  define HEDLEY_DIAGNOSTIC_POP __pragma(warning(pop))
+#elif HEDLEY_ARM_VERSION_CHECK(5,6,0)
+#  define HEDLEY_DIAGNOSTIC_PUSH _Pragma("push")
+#  define HEDLEY_DIAGNOSTIC_POP _Pragma("pop")
+#elif \
+    HEDLEY_TI_VERSION_CHECK(15,12,0) || \
+    HEDLEY_TI_ARMCL_VERSION_CHECK(5,2,0) || \
+    HEDLEY_TI_CL430_VERSION_CHECK(4,4,0) || \
+    HEDLEY_TI_CL6X_VERSION_CHECK(8,1,0) || \
+    HEDLEY_TI_CL7X_VERSION_CHECK(1,2,0) || \
+    HEDLEY_TI_CLPRU_VERSION_CHECK(2,1,0)
+#  define HEDLEY_DIAGNOSTIC_PUSH _Pragma("diag_push")
+#  define HEDLEY_DIAGNOSTIC_POP _Pragma("diag_pop")
+#elif HEDLEY_PELLES_VERSION_CHECK(2,90,0)
+#  define HEDLEY_DIAGNOSTIC_PUSH _Pragma("warning(push)")
+#  define HEDLEY_DIAGNOSTIC_POP _Pragma("warning(pop)")
+#else
+#  define HEDLEY_DIAGNOSTIC_PUSH
+#  define HEDLEY_DIAGNOSTIC_POP
+#endif
+
 /* HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_ is for
    HEDLEY INTERNAL USE ONLY.  API subject to change without notice. */
 #if defined(HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_)
@@ -762,70 +826,6 @@
 #  endif
 #else
 #  define HEDLEY_CPP_CAST(T, expr) (expr)
-#endif
-
-#if \
-  (defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901L)) || \
-  defined(__clang__) || \
-  HEDLEY_GCC_VERSION_CHECK(3,0,0) || \
-  HEDLEY_INTEL_VERSION_CHECK(13,0,0) || \
-  HEDLEY_IAR_VERSION_CHECK(8,0,0) || \
-  HEDLEY_PGI_VERSION_CHECK(18,4,0) || \
-  HEDLEY_ARM_VERSION_CHECK(4,1,0) || \
-  HEDLEY_TI_VERSION_CHECK(15,12,0) || \
-  HEDLEY_TI_ARMCL_VERSION_CHECK(4,7,0) || \
-  HEDLEY_TI_CL430_VERSION_CHECK(2,0,1) || \
-  HEDLEY_TI_CL2000_VERSION_CHECK(6,1,0) || \
-  HEDLEY_TI_CL6X_VERSION_CHECK(7,0,0) || \
-  HEDLEY_TI_CL7X_VERSION_CHECK(1,2,0) || \
-  HEDLEY_TI_CLPRU_VERSION_CHECK(2,1,0) || \
-  HEDLEY_CRAY_VERSION_CHECK(5,0,0) || \
-  HEDLEY_TINYC_VERSION_CHECK(0,9,17) || \
-  HEDLEY_SUNPRO_VERSION_CHECK(8,0,0) || \
-  (HEDLEY_IBM_VERSION_CHECK(10,1,0) && defined(__C99_PRAGMA_OPERATOR))
-#  define HEDLEY_PRAGMA(value) _Pragma(#value)
-#elif HEDLEY_MSVC_VERSION_CHECK(15,0,0)
-#  define HEDLEY_PRAGMA(value) __pragma(value)
-#else
-#  define HEDLEY_PRAGMA(value)
-#endif
-
-#if defined(HEDLEY_DIAGNOSTIC_PUSH)
-#  undef HEDLEY_DIAGNOSTIC_PUSH
-#endif
-#if defined(HEDLEY_DIAGNOSTIC_POP)
-#  undef HEDLEY_DIAGNOSTIC_POP
-#endif
-#if defined(__clang__)
-#  define HEDLEY_DIAGNOSTIC_PUSH _Pragma("clang diagnostic push")
-#  define HEDLEY_DIAGNOSTIC_POP _Pragma("clang diagnostic pop")
-#elif HEDLEY_INTEL_VERSION_CHECK(13,0,0)
-#  define HEDLEY_DIAGNOSTIC_PUSH _Pragma("warning(push)")
-#  define HEDLEY_DIAGNOSTIC_POP _Pragma("warning(pop)")
-#elif HEDLEY_GCC_VERSION_CHECK(4,6,0)
-#  define HEDLEY_DIAGNOSTIC_PUSH _Pragma("GCC diagnostic push")
-#  define HEDLEY_DIAGNOSTIC_POP _Pragma("GCC diagnostic pop")
-#elif HEDLEY_MSVC_VERSION_CHECK(15,0,0)
-#  define HEDLEY_DIAGNOSTIC_PUSH __pragma(warning(push))
-#  define HEDLEY_DIAGNOSTIC_POP __pragma(warning(pop))
-#elif HEDLEY_ARM_VERSION_CHECK(5,6,0)
-#  define HEDLEY_DIAGNOSTIC_PUSH _Pragma("push")
-#  define HEDLEY_DIAGNOSTIC_POP _Pragma("pop")
-#elif \
-    HEDLEY_TI_VERSION_CHECK(15,12,0) || \
-    HEDLEY_TI_ARMCL_VERSION_CHECK(5,2,0) || \
-    HEDLEY_TI_CL430_VERSION_CHECK(4,4,0) || \
-    HEDLEY_TI_CL6X_VERSION_CHECK(8,1,0) || \
-    HEDLEY_TI_CL7X_VERSION_CHECK(1,2,0) || \
-    HEDLEY_TI_CLPRU_VERSION_CHECK(2,1,0)
-#  define HEDLEY_DIAGNOSTIC_PUSH _Pragma("diag_push")
-#  define HEDLEY_DIAGNOSTIC_POP _Pragma("diag_pop")
-#elif HEDLEY_PELLES_VERSION_CHECK(2,90,0)
-#  define HEDLEY_DIAGNOSTIC_PUSH _Pragma("warning(push)")
-#  define HEDLEY_DIAGNOSTIC_POP _Pragma("warning(pop)")
-#else
-#  define HEDLEY_DIAGNOSTIC_PUSH
-#  define HEDLEY_DIAGNOSTIC_POP
 #endif
 
 #if defined(HEDLEY_DIAGNOSTIC_DISABLE_DEPRECATED)
