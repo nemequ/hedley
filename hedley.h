@@ -756,7 +756,7 @@
 #    define HEDLEY_CPP_CAST(T, expr) \
        HEDLEY_DIAGNOSTIC_PUSH \
        _Pragma("diag_suppress=Pe137") \
-       HEDLEY_DIAGNOSTIC_POP \
+       HEDLEY_DIAGNOSTIC_POP
 #  else
 #    define HEDLEY_CPP_CAST(T, expr) ((T) (expr))
 #  endif
