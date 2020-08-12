@@ -13,7 +13,7 @@
     defined(HEDLEY_TI_CLPRU_VERSION)
 #  pragma diag_remark 1490
 #elif HEDLEY_PGI_VERSION_CHECK(20,7,0)
-#  pragma diag_remark 1651
+#  pragma diag_remark 1650,1651
 #elif defined(HEDLEY_PGI_VERSION)
 #  pragma diag_remark 1650
 #elif defined(HEDLEY_GNUC_VERSION)

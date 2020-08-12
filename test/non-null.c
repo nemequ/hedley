@@ -10,7 +10,7 @@
 #endif
 
 #if HEDLEY_PGI_VERSION_CHECK(20,7,0)
-#  pragma diag_remark 1623
+#  pragma diag_remark 1622,1623
 #elif defined(HEDLEY_PGI_VERSION)
 #  pragma diag_remark 1622
 #elif HEDLEY_SUNPRO_VERSION_CHECK(5,15,0) && defined(__cplusplus)
