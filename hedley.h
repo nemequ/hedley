@@ -768,12 +768,22 @@
 #if defined(__cplusplus)
 #  if HEDLEY_HAS_WARNING("-Wc++98-compat")
 #    if HEDLEY_HAS_WARNING("-Wc++17-extensions")
-#      define HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_(xpr) \
-         HEDLEY_DIAGNOSTIC_PUSH \
-         _Pragma("clang diagnostic ignored \"-Wc++98-compat\"") \
-         _Pragma("clang diagnostic ignored \"-Wc++17-extensions\"") \
-         xpr \
-         HEDLEY_DIAGNOSTIC_POP
+#      if HEDLEY_HAS_WARNING("-Wc++1z-extensions")
+#        define HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_(xpr) \
+           HEDLEY_DIAGNOSTIC_PUSH \
+           _Pragma("clang diagnostic ignored \"-Wc++98-compat\"") \
+           _Pragma("clang diagnostic ignored \"-Wc++17-extensions\"") \
+           _Pragma("clang diagnostic ignored \"-Wc++1z-extensions\"") \
+           xpr \
+           HEDLEY_DIAGNOSTIC_POP
+#      else
+#        define HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_(xpr) \
+           HEDLEY_DIAGNOSTIC_PUSH \
+           _Pragma("clang diagnostic ignored \"-Wc++98-compat\"") \
+           _Pragma("clang diagnostic ignored \"-Wc++17-extensions\"") \
+           xpr \
+           HEDLEY_DIAGNOSTIC_POP
+#      endif
 #    else
 #      define HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_(xpr) \
          HEDLEY_DIAGNOSTIC_PUSH \
@@ -1037,13 +1047,7 @@
 #if defined(HEDLEY_WARN_UNUSED_RESULT_MSG)
 #  undef HEDLEY_WARN_UNUSED_RESULT_MSG
 #endif
-#if (HEDLEY_HAS_CPP_ATTRIBUTE(nodiscard) >= 201907L)
-#  define HEDLEY_WARN_UNUSED_RESULT HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_([[nodiscard]])
-#  define HEDLEY_WARN_UNUSED_RESULT_MSG(msg) HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_([[nodiscard(msg)]])
-#elif HEDLEY_HAS_CPP_ATTRIBUTE(nodiscard)
-#  define HEDLEY_WARN_UNUSED_RESULT HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_([[nodiscard]])
-#  define HEDLEY_WARN_UNUSED_RESULT_MSG(msg) HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_([[nodiscard]])
-#elif \
+#if \
   HEDLEY_HAS_ATTRIBUTE(warn_unused_result) || \
   HEDLEY_GCC_VERSION_CHECK(3,4,0) || \
   HEDLEY_INTEL_VERSION_CHECK(13,0,0) || \
@@ -1062,6 +1066,12 @@
   HEDLEY_PGI_VERSION_CHECK(17,10,0)
 #  define HEDLEY_WARN_UNUSED_RESULT __attribute__((__warn_unused_result__))
 #  define HEDLEY_WARN_UNUSED_RESULT_MSG(msg) __attribute__((__warn_unused_result__))
+#elif (HEDLEY_HAS_CPP_ATTRIBUTE(nodiscard) >= 201907L)
+#  define HEDLEY_WARN_UNUSED_RESULT HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_([[nodiscard]])
+#  define HEDLEY_WARN_UNUSED_RESULT_MSG(msg) HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_([[nodiscard(msg)]])
+#elif HEDLEY_HAS_CPP_ATTRIBUTE(nodiscard)
+#  define HEDLEY_WARN_UNUSED_RESULT HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_([[nodiscard]])
+#  define HEDLEY_WARN_UNUSED_RESULT_MSG(msg) HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_([[nodiscard]])
 #elif defined(_Check_return_) /* SAL */
 #  define HEDLEY_WARN_UNUSED_RESULT _Check_return_
 #  define HEDLEY_WARN_UNUSED_RESULT_MSG(msg) _Check_return_
