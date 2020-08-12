@@ -971,9 +971,6 @@
   HEDLEY_INTEL_CL_VERSION_CHECK(2021,1,0)
 #  define HEDLEY_DEPRECATED(since) __declspec(deprecated("Since " # since))
 #  define HEDLEY_DEPRECATED_FOR(since, replacement) __declspec(deprecated("Since " #since "; use " #replacement))
-#elif defined(__cplusplus) && (__cplusplus >= 201402L)
-#  define HEDLEY_DEPRECATED(since) HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_([[deprecated("Since " #since)]])
-#  define HEDLEY_DEPRECATED_FOR(since, replacement) HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_([[deprecated("Since " #since "; use " #replacement)]])
 #elif \
   HEDLEY_HAS_EXTENSION(attribute_deprecated_with_message) || \
   HEDLEY_GCC_VERSION_CHECK(4,5,0) || \
@@ -988,6 +985,9 @@
   HEDLEY_TI_CLPRU_VERSION_CHECK(2,3,0)
 #  define HEDLEY_DEPRECATED(since) __attribute__((__deprecated__("Since " #since)))
 #  define HEDLEY_DEPRECATED_FOR(since, replacement) __attribute__((__deprecated__("Since " #since "; use " #replacement)))
+#elif defined(__cplusplus) && (__cplusplus >= 201402L)
+#  define HEDLEY_DEPRECATED(since) HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_([[deprecated("Since " #since)]])
+#  define HEDLEY_DEPRECATED_FOR(since, replacement) HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_([[deprecated("Since " #since "; use " #replacement)]])
 #elif \
   HEDLEY_HAS_ATTRIBUTE(deprecated) || \
   HEDLEY_GCC_VERSION_CHECK(3,1,0) || \
