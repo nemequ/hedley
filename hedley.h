@@ -1891,7 +1891,7 @@ HEDLEY_DIAGNOSTIC_POP
 #if defined(HEDLEY_FLAGS)
 #  undef HEDLEY_FLAGS
 #endif
-#if HEDLEY_HAS_ATTRIBUTE(flag_enum)
+#if HEDLEY_HAS_ATTRIBUTE(flag_enum) && (!defined(__cplusplus) || HEDLEY_HAS_WARNING("-Wbitfield-enum-conversion"))
 #  define HEDLEY_FLAGS __attribute__((__flag_enum__))
 #else
 #  define HEDLEY_FLAGS
