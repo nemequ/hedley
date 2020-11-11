@@ -483,6 +483,7 @@
   !defined(HEDLEY_INTEL_VERSION) && \
   !defined(HEDLEY_PGI_VERSION) && \
   !defined(HEDLEY_ARM_VERSION) && \
+  !defined(HEDLEY_CRAY_VERSION) && \
   !defined(HEDLEY_TI_VERSION) && \
   !defined(HEDLEY_TI_ARMCL_VERSION) && \
   !defined(HEDLEY_TI_CL430_VERSION) && \
