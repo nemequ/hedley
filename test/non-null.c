@@ -19,6 +19,8 @@
 #  pragma GCC diagnostic warning "-Wnonnull"
 #elif HEDLEY_INTEL_VERSION_CHECK(19,0,0)
 #  pragma warning(disable:2193)
+#elif HEDLEY_MCST_LCC_VERSION_CHECK(1,25,10)
+#  pragma diag_suppress 1622
 #endif
 
 HEDLEY_NON_NULL(1)

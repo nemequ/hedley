@@ -11,7 +11,7 @@
     defined(HEDLEY_TI_CL7X_VERSION) || \
     defined(HEDLEY_TI_CLPRU_VERSION)
 #  pragma diag_remark 183
-#elif defined(HEDLEY_PGI_VERSION) && defined(__cplusplus)
+#elif (defined(HEDLEY_PGI_VERSION) && defined(__cplusplus)) || HEDLEY_MCST_LCC_VERSION_CHECK(1,25,10)
 #  pragma diag_remark 181
 #elif defined(HEDLEY_GCC_VERSION)
 #  pragma GCC diagnostic warning "-Wformat"

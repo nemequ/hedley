@@ -6,7 +6,7 @@
 #  pragma warning(disable:1881)
 #elif HEDLEY_PGI_VERSION_CHECK(20,7,0)
 #  pragma diag_remark 1546,1547
-#elif defined(HEDLEY_PGI_VERSION)
+#elif defined(HEDLEY_PGI_VERSION) || HEDLEY_MCST_LCC_VERSION_CHECK(1,25,10)
 #  pragma diag_remark 1546
 #elif defined(HEDLEY_GNUC_VERSION)
 #  pragma GCC diagnostic warning "-Wformat"
