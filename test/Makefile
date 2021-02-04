@@ -104,6 +104,7 @@ TESTS = \
 	unknown-pragmas \
 	unavailable \
 	unreachable \
+	unused-function \
 	visibility \
 	warn \
 	warn-unused-result \

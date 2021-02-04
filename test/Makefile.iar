@@ -37,6 +37,7 @@ TESTS = \
 	unknown-pragmas.o unknown-pragmas-cpp.o \
 	unavailable.o unavailable-cpp.o \
 	unreachable.o unreachable-cpp.o \
+	unused-function.o unused-function-cpp.o \
 	visibility.o visibility-cpp.o \
 	warn.o warn-cpp.o \
 	warn-unused-result.o warn-unused-result-cpp.o \
@@ -74,6 +75,7 @@ CLEANFILES = $(TESTS) \
 	unknown-pragmas.cpp unknown-pragmas.o unknown-pragmas-cpp.o \
 	unavailable.cpp unavailable.o unavailable-cpp.o \
 	unreachable.cpp unreachable.o unreachable-cpp.o \
+	unused-function.cpp unused-function.o unused-function-cpp.o \
 	visibility.cpp visibility.o visibility-cpp.o \
 	warn.cpp warn.o warn-cpp.o \
 	warn-unused-result.cpp warn-unused-result.o warn-unused-result-cpp.o \
@@ -299,6 +301,13 @@ unreachable.o: unreachable.c
 unreachable.cpp: unreachable.c
 	copy /Y $(?) $(@) >NUL
 unreachable-cpp.o: unreachable.cpp
+	$(CXX) $(CXXFLAGS) --output $(@) $(?)
+
+unused-function.o: unused-function.c
+	$(CC) $(CFLAGS) --output $(@) $(?)
+unused-function.cpp: unused-function.c
+	copy /Y $(?) $(@) >NUL
+unused-function-cpp.o: unused-function.cpp
 	$(CXX) $(CXXFLAGS) --output $(@) $(?)
 
 visibility.o: visibility.c

@@ -994,6 +994,21 @@
 #  define HEDLEY_DIAGNOSTIC_DISABLE_CAST_QUAL
 #endif
 
+#if defined(HEDLEY_DIAGNOSTIC_DISABLE_UNUSED_FUNCTION)
+#  undef HEDLEY_DIAGNOSTIC_DISABLE_UNUSED_FUNCTION
+#endif
+#if HEDLEY_HAS_WARNING("-Wunused-function")
+#  define HEDLEY_DIAGNOSTIC_DISABLE_UNUSED_FUNCTION _Pragma("clang diagnostic ignored \"-Wunused-function\"")
+#elif HEDLEY_GCC_VERSION_CHECK(3,4,0)
+#  define HEDLEY_DIAGNOSTIC_DISABLE_UNUSED_FUNCTION _Pragma("GCC diagnostic ignored \"-Wunused-function\"")
+#elif HEDLEY_MSVC_VERSION_CHECK(1,0,0)
+#  define HEDLEY_DIAGNOSTIC_DISABLE_UNUSED_FUNCTION __pragma(warning(disable:4505))
+#elif HEDLEY_MCST_LCC_VERSION_CHECK(1,25,10)
+#  define HEDLEY_DIAGNOSTIC_DISABLE_UNUSED_FUNCTION _Pragma("diag_suppress 3142")
+#else
+#  define HEDLEY_DIAGNOSTIC_DISABLE_UNUSED_FUNCTION
+#endif
+
 #if defined(HEDLEY_DEPRECATED)
 #  undef HEDLEY_DEPRECATED
 #endif

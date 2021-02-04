@@ -37,6 +37,7 @@ TESTS = \
 	unknown-pragmas.exe unknown-pragmas-cpp.exe \
 	unavailable.exe unavailable-cpp.exe \
 	unreachable.exe unreachable-cpp.exe \
+	unused-function.exe unused-function-cpp.exe \
 	visibility.exe visibility-cpp.exe \
 	warn.exe warn-cpp.exe \
 	warn-unused-result.exe warn-unused-result-cpp.exe \
@@ -74,6 +75,7 @@ CLEANFILES = $(TESTS) \
 	unknown-pragmas.cpp unknown-pragmas.exe unknown-pragmas-cpp.exe unknown-pragmas.map unknown-pragmas-cpp.map \
 	unavailable.cpp unavailable.exe unavailable-cpp.exe unavailable.map unavailable-cpp.map \
 	unreachable.cpp unreachable.exe unreachable-cpp.exe unreachable.map unreachable-cpp.map \
+	unused-function.cpp unused-function.exe unused-function-cpp.exe unused-function.map unused-function-cpp.map \
 	visibility.cpp visibility.exe visibility-cpp.exe visibility.map visibility-cpp.map \
 	warn.cpp warn.exe warn-cpp.exe warn.map warn-cpp.map \
 	warn-unused-result.cpp warn-unused-result.exe warn-unused-result-cpp.exe warn-unused-result.map warn-unused-result-cpp.map \
@@ -299,6 +301,13 @@ unreachable.exe: unreachable.c
 unreachable.cpp: unreachable.c
 	copy /Y $(?) $(@) >NUL
 unreachable-cpp.exe: unreachable.cpp
+	$(CXX) $(CXXFLAGS) -o $(@) $(?)
+
+unused-function.exe: unused-function.c
+	$(CC) $(CFLAGS) -o $(@) $(?)
+unused-function.cpp: unused-function.c
+	copy /Y $(?) $(@) >NUL
+unused-function-cpp.exe: unused-function.cpp
 	$(CXX) $(CXXFLAGS) -o $(@) $(?)
 
 visibility.exe: visibility.c

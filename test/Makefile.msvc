@@ -37,6 +37,7 @@ TESTS = \
 	unknown-pragmas.exe unknown-pragmas-cpp.exe \
 	unavailable.exe unavailable-cpp.exe \
 	unreachable.exe unreachable-cpp.exe \
+	unused-function.exe unused-function-cpp.exe \
 	visibility.exe visibility-cpp.exe \
 	warn.exe warn-cpp.exe \
 	warn-unused-result.exe warn-unused-result-cpp.exe \
@@ -74,6 +75,7 @@ TESTS = \
 	unknown-pragmas.exe unknown-pragmas-cpp.exe \
 	unavailable.exe unavailable-cpp.exe \
 	unreachable.exe unreachable-cpp.exe \
+	unused-function.exe unused-function-cpp.exe \
 	visibility.exe visibility-cpp.exe \
 	warn.exe warn-cpp.exe \
 	warn-unused-result.exe warn-unused-result-cpp.exe \
@@ -111,6 +113,7 @@ CLEANFILES = $(TESTS) \
 	unknown-pragmas.cpp unknown-pragmas.obj unknown-pragmas.lib unknown-pragmas-cpp.exp unknown-pragmas-cpp.lib \
 	unavailable.cpp unavailable.obj unavailable.lib unavailable-cpp.exp unavailable-cpp.lib \
 	unreachable.cpp unreachable.obj unreachable.lib unreachable-cpp.exp unreachable-cpp.lib \
+	unused-function.cpp unused-function.obj unused-function.lib unused-function-cpp.exp unused-function-cpp.lib \
 	visibility.cpp visibility.obj visibility.lib visibility-cpp.exp visibility-cpp.lib \
 	warn.cpp warn.obj warn.lib warn-cpp.exp warn-cpp.lib \
 	warn-unused-result.cpp warn-unused-result.obj warn-unused-result.lib warn-unused-result-cpp.exp warn-unused-result-cpp.lib \
@@ -336,6 +339,13 @@ unreachable.exe: unreachable.c
 unreachable.cpp: unreachable.c
 	copy /Y $(?) $(@) >NUL
 unreachable-cpp.exe: unreachable.cpp
+	$(CXX) $(CXXFLAGS) /Fe$(@) $(?)
+
+unused-function.exe: unused-function.c
+	$(CC) $(CFLAGS) /Fe$(@) $(?)
+unused-function.cpp: unused-function.c
+	copy /Y $(?) $(@) >NUL
+unused-function-cpp.exe: unused-function.cpp
 	$(CXX) $(CXXFLAGS) /Fe$(@) $(?)
 
 visibility.exe: visibility.c
