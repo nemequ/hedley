@@ -57,10 +57,10 @@ else ifeq ($(notdir $(CXX)), xlc++)
 else ifeq ($(notdir $(CXX)), icpc)
   CXXFLAGS ?= $(GCC_CXX_FLAGS)
   CXX_OUTPUT_FILE := -o
-else ifeq ($(notdir $(CC)), g++)
+else ifeq ($(notdir $(CXX)), g++)
   CXXFLAGS ?= $(GCC_CXX_FLAGS)
   CXX_OUTPUT_FILE := -o
-else ifeq ($(notdir $(CC)), x86_64-w64-mingw32-g++)
+else ifeq ($(notdir $(CXX)), x86_64-w64-mingw32-g++)
   CFLAGS ?= $(GCC_CXX_FLAGS)
   C_OUTPUT_FILE := -o
 else
