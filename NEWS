@@ -1,3 +1,10 @@
+Version 15
+==========
+
+* Support for MCST LCC compiler.
+* New HEDLEY_DIAGNOSTIC_DISABLE_UNUSED_FUNCTION macro.
+* Assorted bug fixes and enhancements.
+
 Version 14
 ==========
 
@@ -10,7 +17,6 @@ Version 13
 * New macros:
   * HEDLEY_CONCAT3
 * Assorted bug fixes and enhancements
-
 
 Version 12
 ==========
