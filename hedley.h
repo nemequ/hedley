@@ -381,7 +381,7 @@
 #  if __VER__ > 1000
 #    define HEDLEY_IAR_VERSION HEDLEY_VERSION_ENCODE((__VER__ / 1000000), ((__VER__ / 1000) % 1000), (__VER__ % 1000))
 #  else
-#    define HEDLEY_IAR_VERSION HEDLEY_VERSION_ENCODE(VER / 100, __VER__ % 100, 0)
+#    define HEDLEY_IAR_VERSION HEDLEY_VERSION_ENCODE(__VER__ / 100, __VER__ % 100, 0)
 #  endif
 #endif
 
@@ -508,7 +508,11 @@
 #if defined(HEDLEY_HAS_ATTRIBUTE)
 #  undef HEDLEY_HAS_ATTRIBUTE
 #endif
-#if defined(__has_attribute)
+#if \
+  defined(__has_attribute) && \
+  ( \
+    (!defined(HEDLEY_IAR_VERSION) || HEDLEY_IAR_VERSION_CHECK(8,5,9)) \
+  )
 #  define HEDLEY_HAS_ATTRIBUTE(attribute) __has_attribute(attribute)
 #else
 #  define HEDLEY_HAS_ATTRIBUTE(attribute) (0)
@@ -518,7 +522,7 @@
 #  undef HEDLEY_GNUC_HAS_ATTRIBUTE
 #endif
 #if defined(__has_attribute)
-#  define HEDLEY_GNUC_HAS_ATTRIBUTE(attribute,major,minor,patch) __has_attribute(attribute)
+#  define HEDLEY_GNUC_HAS_ATTRIBUTE(attribute,major,minor,patch) HEDLEY_HAS_ATTRIBUTE(attribute)
 #else
 #  define HEDLEY_GNUC_HAS_ATTRIBUTE(attribute,major,minor,patch) HEDLEY_GNUC_VERSION_CHECK(major,minor,patch)
 #endif
@@ -527,7 +531,7 @@
 #  undef HEDLEY_GCC_HAS_ATTRIBUTE
 #endif
 #if defined(__has_attribute)
-#  define HEDLEY_GCC_HAS_ATTRIBUTE(attribute,major,minor,patch) __has_attribute(attribute)
+#  define HEDLEY_GCC_HAS_ATTRIBUTE(attribute,major,minor,patch) HEDLEY_HAS_ATTRIBUTE(attribute)
 #else
 #  define HEDLEY_GCC_HAS_ATTRIBUTE(attribute,major,minor,patch) HEDLEY_GCC_VERSION_CHECK(major,minor,patch)
 #endif
@@ -1021,7 +1025,7 @@
 #  define HEDLEY_DEPRECATED(since) __declspec(deprecated("Since " # since))
 #  define HEDLEY_DEPRECATED_FOR(since, replacement) __declspec(deprecated("Since " #since "; use " #replacement))
 #elif \
-  HEDLEY_HAS_EXTENSION(attribute_deprecated_with_message) || \
+  (HEDLEY_HAS_EXTENSION(attribute_deprecated_with_message) && !defined(HEDLEY_IAR_VERSION)) || \
   HEDLEY_GCC_VERSION_CHECK(4,5,0) || \
   HEDLEY_INTEL_VERSION_CHECK(13,0,0) || \
   HEDLEY_ARM_VERSION_CHECK(5,6,0) || \
@@ -1053,7 +1057,8 @@
   HEDLEY_TI_CL6X_VERSION_CHECK(7,5,0) || \
   HEDLEY_TI_CL7X_VERSION_CHECK(1,2,0) || \
   HEDLEY_TI_CLPRU_VERSION_CHECK(2,1,0) || \
-  HEDLEY_MCST_LCC_VERSION_CHECK(1,25,10)
+  HEDLEY_MCST_LCC_VERSION_CHECK(1,25,10) || \
+  HEDLEY_IAR_VERSION_CHECK(8,10,0)
 #  define HEDLEY_DEPRECATED(since) __attribute__((__deprecated__))
 #  define HEDLEY_DEPRECATED_FOR(since, replacement) __attribute__((__deprecated__))
 #elif \
@@ -1166,7 +1171,8 @@
   (HEDLEY_TI_CL6X_VERSION_CHECK(7,2,0) && defined(__TI_GNU_ATTRIBUTE_SUPPORT__)) || \
   HEDLEY_TI_CL6X_VERSION_CHECK(7,5,0) || \
   HEDLEY_TI_CL7X_VERSION_CHECK(1,2,0) || \
-  HEDLEY_TI_CLPRU_VERSION_CHECK(2,1,0)
+  HEDLEY_TI_CLPRU_VERSION_CHECK(2,1,0) || \
+  HEDLEY_IAR_VERSION_CHECK(8,10,0)
 #  define HEDLEY_NO_RETURN __attribute__((__noreturn__))
 #elif HEDLEY_SUNPRO_VERSION_CHECK(5,10,0)
 #  define HEDLEY_NO_RETURN _Pragma("does_not_return")
@@ -1567,7 +1573,8 @@ HEDLEY_DIAGNOSTIC_POP
   HEDLEY_TI_CL6X_VERSION_CHECK(7,5,0) || \
   HEDLEY_TI_CL7X_VERSION_CHECK(1,2,0) || \
   HEDLEY_TI_CLPRU_VERSION_CHECK(2,1,0) || \
-  HEDLEY_MCST_LCC_VERSION_CHECK(1,25,10)
+  HEDLEY_MCST_LCC_VERSION_CHECK(1,25,10) || \
+  HEDLEY_IAR_VERSION_CHECK(8,10,0)
 #  define HEDLEY_ALWAYS_INLINE __attribute__((__always_inline__)) HEDLEY_INLINE
 #elif \
   HEDLEY_MSVC_VERSION_CHECK(12,0,0) || \
@@ -1610,7 +1617,8 @@ HEDLEY_DIAGNOSTIC_POP
   HEDLEY_TI_CL6X_VERSION_CHECK(7,5,0) || \
   HEDLEY_TI_CL7X_VERSION_CHECK(1,2,0) || \
   HEDLEY_TI_CLPRU_VERSION_CHECK(2,1,0) || \
-  HEDLEY_MCST_LCC_VERSION_CHECK(1,25,10)
+  HEDLEY_MCST_LCC_VERSION_CHECK(1,25,10) || \
+  HEDLEY_IAR_VERSION_CHECK(8,10,0)
 #  define HEDLEY_NEVER_INLINE __attribute__((__noinline__))
 #elif \
   HEDLEY_MSVC_VERSION_CHECK(13,10,0) || \
@@ -1777,7 +1785,7 @@ HEDLEY_DIAGNOSTIC_POP
           !defined(HEDLEY_SUNPRO_VERSION) && \
           !defined(HEDLEY_PGI_VERSION) && \
           !defined(HEDLEY_IAR_VERSION)) || \
-       HEDLEY_HAS_EXTENSION(c_generic_selections) || \
+       (HEDLEY_HAS_EXTENSION(c_generic_selections) && !defined(HEDLEY_IAR_VERSION)) || \
        HEDLEY_GCC_VERSION_CHECK(4,9,0) || \
        HEDLEY_INTEL_VERSION_CHECK(17,0,0) || \
        HEDLEY_IBM_VERSION_CHECK(12,1,0) || \

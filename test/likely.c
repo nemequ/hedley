@@ -21,7 +21,7 @@
 int main(int argc, char* argv[HEDLEY_ARRAY_PARAM(argc)]) {
   int res;
 
-  (void) argv;
+  HEDLEY_STATIC_CAST(void, argv);
 
   res = (HEDLEY_PREDICT(argc + 1, 2, 0.95) == 2);
   assert(res);

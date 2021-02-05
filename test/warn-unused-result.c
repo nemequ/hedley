@@ -16,6 +16,8 @@
 #  pragma diag_remark 1650,1651
 #elif defined(HEDLEY_PGI_VERSION) || HEDLEY_MCST_LCC_VERSION_CHECK(1,25,10)
 #  pragma diag_remark 1650
+#elif defined(HEDLEY_IAR_VERSION)
+#  pragma diag_suppress=Pe2809
 #elif defined(HEDLEY_GNUC_VERSION)
 #  pragma GCC diagnostic warning "-Wunused-result"
 #endif
