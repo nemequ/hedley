@@ -748,7 +748,7 @@
 #if defined(HEDLEY_DIAGNOSTIC_POP)
 #  undef HEDLEY_DIAGNOSTIC_POP
 #endif
-#if defined(__clang__)
+#if defined(__clang__) && !defined(__INTEL_COMPILER)
 #  define HEDLEY_DIAGNOSTIC_PUSH _Pragma("clang diagnostic push")
 #  define HEDLEY_DIAGNOSTIC_POP _Pragma("clang diagnostic pop")
 #elif HEDLEY_INTEL_VERSION_CHECK(13,0,0)
