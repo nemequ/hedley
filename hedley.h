@@ -1490,6 +1490,8 @@ HEDLEY_DIAGNOSTIC_POP
   HEDLEY_PGI_VERSION_CHECK(17,10,0) || \
   HEDLEY_MCST_LCC_VERSION_CHECK(1,25,10)
 #  define HEDLEY_CONST __attribute__((__const__))
+#elif defined(_MSC_VER)
+#  define HEDLEY_CONST __declspec(noalias)
 #elif \
   HEDLEY_SUNPRO_VERSION_CHECK(5,10,0)
 #  define HEDLEY_CONST _Pragma("no_side_effect")
