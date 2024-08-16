@@ -6,8 +6,13 @@
  * the public domain worldwide. This software is distributed without
  * any warranty.
  *
- * For details, see <http://creativecommons.org/publicdomain/zero/1.0/>.
- * SPDX-License-Identifier: CC0-1.0
+ * Alternatively, and at your option, this software is available under the
+ * MIT No Attribution License (MIT-0); see the file COPYING-MIT-0.
+ *
+ * For details, see <http://creativecommons.org/publicdomain/zero/1.0/> and the
+ * file COPYING-CC0-1.0, or <https://spdx.org/licenses/MIT-0.html> and the file
+ * COPYING-MIT-0.
+ * SPDX-License-Identifier: CC0-1.0 OR MIT-0
  */
 
 #if !defined(HEDLEY_VERSION) || (HEDLEY_VERSION < 15)
