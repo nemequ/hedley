@@ -1867,7 +1867,7 @@ HEDLEY_DIAGNOSTIC_POP
   HEDLEY_INTEL_CL_VERSION_CHECK(2021,1,0)
 #  define HEDLEY_STATIC_ASSERT(expr, message) HEDLEY_DIAGNOSTIC_DISABLE_CPP98_COMPAT_WRAP_(static_assert(expr, message))
 #else
-#  define HEDLEY_STATIC_ASSERT(expr, message)
+#  define HEDLEY_STATIC_ASSERT(expr, message) struct { int static_assertion_failed: sizeof(int) * 8 + !(expr); }
 #endif
 
 #if defined(HEDLEY_NULL)
