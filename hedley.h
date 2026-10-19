@@ -716,7 +716,9 @@
 #  define HEDLEY_GCC_HAS_WARNING(warning,major,minor,patch) HEDLEY_GCC_VERSION_CHECK(major,minor,patch)
 #endif
 
-#if \
+#if defined(HEDLEY_TINYC_VERSION)
+#  define HEDLEY_PRAGMA(value)
+#elif \
   (defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901L)) || \
   defined(__clang__) || \
   HEDLEY_GCC_VERSION_CHECK(3,0,0) || \
@@ -732,7 +734,6 @@
   HEDLEY_TI_CL7X_VERSION_CHECK(1,2,0) || \
   HEDLEY_TI_CLPRU_VERSION_CHECK(2,1,0) || \
   HEDLEY_CRAY_VERSION_CHECK(5,0,0) || \
-  HEDLEY_TINYC_VERSION_CHECK(0,9,17) || \
   HEDLEY_SUNPRO_VERSION_CHECK(8,0,0) || \
   (HEDLEY_IBM_VERSION_CHECK(10,1,0) && defined(__C99_PRAGMA_OPERATOR))
 #  define HEDLEY_PRAGMA(value) _Pragma(#value)
